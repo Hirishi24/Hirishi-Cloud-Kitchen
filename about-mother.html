@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About the Founder | Hirishi Cloud Kitchen</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/hirishi-logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/hirishi-logo.png">
+  <link rel="apple-touch-icon" href="img/hirishi-logo.png">
+  <link rel="shortcut icon" href="img/hirishi-logo.png" type="image/x-icon">
+  <style>
+    .founder-hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 2em 4em 2em;
+      position: relative;
+      background: linear-gradient(135deg, #fffbe6 60%, #e3d18a 100%);
+      overflow: hidden;
+    }
+    .founder-content {
+      max-width: 900px;
+      margin: 0 auto;
+      background: rgba(255, 251, 230, 0.98);
+      border-radius: 32px;
+      box-shadow: 0 8px 48px rgba(32, 64, 59, 0.12);
+      padding: 3em 2em;
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+    .founder-photo {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: 4px solid #e3d18a;
+      background: #fffbe6;
+      object-fit: cover;
+      margin: 0 auto 1.5em auto;
+      box-shadow: 0 4px 24px rgba(32, 64, 59, 0.10);
+      animation: float 3s ease-in-out infinite;
+    }
+    .founder-name {
+      color: #1b3c3d;
+      font-family: 'Big Shoulders Text', cursive;
+      font-size: 2.2em;
+      margin-bottom: 0.2em;
+    }
+    .founder-title {
+      color: #e3d18a;
+      font-family: 'Big Shoulders Text', cursive;
+      font-size: 1.3em;
+      margin-bottom: 1.2em;
+    }
+    .founder-story {
+      color: #20403b;
+      font-size: 1.2em;
+      line-height: 1.8;
+      margin-bottom: 2em;
+      text-align: left;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .founder-quote {
+      color: #1b3c3d;
+      font-size: 1.3em;
+      font-style: italic;
+      margin: 2em auto 1.5em auto;
+      background: rgba(227, 209, 138, 0.12);
+      border-radius: 16px;
+      padding: 1.2em 2em;
+      max-width: 600px;
+      box-shadow: 0 2px 12px rgba(32, 64, 59, 0.06);
+      position: relative;
+    }
+    .founder-quote:before {
+      content: '“';
+      font-size: 2.5em;
+      color: #e3d18a;
+      position: absolute;
+      left: 18px;
+      top: 0;
+      opacity: 0.7;
+    }
+    .founder-quote:after {
+      content: '”';
+      font-size: 2.5em;
+      color: #e3d18a;
+      position: absolute;
+      right: 18px;
+      bottom: 0;
+      opacity: 0.7;
+    }
+    .founder-values {
+      margin: 2.5em 0 1.5em 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2em;
+    }
+    .value-card {
+      background: #fffbe6;
+      border: 2px solid #e3d18a;
+      border-radius: 16px;
+      padding: 1.2em 2em;
+      min-width: 180px;
+      max-width: 220px;
+      color: #1b3c3d;
+      font-family: 'Big Shoulders Text', cursive;
+      font-size: 1.1em;
+      box-shadow: 0 2px 8px rgba(32, 64, 59, 0.07);
+      text-align: center;
+    }
+    .founder-message {
+      margin-top: 2.5em;
+      color: #20403b;
+      font-size: 1.15em;
+      background: rgba(227, 209, 138, 0.08);
+      border-radius: 12px;
+      padding: 1.2em 2em;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+    @media (max-width: 768px) {
+      .founder-content { padding: 2em 0.5em; }
+      .founder-photo { width: 120px; height: 120px; }
+      .founder-values { flex-direction: column; gap: 1em; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-logo">
+      <a href="index.html" class="logo-link">
+        <img src="img/hirishi-logo.svg" alt="Hirishi Cloud Kitchen Logo" class="logo-img">
+        <div class="navbar-title">
+          <span class="brand-main">Hirishi</span>
+          <span class="brand-sub">Cloud Kitchen</span>
+        </div>
+      </a>
+    </div>
+    <ul class="navbar-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about-mother.html" class="active">About</a></li>
+      <li><a href="pickles.html">Pickles</a></li>
+      <li><a href="cart.html">Cart</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+  <section class="founder-hero">
+    <div class="founder-content">
+      <img src="img/mother.jpg" alt="Satya Saladi" class="founder-photo">
+      <div class="founder-name">Satya Saladi</div>
+      <div class="founder-title">Founder &amp; The Heart of Hirishi Cloud Kitchen</div>
+      <div class="founder-story">
+        Satya Saladi's journey began in her home kitchen, where her love for authentic, traditional flavors blossomed into a passion for sharing homemade goodness with the world. With every recipe, she brings the warmth, care, and tradition of generations, creating food that feels like a hug from home.<br><br>
+        As a mother and a visionary, Satya's mission is to deliver not just food, but memories and love to every household. Her dedication to quality, hygiene, and the true taste of home is the foundation of Hirishi Cloud Kitchen.
+      </div>
+      <div class="founder-quote">
+        Every recipe I create is a piece of my heart, made with love and tradition. I want to share the authentic taste of home with everyone.
+      </div>
+      <div class="founder-values">
+        <div class="value-card">Homemade with Love</div>
+        <div class="value-card">Authentic Family Recipes</div>
+        <div class="value-card">Quality &amp; Hygiene</div>
+        <div class="value-card">Delivering Memories</div>
+      </div>
+      <div class="founder-message">
+        <b>Satya's Message:</b><br>
+        "Thank you for trusting us to bring a taste of our home to yours. Every order is special to me, and I hope you feel the love and care in every bite. Welcome to the Hirishi family!"
+      </div>
+    </div>
+  </section>
+  <footer class="footer">
+    <div class="footer-content">
+      <span>&copy; 2025 Hirishi Cloud Kitchen. All rights reserved.</span>
+      <span class="footer-socials">
+        <a href="https://instagram.com/hirishicloudkitchen" target="_blank"><img src="img/instagram-icon.png" alt="Instagram"></a>
+        <a href="https://facebook.com/hirishicloudkitchen" target="_blank"><img src="img/facebook logo_icon.png" alt="Facebook"></a>
+        <a href="https://youtube.com/@hirishicloudkitchen" target="_blank"><img src="img/Youtube logo.webp" alt="YouTube"></a>
+        <a href="https://twitter.com/hirishicloudkitchen" target="_blank"><img src="img/twitter-icon.png" alt="Twitter"></a>
+        <a href="https://whatsapp.com/channel/0029VaFQ9gFJt1bQ7n3QyM2A" target="_blank"><img src="img/Whatsapp-Channel-icon.jpg" alt="WhatsApp Channel"></a>
+      </span>
+    </div>
+  </footer>
+</body>
+</html> 

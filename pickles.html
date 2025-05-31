@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pickles Cloud | Hirishi Cloud Kitchen</title>
+  <link rel="stylesheet" href="index.css">
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="img/hirishi-logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/hirishi-logo.png">
+  <link rel="apple-touch-icon" href="img/hirishi-logo.png">
+  <link rel="shortcut icon" href="img/hirishi-logo.png" type="image/x-icon">
+  <style>
+    /* Add these styles to your existing CSS */
+    .logo-link {
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      transition: transform 0.3s ease;
+    }
+
+    .logo-link:hover {
+      transform: scale(1.02);
+    }
+
+    .navbar-logo {
+      display: flex;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-logo">
+      <a href="index.html" class="logo-link">
+        <img src="img/hirishi-logo.svg" alt="Hirishi Cloud Kitchen Logo" class="logo-img">
+        <div class="navbar-title">
+          <span class="brand-main">Hirishi</span>
+          <span class="brand-sub">Cloud Kitchen</span>
+        </div>
+      </a>
+    </div>
+    <ul class="navbar-links">
+      <li><a href="index.html"><img src="img/home.svg" alt="Home" class="nav-home-icon"> Home</a></li>
+      
+    </ul>
+    <a href="cart.html" class="cart-icon-link">
+      <span id="cart-badge" class="cart-badge">0</span>
+      <img src="img/cart.png" alt="Cart" class="cart-icon-svg" style="width:32px;height:32px;">
+    </a>
+  </nav>
+  <section class="menu-section">
+    <h2 class="menu-title">Pickles Cloud </h2>
+    <div class="menu-grid" id="pickles-list">
+      <!-- Product cards will be injected by JS -->
+    </div>
+  </section>
+  <footer class="footer">
+    <div class="footer-content">
+      <span>&copy; 2025 Hirishi Cloud Kitchen. All rights reserved.</span>
+    </div>
+  </footer>
+  <script src="js/products.js"></script>
+  <script src="js/alerts.js"></script>
+  <script>
+    // Render pickles with weight selection
+    const pickles = window.products.pickles;
+    const grid = document.getElementById('pickles-list');
+    grid.innerHTML = pickles.map((p, idx) => {
+      const minPrice = Math.min(...p.weights.map(w => w.price));
+      const options = p.weights.map((w, i) => `<option value="${i}">${w.label} - ₹${w.price}</option>`).join('');
+      return `
+        <div class="menu-item" id="item-${p.id}">
+          <img src="img/${p.image}" alt="${p.name}">
+          <span>${p.name}</span>
+          <div class="price-row">
+            <span class="selling">from ₹${minPrice} onwards</span>
+          </div>
+          <div style="margin:0.7em 0;">
+            <select class="weight-select" id="weight-${idx}">
+              ${options}
+            </select>
+          </div>
+          <div class="selected-price" id="price-${idx}">₹${p.weights[0].price}</div>
+          <button class="hero-cta" onclick="addToCartWithWeight('${p.id}', document.getElementById('weight-${idx}').value)">Add to Cart</button>
+        </div>
+      `;
+    }).join('');
+    // Update price on weight change
+    pickles.forEach((p, idx) => {
+      const select = document.getElementById('weight-' + idx);
+      const priceDiv = document.getElementById('price-' + idx);
+      select.addEventListener('change', function() {
+        priceDiv.textContent = '₹' + p.weights[this.value].price;
+      });
+    });
+    // Add to cart with weight
+    window.addToCartWithWeight = function(id, weightIdx) {
+      const prod = pickles.find(p => p.id === id);
+      const weight = prod.weights[weightIdx];
+      const cartId = id + '-' + weight.label;
+      const itemName = prod.name + ' (' + weight.label + ')';
+      
+      // Add to cart
+      const cart = JSON.parse(localStorage.getItem('cart') || '{}');
+      if (!cart[cartId]) {
+        cart[cartId] = { name: itemName, price: weight.price, qty: 1 };
+      } else {
+        cart[cartId].qty += 1;
+      }
+      localStorage.setItem('cart', JSON.stringify(cart));
+      
+      // Show alert
+      showAlert('addToCart', itemName);
+      
+      // Update cart badge
+      updateCartBadge();
+    }
+    // Cart badge update
+    function updateCartBadge() {
+      const cart = JSON.parse(localStorage.getItem('cart') || '{}');
+      let count = 0;
+      Object.values(cart).forEach(item => {
+        count += item.qty;
+      });
+      document.getElementById('cart-badge').textContent = count;
+    }
+    updateCartBadge();
+    window.addEventListener('storage', updateCartBadge);
+    window.addEventListener('pageshow', updateCartBadge);
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const addToCartButtons = document.querySelectorAll('.add-to-cart');
+      
+      addToCartButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const productId = this.dataset.productId;
+          const product = products.find(p => p.id === productId);
+          
+          if (product) {
+            addToCart(product);
+            showAlert('addToCart', product.name);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html> 

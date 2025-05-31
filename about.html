@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us | Hirishi Cloud Kitchen</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/hirishi-logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/hirishi-logo.png">
+  <link rel="apple-touch-icon" href="img/hirishi-logo.png">
+  <link rel="shortcut icon" href="img/hirishi-logo.png" type="image/x-icon">
+  <style>
+    .about-hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 2em 4em 2em;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .story-section {
+      background: rgba(255, 251, 230, 0.95);
+      border-radius: 32px;
+      padding: 3em;
+      margin-bottom: 2em;
+      box-shadow: 0 8px 48px rgba(32, 64, 59, 0.15);
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .story-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at center, rgba(227, 209, 138, 0.1) 0%, transparent 70%);
+      animation: pulse 4s infinite;
+    }
+
+    .founder-section {
+      display: flex;
+      gap: 3em;
+      margin-bottom: 2em;
+      animation: fadeInUp 1s ease-out 0.3s both;
+    }
+
+    .founder-card {
+      flex: 1;
+      background: rgba(255, 251, 230, 0.95);
+      border-radius: 24px;
+      padding: 2em;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(32, 64, 59, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .founder-card:hover {
+      transform: translateY(-10px);
+    }
+
+    .founder-image {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      margin: 0 auto 1.5em;
+      border: 3px solid #e3d18a;
+      padding: 5px;
+      background: #fffbe6;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .founder-name {
+      color: #1b3c3d;
+      font-family: 'Big Shoulders Text', cursive;
+      font-size: 1.8em;
+      margin-bottom: 0.3em;
+    }
+
+    .founder-role {
+      color: #e3d18a;
+      font-family: 'Big Shoulders Text', cursive;
+      font-size: 1.2em;
+      margin-bottom: 1em;
+    }
+
+    .founder-quote {
+      color: #20403b;
+      font-style: italic;
+      line-height: 1.6;
+      margin-bottom: 1.5em;
+    }
+
+    .mission-section {
+      background: rgba(255, 251, 230, 0.95);
+      border-radius: 32px;
+      padding: 3em;
+      text-align: center;
+      box-shadow: 0 8px 48px rgba(32, 64, 59, 0.15);
+      animation: fadeInUp 1s ease-out 0.6s both;
+    }
+
+    .mission-title {
+      color: #1b3c3d;
+      font-family: 'Big Shoulders Text', cursive;
+      font-size: 2.2em;
+      margin-bottom: 1em;
+    }
+
+    .mission-text {
+      color: #20403b;
+      font-size: 1.2em;
+      line-height: 1.8;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .cta-section {
+      text-align: center;
+      margin-top: 3em;
+      animation: fadeInUp 1s ease-out 0.9s both;
+    }
+
+    .cta-button {
+      display: inline-block;
+      background: #e3d18a;
+      color: #1b3c3d;
+      font-family: 'Big Shoulders Text', cursive;
+      font-size: 1.2em;
+      font-weight: 700;
+      padding: 1em 2.5em;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(32, 64, 59, 0.2);
+    }
+
+    .cta-button:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(32, 64, 59, 0.3);
+      background: #fffbe6;
+    }
+
+    .floating-elements {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .floating-element {
+      position: absolute;
+      background: linear-gradient(135deg, #e3d18a 0%, #fffbe6 100%);
+      border-radius: 50%;
+      opacity: 0.1;
+      animation: float 6s infinite ease-in-out;
+    }
+
+    .floating-element:nth-child(1) { width: 100px; height: 100px; top: 20%; left: 10%; animation-delay: 0s; }
+    .floating-element:nth-child(2) { width: 150px; height: 150px; top: 60%; left: 80%; animation-delay: 1s; }
+    .floating-element:nth-child(3) { width: 80px; height: 80px; top: 80%; left: 20%; animation-delay: 2s; }
+    .floating-element:nth-child(4) { width: 120px; height: 120px; top: 30%; left: 70%; animation-delay: 3s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(5deg); }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 0.8; }
+    }
+
+    @media (max-width: 768px) {
+      .founder-section {
+        flex-direction: column;
+        gap: 2em;
+      }
+
+      .story-section,
+      .mission-section {
+        padding: 2em;
+      }
+
+      .founder-image {
+        width: 120px;
+        height: 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-logo">
+      <a href="index.html" class="logo-link">
+        <img src="img/hirishi-logo.svg" alt="Hirishi Cloud Kitchen Logo" class="logo-img">
+        <div class="navbar-title">
+          <span class="brand-main">Hirishi</span>
+          <span class="brand-sub">Cloud Kitchen</span>
+        </div>
+      </a>
+    </div>
+    <ul class="navbar-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="pickles.html">Pickles</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="floating-elements">
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+  </div>
+
+  <section class="about-hero">
+    <div class="about-content">
+      <div class="story-section">
+        <h2 style="color: #1b3c3d; font-family: 'Big Shoulders Text', cursive; font-size: 2.2em; margin-bottom: 1em; text-align: center;">Our Story</h2>
+        <p style="color: #20403b; font-size: 1.2em; line-height: 1.8; margin-bottom: 1.5em;">
+          In the heart of our home kitchen, a beautiful journey began. Satya Saladi, a mother with a passion for authentic flavors, and her son Hirishi, combined their love for traditional cooking with a modern vision. What started as a small family tradition of making pickles and snacks has blossomed into Hirishi Cloud Kitchen - a celebration of homemade goodness delivered right to your doorstep.
+        </p>
+        <p style="color: #20403b; font-size: 1.2em; line-height: 1.8;">
+          The name "Hirishi" is a blend of our names - a perfect representation of our mother-son partnership. Every recipe we create carries the warmth of our home and the love we put into our cooking. From our signature pickles to our homemade snacks, each item is prepared with the same care and attention that we would give to our own family.
+        </p>
+      </div>
+
+      <div class="founder-section">
+        <div class="founder-card">
+          <img src="img/satya.png" alt="Satya Saladi" class="founder-image">
+          <h3 class="founder-name">Satya Saladi</h3>
+          <p class="founder-role">The Heart of Our Kitchen</p>
+          <p class="founder-quote">"Every recipe I create is a piece of my heart, made with love and tradition. I want to share the authentic taste of home with everyone."</p>
+        </div>
+        <div class="founder-card">
+          <img src="img/hirishi.png" alt="Hirishi" class="founder-image">
+          <h3 class="founder-name">Hirishi</h3>
+          <p class="founder-role">The Vision Behind Hirishi</p>
+          <p class="founder-quote">"Bringing my mother's amazing recipes to people across India is my dream. Every order we receive is a chance to share our family's love for food."</p>
+        </div>
+      </div>
+
+      <div class="mission-section">
+        <h3 class="mission-title">Our Mission</h3>
+        <p class="mission-text">
+          At Hirishi Cloud Kitchen, we're not just selling food - we're sharing a piece of our home with you. Our mission is to bring the authentic taste of homemade goodness to every household in India. We believe that food made with love and care can bring joy to people's lives, and we're committed to maintaining the highest standards of quality and hygiene in everything we prepare.
+        </p>
+      </div>
+
+      <div class="cta-section">
+        <a href="pickles.html" class="cta-button">Explore Our Products</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <span>&copy; 2025 Hirishi Cloud Kitchen. All rights reserved.</span>
+      <span class="footer-socials">
+        <a href="https://instagram.com/hirishicloudkitchen" target="_blank"><img src="img/instagram-icon.png" alt="Instagram"></a>
+        <a href="https://facebook.com/hirishicloudkitchen" target="_blank"><img src="img/facebook logo_icon.png" alt="Facebook"></a>
+        <a href="https://youtube.com/@hirishicloudkitchen" target="_blank"><img src="img/Youtube logo.webp" alt="YouTube"></a>
+        <a href="https://twitter.com/hirishicloudkitchen" target="_blank"><img src="img/twitter-icon.png" alt="Twitter"></a>
+        <a href="https://whatsapp.com/channel/0029VaFQ9gFJt1bQ7n3QyM2A" target="_blank"><img src="img/Whatsapp-Channel-icon.jpg" alt="WhatsApp Channel"></a>
+      </span>
+    </div>
+  </footer>
+</body>
+</html> 
