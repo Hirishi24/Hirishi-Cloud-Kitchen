@@ -128,6 +128,25 @@
       z-index: 2;
     }
 
+    /* Item quantity styles */
+    .item-quantity {
+      background: rgba(227, 209, 138, 0.2);
+      color: #e3d18a;
+      padding: 6px 12px;
+      border-radius: 15px;
+      font-family: 'Big Shoulders Text', cursive;
+      font-size: 0.9em;
+      margin: 8px 0;
+      text-align: center;
+      display: none;
+      border: 1px solid rgba(227, 209, 138, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .item-quantity:hover {
+      background: rgba(227, 209, 138, 0.3);
+    }
+
     /* Login button styles */
     .login-btn {
       background: #e3d18a;
@@ -262,6 +281,7 @@
             </select>
           </div>
           <div class="selected-price" id="price-${idx}">₹${p.weights[0].price}</div>
+          <div class="item-quantity" id="quantity-${p.id}">0 items in cart</div>
           <button class="hero-cta" onclick="addToCartWithWeight('${p.id}', document.getElementById('weight-${idx}').value)">Add to Cart</button>
         </div>
       `;
@@ -290,11 +310,38 @@
       }
       localStorage.setItem('cart', JSON.stringify(cart));
       
+      // Update quantity display
+      updateItemQuantity(id);
+      
       // Show alert
       showAlert('addToCart', itemName);
       
       // Update cart badge
       updateCartBadge();
+    }
+    // Function to update item quantity display
+    function updateItemQuantity(itemId) {
+      const cart = JSON.parse(localStorage.getItem('cart') || '{}');
+      let totalQty = 0;
+      
+      // Sum up quantities for all weights of this item
+      Object.entries(cart).forEach(([key, value]) => {
+        if (key.startsWith(itemId + '-')) {
+          totalQty += value.qty;
+        }
+      });
+      
+      const quantityDiv = document.getElementById('quantity-' + itemId);
+      if (quantityDiv) {
+        quantityDiv.textContent = totalQty === 1 ? '1 item in cart' : `${totalQty} items in cart`;
+        quantityDiv.style.display = totalQty > 0 ? 'block' : 'none';
+      }
+    }
+    // Update all item quantities on page load
+    function updateAllItemQuantities() {
+      pickles.forEach(p => {
+        updateItemQuantity(p.id);
+      });
     }
     // Cart badge update
     function updateCartBadge() {
@@ -305,10 +352,17 @@
       });
       document.getElementById('cart-badge').textContent = count;
     }
+    // Initialize quantities and cart badge
+    updateAllItemQuantities();
     updateCartBadge();
-    window.addEventListener('storage', updateCartBadge);
-    window.addEventListener('pageshow', updateCartBadge);
-
+    window.addEventListener('storage', () => {
+      updateAllItemQuantities();
+      updateCartBadge();
+    });
+    window.addEventListener('pageshow', () => {
+      updateAllItemQuantities();
+      updateCartBadge();
+    });
     document.addEventListener('DOMContentLoaded', function() {
       const addToCartButtons = document.querySelectorAll('.add-to-cart');
       
