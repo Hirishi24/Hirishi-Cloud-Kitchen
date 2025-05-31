@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pickles Cloud | Hirishi Cloud Kitchen</title>
+  <title>Pickles - Hirishi Cloud Kitchen</title>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Text:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="index.css">
   <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="img/hirishi-logo.png">
@@ -28,6 +29,93 @@
       display: flex;
       align-items: center;
     }
+
+    /* Keep existing styles */
+    .pickles-section {
+      padding: 80px 20px;
+      min-height: 100vh;
+      background: linear-gradient(135deg, rgba(27, 60, 61, 0.95), rgba(32, 64, 59, 0.95));
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Add back button styles */
+    .back-button {
+      position: fixed;
+      top: 80px;  /* Adjusted to be just below the navbar */
+      right: 20px;
+      background: #e3d18a;
+      color: #1b3c3d;
+      border: none;
+      border-radius: 50px;
+      padding: 12px 25px;
+      font-family: 'Big Shoulders Text', cursive;
+      font-size: 1.1em;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(32, 64, 59, 0.2);
+      transition: all 0.3s ease;
+      z-index: 100;
+      margin-top: 10px;  /* Added margin for better spacing */
+    }
+
+    .back-button:hover {
+      transform: translateX(5px);
+      background: #fffbe6;
+      box-shadow: 0 6px 20px rgba(32, 64, 59, 0.3);
+    }
+
+    .back-button .arrow {
+      transition: transform 0.3s ease;
+    }
+
+    .back-button:hover .arrow {
+      transform: translateX(3px);
+    }
+
+    /* Login button styles */
+    .login-btn {
+      background: #e3d18a;
+      color: #1b3c3d;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-family: 'Big Shoulders Text', cursive;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(32, 64, 59, 0.2);
+    }
+
+    .login-btn:hover {
+      background: #fffbe6;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(32, 64, 59, 0.3);
+    }
+
+    .login-btn .btn-text {
+      font-size: 1.1em;
+    }
+
+    .login-btn .btn-icon {
+      font-size: 1.2em;
+      transition: transform 0.3s ease;
+    }
+
+    .login-btn:hover .btn-icon {
+      transform: translateX(3px);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
   </style>
 </head>
 <body>
@@ -42,14 +130,30 @@
       </a>
     </div>
     <ul class="navbar-links">
-      <li><a href="index.html"><img src="img/home.svg" alt="Home" class="nav-home-icon"> Home</a></li>
-      
+      <li><a href="index.html#hero">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="index.html#menu">Menu</a></li>
+      <li><a href="pickles.html">Pickles</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
     </ul>
-    <a href="cart.html" class="cart-icon-link">
-      <span id="cart-badge" class="cart-badge">0</span>
-      <img src="img/cart.png" alt="Cart" class="cart-icon-svg" style="width:32px;height:32px;">
-    </a>
+    <div class="nav-right">
+      <a href="login.html" class="login-btn">
+        <span class="btn-text">Login</span>
+        <span class="btn-icon">→</span>
+      </a>
+      <a href="cart.html" class="cart-icon-link">
+        <span id="cart-badge" class="cart-badge">0</span>
+        <img src="img/cart.png" alt="Cart" class="cart-icon-svg" style="width:32px;height:32px;">
+      </a>
+    </div>
   </nav>
+
+  <!-- Back Button -->
+  <button class="back-button" onclick="window.location.href='index.html#menu'">
+    <span class="arrow">←</span>
+    <span>Back to Menu</span>
+  </button>
+
   <section class="menu-section">
     <h2 class="menu-title">Pickles Cloud </h2>
     <div class="menu-grid" id="pickles-list">

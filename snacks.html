@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snacks Cloud - Hirishi Cloud Kitchen</title>
+    <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Text:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+    <style>
+        .snacks-section {
+            padding: 80px 20px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(27, 60, 61, 0.95), rgba(32, 64, 59, 0.95));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .snacks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2em;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2em;
+        }
+
+        .snack-item {
+            background: #fffbe6;
+            border-radius: 20px;
+            padding: 1.5em;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(32, 64, 59, 0.1);
+            border: 2px solid #e3d18a;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .snack-item:hover {
+            transform: translateY(-8px) rotate(1deg);
+            box-shadow: 0 8px 30px rgba(32, 64, 59, 0.15);
+        }
+
+        .snack-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(227, 209, 138, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .snack-item:hover::before {
+            opacity: 1;
+        }
+
+        .snack-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            margin: 0 auto 1em;
+            border: 3px solid #e3d18a;
+            padding: 0.5em;
+            background: #fff;
+            transition: transform 0.3s;
+        }
+
+        .snack-item:hover .snack-image {
+            transform: scale(1.05) rotate(-5deg);
+        }
+
+        .snack-name {
+            font-family: 'Big Shoulders Text', cursive;
+            font-size: 1.4em;
+            color: #1b3c3d;
+            margin-bottom: 0.5em;
+        }
+
+        .snack-description {
+            color: #20403b;
+            margin-bottom: 1em;
+            line-height: 1.5;
+        }
+
+        .snack-price {
+            font-family: 'Big Shoulders Text', cursive;
+            font-size: 1.2em;
+            color: #e3d18a;
+            font-weight: 700;
+            margin-bottom: 1em;
+        }
+
+        .add-to-cart-btn {
+            background: #e3d18a;
+            color: #1b3c3d;
+            border: none;
+            border-radius: 25px;
+            padding: 0.8em 1.5em;
+            font-family: 'Big Shoulders Text', cursive;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .add-to-cart-btn:hover {
+            background: #fffbe6;
+            transform: scale(1.05);
+        }
+
+        .snack-badge {
+            position: absolute;
+            top: 1em;
+            right: 1em;
+            background: #e3d18a;
+            color: #1b3c3d;
+            padding: 0.3em 0.8em;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: 600;
+            animation: badge-pulse 2s infinite;
+        }
+
+        @keyframes badge-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .snacks-title {
+            text-align: center;
+            color: #e3d18a;
+            font-family: 'Big Shoulders Text', cursive;
+            font-size: 2.5em;
+            margin-bottom: 1em;
+            position: relative;
+            padding-bottom: 0.5em;
+        }
+
+        .snacks-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: #e3d18a;
+            border-radius: 2px;
+        }
+
+        .floating-snack {
+            position: absolute;
+            pointer-events: none;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        .snack-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: #fffbe6;
+            padding: 2em;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(32, 64, 59, 0.2);
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s;
+        }
+
+        .snack-popup.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            pointer-events: auto;
+        }
+
+        .snack-popup-content {
+            text-align: center;
+        }
+
+        .snack-popup-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 0 auto 1em;
+            border: 3px solid #e3d18a;
+        }
+
+        .snack-popup-title {
+            font-family: 'Big Shoulders Text', cursive;
+            font-size: 1.8em;
+            color: #1b3c3d;
+            margin-bottom: 0.5em;
+        }
+
+        .snack-popup-description {
+            color: #20403b;
+            margin-bottom: 1.5em;
+            line-height: 1.6;
+        }
+
+        .snack-popup-price {
+            font-family: 'Big Shoulders Text', cursive;
+            font-size: 1.4em;
+            color: #e3d18a;
+            font-weight: 700;
+            margin-bottom: 1.5em;
+        }
+
+        .snack-popup-close {
+            position: absolute;
+            top: 1em;
+            right: 1em;
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            color: #1b3c3d;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .snack-popup-close:hover {
+            color: #e3d18a;
+        }
+
+        .snack-popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(27, 60, 61, 0.8);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .snack-popup-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .snack-category {
+            position: absolute;
+            top: 1em;
+            left: 1em;
+            background: #1b3c3d;
+            color: #e3d18a;
+            padding: 0.3em 0.8em;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: #e3d18a;
+            color: #1b3c3d;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 25px;
+            font-family: 'Big Shoulders Text', cursive;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(32, 64, 59, 0.2);
+            transition: all 0.3s ease;
+            z-index: 100;
+            margin-top: 10px;
+        }
+
+        .back-button:hover {
+            transform: translateX(5px);
+            background: #fffbe6;
+            box-shadow: 0 6px 20px rgba(32, 64, 59, 0.3);
+        }
+
+        .back-button .arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .back-button:hover .arrow {
+            transform: translateX(3px);
+        }
+
+        /* Login button styles */
+        .login-btn {
+            background: #e3d18a;
+            color: #1b3c3d;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-family: 'Big Shoulders Text', cursive;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(32, 64, 59, 0.2);
+        }
+
+        .login-btn:hover {
+            background: #fffbe6;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(32, 64, 59, 0.3);
+        }
+
+        .login-btn .btn-text {
+            font-size: 1.1em;
+        }
+
+        .login-btn .btn-icon {
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+
+        .login-btn:hover .btn-icon {
+            transform: translateX(3px);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Navigation bar scrolling styles */
+        .navbar {
+            background: rgba(27, 60, 61, 0.95);
+            padding: 15px 30px;
+            position: relative;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Remove the fixed positioning and scrolling behavior */
+        .navbar.scrolled,
+        .navbar.visible {
+            transform: none;
+        }
+
+        .coming-soon-message {
+            max-width: 800px;
+            margin: 2em auto;
+            padding: 2em;
+            background: rgba(255, 251, 230, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(32, 64, 59, 0.1);
+            text-align: center;
+        }
+
+        .message-container {
+            position: relative;
+        }
+
+        .message-icon {
+            font-size: 4em;
+            margin-bottom: 0.5em;
+            animation: bounce 2s infinite;
+        }
+
+        .message-container h2 {
+            color: #1b3c3d;
+            font-family: 'Big Shoulders Text', cursive;
+            font-size: 2em;
+            margin-bottom: 0.5em;
+        }
+
+        .message-container p {
+            color: #20403b;
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 1em;
+        }
+
+        .animated-message {
+            margin-top: 2em;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .message-bubble {
+            background: #e3d18a;
+            padding: 1em 2em;
+            border-radius: 20px;
+            position: relative;
+            max-width: 80%;
+            box-shadow: 0 4px 15px rgba(32, 64, 59, 0.1);
+            animation: float 3s infinite ease-in-out;
+        }
+
+        .bubble-text {
+            color: #1b3c3d;
+            font-family: 'Big Shoulders Text', cursive;
+            font-size: 1.1em;
+            display: block;
+        }
+
+        .character {
+            font-size: 3em;
+            margin-left: 1em;
+            animation: wave 2s infinite;
+        }
+
+        /* Panda Button Styles */
+        .panda-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            background: #e3d18a;
+            color: #1b3c3d;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-family: 'Big Shoulders Text', cursive;
+            font-size: 1.2em;
+            font-weight: 600;
+            margin: 2em auto;
+            box-shadow: 0 4px 15px rgba(32, 64, 59, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .panda-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(32, 64, 59, 0.3);
+            background: #fffbe6;
+        }
+
+        .panda-emoji {
+            font-size: 1.5em;
+            animation: pandaBounce 1s infinite;
+        }
+
+        @keyframes pandaBounce {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-5px) rotate(10deg); }
+        }
+
+        .panda-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .panda-button:hover::before {
+            left: 100%;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        /* Responsive Styles */
+        @media screen and (max-width: 768px) {
+            .snacks-section {
+                padding: 60px 15px;
+            }
+
+            .snacks-title {
+                font-size: 2em;
+                margin-bottom: 0.8em;
+            }
+
+            .coming-soon-message {
+                margin: 1.5em auto;
+                padding: 1.5em;
+                width: 90%;
+            }
+
+            .message-container h2 {
+                font-size: 1.6em;
+            }
+
+            .message-container p {
+                font-size: 1.1em;
+                padding: 0 10px;
+            }
+
+            .message-icon {
+                font-size: 3em;
+            }
+
+            .panda-button {
+                padding: 12px 25px;
+                font-size: 1.1em;
+                width: 90%;
+                max-width: 300px;
+                margin: 1.5em auto;
+            }
+
+            .panda-emoji {
+                font-size: 1.3em;
+            }
+
+            .message-bubble {
+                padding: 0.8em 1.5em;
+                max-width: 90%;
+            }
+
+            .bubble-text {
+                font-size: 1em;
+            }
+
+            .character {
+                font-size: 2.5em;
+            }
+
+            .animated-message {
+                flex-direction: column;
+                gap: 1em;
+            }
+
+            .character {
+                margin-left: 0;
+                margin-top: 0.5em;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .snacks-section {
+                padding: 50px 10px;
+            }
+
+            .snacks-title {
+                font-size: 1.8em;
+            }
+
+            .coming-soon-message {
+                padding: 1.2em;
+                width: 95%;
+            }
+
+            .message-container h2 {
+                font-size: 1.4em;
+            }
+
+            .message-container p {
+                font-size: 1em;
+                padding: 0 5px;
+            }
+
+            .panda-button {
+                padding: 10px 20px;
+                font-size: 1em;
+                width: 95%;
+            }
+
+            .message-bubble {
+                padding: 0.7em 1.2em;
+            }
+
+            .bubble-text {
+                font-size: 0.9em;
+            }
+
+            .character {
+                font-size: 2em;
+            }
+        }
+
+        /* Touch Device Optimizations */
+        @media (hover: none) {
+            .panda-button:hover {
+                transform: none;
+                background: #e3d18a;
+            }
+
+            .panda-button:active {
+                transform: translateY(-2px);
+                background: #fffbe6;
+            }
+
+            .panda-button::before {
+                display: none;
+            }
+        }
+
+        /* High Contrast Mode Support */
+        @media (prefers-contrast: high) {
+            .panda-button {
+                border: 2px solid #1b3c3d;
+            }
+
+            .message-bubble {
+                border: 2px solid #1b3c3d;
+            }
+        }
+
+        /* Reduced Motion Support */
+        @media (prefers-reduced-motion: reduce) {
+            .panda-emoji,
+            .message-icon,
+            .character,
+            .message-bubble {
+                animation: none;
+            }
+
+            .panda-button:hover {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-logo">
+            <a href="index.html" class="logo-link">
+                <img src="img/hirishi-logo.svg" alt="Hirishi Cloud Kitchen Logo" class="logo-img">
+                <div class="navbar-title">
+                    <span class="brand-main">Hirishi</span>
+                    <span class="brand-sub">Cloud Kitchen</span>
+                </div>
+            </a>
+        </div>
+        <ul class="navbar-links">
+            <li><a href="index.html#hero">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="index.html#menu">Menu</a></li>
+            <li><a href="pickles.html">Pickles</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <div class="nav-right">
+            <a href="login.html" class="login-btn">
+                <span class="btn-text">Login</span>
+                <span class="btn-icon">→</span>
+            </a>
+            <a href="cart.html" class="cart-icon-link">
+                <span id="cart-badge" class="cart-badge">0</span>
+                <img src="img/cart.png" alt="Cart" class="cart-icon-svg" style="width:32px;height:32px;">
+            </a>
+        </div>
+    </nav>
+
+    <!-- Snacks Section -->
+    <section class="snacks-section">
+        <h1 class="snacks-title">Coming Soon!</h1>
+        <div class="coming-soon-message">
+            <div class="message-container">
+                <div class="message-icon">🥨</div>
+                <h2>Delicious Snacks Collection</h2>
+                <p>We are currently focusing on delivering our premium homemade non-veg pickles.</p>
+                <p>Our mouthwatering snacks will be available soon!</p>
+                <a href="pickles.html" class="panda-button">
+                    <span class="panda-emoji">🐼</span>
+                    Order from Pickles Cloud
+                </a>
+                <div class="animated-message">
+                    <span class="message-bubble">
+                        <span class="bubble-text">Customer experience is our priority! We're working hard to bring you the best homemade snacks soon! 🎉</span>
+                    </span>
+                    <div class="character">🧑‍🍳</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Snack Popup -->
+    <div class="snack-popup-overlay"></div>
+    <div class="snack-popup">
+        <button class="snack-popup-close">&times;</button>
+        <div class="snack-popup-content">
+            <img src="" alt="" class="snack-popup-image">
+            <h2 class="snack-popup-title"></h2>
+            <p class="snack-popup-description"></p>
+            <div class="snack-popup-price"></div>
+            <button class="add-to-cart-btn">Add to Cart</button>
+        </div>
+    </div>
+
+    <script>
+        // Add this script for navbar scrolling behavior
+        let lastScrollTop = 0;
+        const navbar = document.querySelector('.navbar');
+        
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > lastScrollTop) {
+                // Scrolling down
+                navbar.classList.add('scrolled');
+                navbar.classList.remove('visible');
+            } else {
+                // Scrolling up
+                navbar.classList.remove('scrolled');
+                navbar.classList.add('visible');
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+
+        // Rest of your existing scripts
+        // Sample snacks data
+        const snacks = [
+            {
+                id: 'murukku',
+                name: 'Murukku',
+                description: 'Crispy and crunchy spiral-shaped snack made from rice flour and spices',
+                price: '₹250/kg',
+                image: 'img/snacks/murukku.jpg',
+                badge: 'Best Seller',
+                category: 'Traditional'
+            },
+            {
+                id: 'mixture',
+                name: 'Mixture',
+                description: 'A delightful mix of various fried snacks with peanuts and spices',
+                price: '₹300/kg',
+                image: 'img/snacks/mixture.jpg',
+                badge: 'Popular',
+                category: 'Mixed'
+            },
+            {
+                id: 'thatte',
+                name: 'Thatte',
+                description: 'Crispy diamond-shaped snack made from rice flour and urad dal',
+                price: '₹280/kg',
+                image: 'img/snacks/thatte.jpg',
+                badge: 'Crispy',
+                category: 'Traditional'
+            },
+            {
+                id: 'kara-sev',
+                name: 'Kara Sev',
+                description: 'Spicy and crispy vermicelli-like snack made from gram flour',
+                price: '₹320/kg',
+                image: 'img/snacks/kara-sev.jpg',
+                badge: 'Spicy',
+                category: 'Spicy'
+            }
+        ];
+
+        // Function to create snack items
+        function createSnackItems() {
+            const snacksGrid = document.querySelector('.snacks-grid');
+            snacks.forEach(snack => {
+                const snackItem = document.createElement('div');
+                snackItem.className = 'snack-item';
+                snackItem.innerHTML = `
+                    ${snack.badge ? `<span class="snack-badge">${snack.badge}</span>` : ''}
+                    <span class="snack-category">${snack.category}</span>
+                    <img src="${snack.image}" alt="${snack.name}" class="snack-image">
+                    <h3 class="snack-name">${snack.name}</h3>
+                    <p class="snack-description">${snack.description}</p>
+                    <div class="snack-price">${snack.price}</div>
+                    <button class="add-to-cart-btn" data-id="${snack.id}">Add to Cart</button>
+                `;
+                snacksGrid.appendChild(snackItem);
+
+                // Add click event for snack item
+                snackItem.addEventListener('click', () => showSnackPopup(snack));
+            });
+        }
+
+        // Function to show snack popup
+        function showSnackPopup(snack) {
+            const popup = document.querySelector('.snack-popup');
+            const overlay = document.querySelector('.snack-popup-overlay');
+            const popupImage = popup.querySelector('.snack-popup-image');
+            const popupTitle = popup.querySelector('.snack-popup-title');
+            const popupDescription = popup.querySelector('.snack-popup-description');
+            const popupPrice = popup.querySelector('.snack-popup-price');
+
+            popupImage.src = snack.image;
+            popupImage.alt = snack.name;
+            popupTitle.textContent = snack.name;
+            popupDescription.textContent = snack.description;
+            popupPrice.textContent = snack.price;
+
+            popup.classList.add('show');
+            overlay.classList.add('show');
+        }
+
+        // Close popup when clicking close button or overlay
+        document.querySelector('.snack-popup-close').addEventListener('click', () => {
+            document.querySelector('.snack-popup').classList.remove('show');
+            document.querySelector('.snack-popup-overlay').classList.remove('show');
+        });
+
+        document.querySelector('.snack-popup-overlay').addEventListener('click', () => {
+            document.querySelector('.snack-popup').classList.remove('show');
+            document.querySelector('.snack-popup-overlay').classList.remove('show');
+        });
+
+        // Initialize snack items
+        createSnackItems();
+
+        // Add floating snacks animation
+        function createFloatingSnacks() {
+            const snacks = ['🥨', '🥨', '🥨', '🥨', '🥨'];
+            const section = document.querySelector('.snacks-section');
+            
+            snacks.forEach((snack, index) => {
+                const floatingSnack = document.createElement('div');
+                floatingSnack.className = 'floating-snack';
+                floatingSnack.textContent = snack;
+                floatingSnack.style.fontSize = '2em';
+                floatingSnack.style.left = `${Math.random() * 100}%`;
+                floatingSnack.style.top = `${Math.random() * 100}%`;
+                floatingSnack.style.animationDelay = `${index * 0.5}s`;
+                section.appendChild(floatingSnack);
+            });
+        }
+
+        createFloatingSnacks();
+    </script>
+</body>
+</html> 
