@@ -300,7 +300,7 @@
 
       // Check for exclamation mark in the code
       if (code.includes('!')) {
-        document.getElementById('coupon-modal-message').textContent = 'Hey! Please remove the exclamation mark ( ! ) from the code. Just use HIRISHI10 😊';
+        document.getElementById('coupon-modal-message').textContent = 'Hey! Please remove the exclamation mark ( ! ) from the code. Just use HIRISHI10 or RappaRappa50 😊';
         return;
       }
 
@@ -315,10 +315,23 @@
           closeCouponModal();
           renderCart();
         }, 1800);
+      } else if (code.toLowerCase() === 'rapparappa50' && total >= 1000) {
+        couponApplied = true;
+        couponDiscount = 50;
+        document.getElementById('coupon-modal-message').textContent = '🎉 Coupon applied! ₹50 off';
+        // Panda jumps and confetti
+        document.getElementById('panda-runner').classList.add('panda-jump');
+        showConfetti();
+        setTimeout(() => {
+          closeCouponModal();
+          renderCart();
+        }, 1800);
       } else if (code.toLowerCase() === 'hirishi10') {
         document.getElementById('coupon-modal-message').textContent = '❌ Add more items to reach ₹2000 for this coupon!';
+      } else if (code.toLowerCase() === 'rapparappa50') {
+        document.getElementById('coupon-modal-message').textContent = '❌ Add more items to reach ₹1000 for this coupon!';
       } else {
-        document.getElementById('coupon-modal-message').textContent = '❌ Invalid coupon. Try HIRISHI10!';
+        document.getElementById('coupon-modal-message').textContent = '❌ Invalid coupon. Try HIRISHI10 or RappaRappa50!';
       }
     }
     function showConfetti() {
