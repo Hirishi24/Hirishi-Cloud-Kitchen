@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chicken Bone Pickle - Hirishi Cloud Kitchen</title>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Text:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="img/hirishi-logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/hirishi-logo.png">
+  <link rel="apple-touch-icon" href="img/hirishi-logo.png">
+  <link rel="shortcut icon" href="img/hirishi-logo.png" type="image/x-icon">
+  <style>
+    .product-section {
+      padding: 80px 20px;
+      min-height: 100vh;
+      background: linear-gradient(135deg, rgba(27, 60, 61, 0.95), rgba(32, 64, 59, 0.95));
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .product-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      padding: 20px;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    .product-image-container {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .product-image {
+      width: 100%;
+      height: auto;
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      box-sizing: border-box;
+    }
+
+    .product-details {
+      flex: 1;
+      padding: 2em;
+      color: #e3d18a;
+    }
+
+    .product-title {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      color: #e3d18a;
+    }
+
+    .product-description {
+      font-size: 1.2em;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .product-features {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 30px;
+    }
+
+    .product-features li {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .product-features li::before {
+      content: "•";
+      color: #e3d18a;
+      font-size: 1.5em;
+    }
+
+    .weight-options {
+      margin-bottom: 30px;
+    }
+
+    .weight-select {
+      background: rgba(227, 209, 138, 0.2);
+      color: #e3d18a;
+      padding: 10px 20px;
+      border-radius: 25px;
+      border: 1px solid rgba(227, 209, 138, 0.3);
+      font-family: 'Big Shoulders Text', cursive;
+      font-size: 1.1em;
+      width: 200px;
+      cursor: pointer;
+    }
+
+    .selected-price {
+      font-size: 1.8em;
+      color: #e3d18a;
+      margin: 20px 0;
+    }
+
+    .add-to-cart-btn {
+      background: #e3d18a;
+      color: #1b3c3d;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 30px;
+      font-family: 'Big Shoulders Text', cursive;
+      font-size: 1.2em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(32, 64, 59, 0.2);
+    }
+
+    .add-to-cart-btn:hover {
+      background: #fffbe6;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(32, 64, 59, 0.3);
+    }
+
+    .nav-arrow {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(227, 209, 138, 0.2);
+      color: #e3d18a;
+      border: 1px solid rgba(227, 209, 138, 0.3);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .nav-arrow::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-top: 2px solid #e3d18a;
+      border-right: 2px solid #e3d18a;
+      transform: rotate(225deg);
+    }
+
+    .nav-arrow.right::before {
+      transform: rotate(45deg);
+    }
+
+    .nav-arrow .tooltip {
+      position: absolute;
+      background: rgba(27, 60, 61, 0.9);
+      color: #fffbe6;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 0.9em;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-arrow:hover .tooltip {
+      opacity: 1;
+    }
+
+    .nav-arrow.left .tooltip {
+      right: 100%;
+      margin-right: 10px;
+    }
+
+    .nav-arrow.right .tooltip {
+      left: 100%;
+      margin-left: 10px;
+    }
+
+    .nav-arrow:hover {
+      background: rgba(227, 209, 138, 0.4);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .nav-arrow:active {
+      transform: translateY(-50%) scale(0.95);
+    }
+
+    .nav-arrow.left {
+      left: 20px;
+    }
+
+    .nav-arrow.right {
+      right: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .product-container {
+        grid-template-columns: 1fr;
+        padding: 10px;
+      }
+      .nav-arrow {
+        width: 40px;
+        height: 40px;
+      }
+      .nav-arrow.left {
+        left: 10px;
+      }
+      .nav-arrow.right {
+        right: 10px;
+      }
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      width: 100%;
+      position: relative;
+    }
+
+    .customization-section {
+      background: rgba(227, 209, 138, 0.1);
+      border-radius: 15px;
+      padding: 25px;
+      margin: 30px 0;
+      border: 2px solid rgba(227, 209, 138, 0.2);
+    }
+
+    .customization-section h3 {
+      color: #e3d18a;
+      font-family: 'Big Shoulders Text', cursive;
+      font-size: 1.5em;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .option-group {
+      margin-bottom: 20px;
+    }
+
+    .option-group label {
+      display: block;
+      margin-bottom: 10px;
+      color: #e3d18a;
+      font-size: 1.1em;
+      font-weight: 600;
+    }
+
+    .option-group select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 2px solid #e3d18a;
+      background: #1b3c3d;
+      color: #e3d18a;
+      font-family: 'Big Shoulders Text', cursive;
+      font-size: 1em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .option-group select:focus {
+      outline: none;
+      border-color: #fffbe6;
+      box-shadow: 0 0 10px rgba(227, 209, 138, 0.3);
+    }
+
+    .option-group select option {
+      background: #1b3c3d;
+      color: #e3d18a;
+      padding: 10px;
+    }
+
+    .option-description {
+      font-size: 0.9em;
+      color: rgba(227, 209, 138, 0.8);
+      margin-top: 5px;
+      font-style: italic;
+    }
+
+    .price-section {
+      background: rgba(227, 209, 138, 0.1);
+      border-radius: 15px;
+      padding: 20px;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .price-section .selected-price {
+      font-size: 1.8em;
+      font-weight: 700;
+      color: #e3d18a;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-logo">
+      <a href="index.html" class="logo-link">
+        <img src="img/hirishi-logo.svg" alt="Hirishi Cloud Kitchen Logo" class="logo-img">
+        <div class="navbar-title">
+          <span class="brand-main">Hirishi</span>
+          <span class="brand-sub">Cloud Kitchen</span>
+        </div>
+      </a>
+    </div>
+    <ul class="navbar-links">
+      <li><a href="index.html#hero">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="index.html#menu">Menu</a></li>
+      <li><a href="pickles.html">Pickles</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="cart.html" class="cart-icon-link">
+        <span id="cart-badge" class="cart-badge">0</span>
+        <img src="img/cart.png" alt="Cart" class="cart-icon-svg">
+      </a>
+      <a href="login.html" class="login-btn">
+        <span class="btn-text">Login</span>
+        <span class="btn-icon">→</span>
+      </a>
+    </div>
+  </nav>
+
+  <section class="product-section">
+    <div class="product-container">
+      <div class="product-image-container">
+        <img src="img/Chicken Bone Pickle.webp" alt="Chicken Bone Pickle" class="product-image">
+      </div>
+      <div class="product-details">
+        <h1 class="product-title">Chicken Bone Pickle</h1>
+        <p class="product-description">
+          Experience the authentic taste of our Chicken Bone Pickle, made with carefully selected chicken bones and our special blend of spices. This pickle is perfect for those who love the rich, meaty flavor combined with the perfect amount of spice.
+        </p>
+        <ul class="product-features">
+          <li>Made with premium quality chicken bones</li>
+          <li>Authentic spice blend</li>
+          <li>Long shelf life</li>
+          <li>Perfect for any occasion</li>
+        </ul>
+        <div class="weight-options">
+          <select class="weight-select">
+            <option value="250">250g - ₹299</option>
+            <option value="500">500g - ₹549</option>
+            <option value="1000">1kg - ₹999</option>
+          </select>
+        </div>
+        <div class="selected-price">₹299</div>
+        <button class="add-to-cart-btn">Add to Cart</button>
+      </div>
+    </div>
+    <a href="chicken-boneless-pickle.html" class="nav-arrow left">
+      <span class="tooltip">Chicken Boneless Pickle</span>
+    </a>
+    <a href="chicken-bone-boneless-pickle.html" class="nav-arrow right">
+      <span class="tooltip">Chicken Bone & Boneless Pickle</span>
+    </a>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <span>&copy; 2025 Hirishi Cloud Kitchen. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <script src="js/products.js"></script>
+  <script src="js/alerts.js"></script>
+  <script>
+    // Update price when weight selection changes
+    document.getElementById('weight').addEventListener('change', function() {
+      const prices = [349, 749, 1399];
+      document.getElementById('price').textContent = '₹' + prices[this.value];
+    });
+
+    // Add to cart with weight
+    function addToCart() {
+      const prod = window.products.pickles.find(p => p.id === 'chicken-bone');
+      const weight = prod.weights[document.getElementById('weight').value];
+      const cartId = 'chicken-bone-' + weight.label;
+      const itemName = prod.name + ' (' + weight.label + ')';
+      
+      // Add to cart
+      const cart = JSON.parse(localStorage.getItem('cart') || '{}');
+      if (!cart[cartId]) {
+        cart[cartId] = { name: itemName, price: weight.price, qty: 1 };
+      } else {
+        cart[cartId].qty += 1;
+      }
+      localStorage.setItem('cart', JSON.stringify(cart));
+      
+      // Show alert
+      showAlert('addToCart', itemName);
+      
+      // Update cart badge
+      updateCartBadge();
+    }
+
+    // Cart badge update
+    function updateCartBadge() {
+      const cart = JSON.parse(localStorage.getItem('cart') || '{}');
+      let count = 0;
+      Object.values(cart).forEach(item => {
+        count += item.qty;
+      });
+      document.getElementById('cart-badge').textContent = count;
+    }
+
+    // Initialize cart badge
+    updateCartBadge();
+
+    // Navigation between pickles
+    function navigateToPickle(id) {
+      const picklePages = {
+        'chicken-bone': 'chicken-bone-pickle.html',
+        'chicken-bone-boneless': 'chicken-bone-boneless-pickle.html',
+        'chicken-boneless': 'chicken-boneless-pickle.html',
+        'chicken-thokku': 'chicken-thokku-pickle.html',
+        'gongura-chicken-boneless': 'gongura-chicken-boneless.html',
+        'natukodi': 'natukodi-pickle.html',
+        'pandugappa-fish': 'pandugappa-fish-pickle.html',
+        'prawns': 'prawns-pickle.html',
+        'gongura-prawns': 'gongura-prawns-pickle.html',
+        'mutton-boneless': 'mutton-boneless-pickle.html',
+        'gongura-mutton-boneless': 'gongura-mutton-boneless-pickle.html',
+        'mutton-kheema': 'mutton-kheema-pickle.html'
+      };
+      
+      window.location.href = picklePages[id];
+    }
+  </script>
+</body>
+</html> 

@@ -11,22 +11,23 @@
   <link rel="shortcut icon" href="img/hirishi-logo.png" type="image/x-icon">
   <style>
     .login-container {
-      min-height: 100vh;
+      height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       background: transparent;
       position: relative;
       z-index: 1;
-      padding-top: 80px;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
     }
     .login-form {
       background: #fffbe6ee;
       border-radius: 32px;
       box-shadow: 0 8px 48px 0 rgba(32,64,59,0.18);
       padding: 2.5em 2.2em 2.2em 2.2em;
-      min-width: 320px;
-      max-width: 95vw;
+      width: 320px;
       position: relative;
       z-index: 2;
       display: flex;
@@ -41,17 +42,26 @@
     }
     .login-form h2 {
       font-family: 'Montserrat', 'Riley', cursive, sans-serif;
-      color: #20403b;
-      font-size: 2.2em;
-      margin-bottom: 0.5em;
+      color: #1b3c3d;
+      font-size: 2.5em;
+      margin-bottom: 0.8em;
       font-weight: 900;
       letter-spacing: 1.5px;
-      background: linear-gradient(90deg, #e3d18a 60%, #fffbe6 100%);
+      text-align: center;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      background: linear-gradient(135deg, #e3d18a 0%, #1b3c3d 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      text-align: center;
       animation: titleGlow 3s ease-in-out infinite;
+    }
+    @keyframes titleGlow {
+      0%, 100% { 
+        filter: drop-shadow(0 0 2px rgba(227, 209, 138, 0.3));
+      }
+      50% { 
+        filter: drop-shadow(0 0 8px rgba(227, 209, 138, 0.6));
+      }
     }
     .login-form input {
       width: 100%;
@@ -67,6 +77,7 @@
       outline: none;
       box-shadow: 0 2px 8px rgba(32,64,59,0.08);
       animation: input-fade-in 1.2s cubic-bezier(.42,1.6,.58,1) both;
+      cursor: text;
     }
     @keyframes input-fade-in {
       0% { opacity: 0; transform: translateY(30px); }
@@ -111,6 +122,7 @@
       text-decoration: underline;
       font-weight: 700;
       transition: color 0.2s;
+      cursor: pointer;
     }
     .login-form .register-link a:hover {
       color: #20403b;
@@ -130,7 +142,10 @@
     /* Extra animated background for login */
     .login-animated-bg {
       position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
       z-index: 0;
       pointer-events: none;
       overflow: hidden;
@@ -154,82 +169,140 @@
     }
     /* Navigation styles */
     .navbar {
+      background: rgba(27, 60, 61, 0.95);
+      padding: 15px 40px;
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      background: rgba(27, 60, 61, 0.95);
-      backdrop-filter: blur(10px);
-      padding: 0.5em 2em;
+      z-index: 1000;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
     .navbar-logo {
       display: flex;
       align-items: center;
     }
     .logo-link {
-      text-decoration: none;
       display: flex;
       align-items: center;
-      gap: 0.5em;
-      transition: transform 0.3s ease;
-    }
-    .logo-link:hover {
-      transform: scale(1.02);
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
     }
     .logo-img {
-      width: 40px;
       height: 40px;
+      margin-right: 10px;
     }
     .navbar-title {
       display: flex;
       flex-direction: column;
-      line-height: 1;
     }
     .brand-main {
-      color: #e3d18a;
-      font-family: 'Big Shoulders Text', cursive;
-      font-size: 1.4em;
-      font-weight: 700;
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #fff;
     }
     .brand-sub {
-      color: #fffbe6;
-      font-family: 'Big Shoulders Text', cursive;
       font-size: 0.9em;
+      color: #e3d18a;
     }
     .navbar-links {
       display: flex;
-      gap: 1.5em;
-      align-items: center;
+      gap: 30px;
       list-style: none;
       margin: 0;
       padding: 0;
     }
     .navbar-links a {
-      color: #fffbe6;
+      color: #fff;
       text-decoration: none;
-      font-family: 'Big Shoulders Text', cursive;
       font-size: 1.1em;
-      padding: 0.5em 1em;
-      border-radius: 12px;
-      transition: all 0.2s;
+      transition: color 0.3s ease;
+      cursor: pointer;
     }
     .navbar-links a:hover {
-      background: #e3d18a;
-      color: #1b3c3d;
-      transform: translateY(-2px);
+      color: #e3d18a;
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
     }
     .register-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
       background: #e3d18a;
-      color: #1b3c3d !important;
-      font-weight: 700;
-      box-shadow: 0 2px 8px rgba(32,64,59,0.10);
+      color: #1b3c3d;
+      text-decoration: none;
+      border-radius: 20px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      cursor: pointer;
     }
     .register-btn:hover {
-      background: #fffbe6 !important;
+      background: #fff;
+      transform: translateY(-2px);
+    }
+    .cart-icon-link {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .cart-icon-svg {
+      width: 32px;
+      height: 32px;
+      filter: brightness(0) invert(1);
+      transition: transform 0.3s ease;
+    }
+    .cart-icon-link:hover .cart-icon-svg {
+      transform: scale(1.1);
+    }
+    .cart-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #e3d18a;
+      color: #1b3c3d;
+      font-size: 0.8em;
+      font-weight: bold;
+      min-width: 20px;
+      height: 20px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 6px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 15px 20px;
+      }
+      .navbar-links {
+        gap: 15px;
+      }
+      .nav-right {
+        gap: 10px;
+      }
+      .register-btn {
+        padding: 6px 12px;
+        font-size: 0.9em;
+      }
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      height: 100vh;
+      cursor: default;
     }
   </style>
 </head>
@@ -245,9 +318,22 @@
       </a>
     </div>
     <ul class="navbar-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="register.html" class="register-btn">Register</a></li>
+      <li><a href="index.html#hero">Home</a></li>
+      <li><a href="about-mother.html">About</a></li>
+      <li><a href="index.html#menu">Menu</a></li>
+      <li><a href="pickle-cloud.html">Pickles</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
     </ul>
+    <div class="nav-right">
+      <a href="register.html" class="register-btn">
+        <span class="btn-text">Register</span>
+        <span class="btn-icon">→</span>
+      </a>
+      <a href="cart.html" class="cart-icon-link">
+        <span id="cart-badge" class="cart-badge">0</span>
+        <img src="img/cart.png" alt="Cart" class="cart-icon-svg">
+      </a>
+    </div>
   </nav>
   
   <div class="login-animated-bg">

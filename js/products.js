@@ -36,5 +36,19 @@ window.products = {
     { id: 'mutton-kheema', name: 'Mutton Kheema Pickle', image: 'kheema-pickle_1650345517.jpg', weights: [
       { label: '250g', price: 799 }, { label: '500g', price: 1299 }, { label: '1kg', price: 2499 }
     ] }
+  ],
+  vegPickles: [
+    { id: 'mango', name: 'Mango Pickle', image: 'mango-pickle.jpg', weights: [
+      { label: '250g', price: 200 }, { label: '500g', price: 350 }, { label: '1kg', price: 650 }
+    ] },
+    { id: 'lemon', name: 'Lemon Pickle', image: 'lemon-pickle.jpg', weights: [
+      { label: '250g', price: 180 }, { label: '500g', price: 320 }, { label: '1kg', price: 600 }
+    ] },
+    { id: 'green-chilli', name: 'Green Chilli Pickle', image: 'green-chilli-pickle.jpg', weights: [
+      { label: '250g', price: 220 }, { label: '500g', price: 400 }, { label: '1kg', price: 750 }
+    ] },
+    { id: 'mixed-veg', name: 'Mixed Veg Pickle', image: 'mixed-veg-pickle.jpg', weights: [
+      { label: '250g', price: 250 }, { label: '500g', price: 450 }, { label: '1kg', price: 850 }
+    ] }
   ]
 }; 

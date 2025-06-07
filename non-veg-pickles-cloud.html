@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pickles - Hirishi Cloud Kitchen</title>
+  <title>Non-Veg Pickles Cloud - Hirishi Cloud Kitchen</title>
   <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Text:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="index.css">
   <!-- Favicon -->
@@ -92,6 +92,33 @@
       max-width: 100%;
       box-sizing: border-box;
       margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+    }
+
+    .menu-item-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .menu-item-link:hover {
+      transform: translateY(-5px);
+    }
+
+    .menu-item-link:hover .menu-item {
+      box-shadow: 0 8px 20px rgba(32, 64, 59, 0.2);
+    }
+
+    .menu-item img {
+      transition: transform 0.3s ease;
+    }
+
+    .menu-item-link:hover .menu-item img {
+      transform: scale(1.05);
     }
 
     /* Cart styles */
@@ -233,7 +260,7 @@
       <li><a href="index.html#hero">Home</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="index.html#menu">Menu</a></li>
-      <li><a href="pickles.html">Pickles</a></li>
+      <li><a href="pickle-cloud.html">Pickles</a></li>
       <li><a href="index.html#contact">Contact</a></li>
     </ul>
     <div class="nav-right">
@@ -249,8 +276,15 @@
   </nav>
 
   <section class="menu-section">
-    <h2 class="menu-title">Pickles Cloud </h2>
+    <h2 class="menu-title">Non-Veg Pickles Cloud </h2>
     <div class="menu-grid" id="pickles-list">
+      <div class="menu-item" onclick="window.location.href='pickle-cloud.html'">
+        <div class="menu-item-content">
+          <h3>Non-Veg Pickle Cloud</h3>
+          <p>Explore our wide range of pickles</p>
+          <span class="price">Customize & Order</span>
+        </div>
+      </div>
       <!-- Product cards will be injected by JS -->
     </div>
   </section>
@@ -269,21 +303,23 @@
       const minPrice = Math.min(...p.weights.map(w => w.price));
       const options = p.weights.map((w, i) => `<option value="${i}">${w.label} - ₹${w.price}</option>`).join('');
       return `
-        <div class="menu-item" id="item-${p.id}">
-          <img src="img/${p.image}" alt="${p.name}">
-          <span>${p.name}</span>
-          <div class="price-row">
-            <span class="selling">from ₹${minPrice} onwards</span>
+        <a href="${p.id}-pickle.html" class="menu-item-link">
+          <div class="menu-item" id="item-${p.id}">
+            <img src="img/${p.image}" alt="${p.name}">
+            <span>${p.name}</span>
+            <div class="price-row">
+              <span class="selling">from ₹${minPrice} onwards</span>
+            </div>
+            <div style="margin:0.7em 0;">
+              <select class="weight-select" id="weight-${idx}">
+                ${options}
+              </select>
+            </div>
+            <div class="selected-price" id="price-${idx}">₹${p.weights[0].price}</div>
+            <div class="item-quantity" id="quantity-${p.id}">0 items in cart</div>
+            <button class="hero-cta" onclick="event.preventDefault(); addToCartWithWeight('${p.id}', document.getElementById('weight-${idx}').value)">Add to Cart</button>
           </div>
-          <div style="margin:0.7em 0;">
-            <select class="weight-select" id="weight-${idx}">
-              ${options}
-            </select>
-          </div>
-          <div class="selected-price" id="price-${idx}">₹${p.weights[0].price}</div>
-          <div class="item-quantity" id="quantity-${p.id}">0 items in cart</div>
-          <button class="hero-cta" onclick="addToCartWithWeight('${p.id}', document.getElementById('weight-${idx}').value)">Add to Cart</button>
-        </div>
+        </a>
       `;
     }).join('');
     // Update price on weight change
