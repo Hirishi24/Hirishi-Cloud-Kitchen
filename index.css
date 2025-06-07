@@ -1915,3 +1915,10 @@ textarea {
 .custom-cursor {
   cursor: pointer;
 }
+
+/* Global styles */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+}
