@@ -41,6 +41,13 @@
     .navbar {
       padding: 1rem 1.5rem;
       justify-content: space-between;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(27, 60, 61, 0.95);
+      backdrop-filter: blur(10px);
     }
 
     .navbar-links {
@@ -53,13 +60,14 @@
       align-items: center;
       gap: 15px;
       margin-left: auto;
+      margin-right: 50px;
     }
 
     /* Keep existing styles */
     .pickles-section {
       padding: 80px 20px;
       min-height: 100vh;
-      background: linear-gradient(135deg, rgba(27, 60, 61, 0.95), rgba(32, 64, 59, 0.95));
+      background: linear-gradient(135deg, #1b3c3d 60%, #20403b 100%);
       position: relative;
       overflow: hidden;
       width: 100%;
@@ -72,8 +80,9 @@
       max-width: 100vw;
       overflow-x: hidden;
       box-sizing: border-box;
-      padding: 40px 20px;
-      margin-top: 20px;
+      padding: 120px 20px 40px 20px;
+      margin-top: 0;
+      background: linear-gradient(135deg, #1b3c3d 60%, #20403b 100%);
     }
 
     .menu-grid {
@@ -126,6 +135,7 @@
       position: relative;
       display: inline-block;
       vertical-align: middle;
+      z-index: 1001;
     }
 
     .cart-icon-svg {
@@ -152,7 +162,7 @@
       justify-content: center;
       box-shadow: 0 2px 8px rgba(32,64,59,0.10);
       border: 2px solid #fffbe6;
-      z-index: 2;
+      z-index: 1002;
     }
 
     /* Item quantity styles */
@@ -189,6 +199,7 @@
       transition: all 0.3s ease;
       box-shadow: 0 4px 15px rgba(32, 64, 59, 0.2);
       white-space: nowrap;
+      z-index: 1001;
     }
 
     .login-btn:hover {
@@ -257,9 +268,9 @@
       </a>
     </div>
     <ul class="navbar-links">
-      <li><a href="index.html#hero">Home</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="index.html#menu">Menu</a></li>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about-mother.html">About</a></li>
+      <li><a href="menu.html">Menu</a></li>
       <li><a href="pickle-cloud.html">Pickles</a></li>
       <li><a href="index.html#contact">Contact</a></li>
     </ul>
