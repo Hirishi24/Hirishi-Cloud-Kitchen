@@ -1,8 +1,5 @@
-# Restaurant Landing Page
+Hirishi Cloud Kitchen 
 
-- Used bootstrap tools & own styles.
-- Implemented responsive template.
+A Website By Hirishi
 
-👉🏻 [Demo](https://yaninatrekhleb.github.io/restaurant-website/)
-
-![Demo](img/demo.gif)
+For Collab Contact insta @alsohirishi
