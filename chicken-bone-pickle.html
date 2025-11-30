@@ -349,14 +349,14 @@
           <li>Perfect for any occasion</li>
         </ul>
         <div class="weight-options">
-          <select class="weight-select">
-            <option value="250">250g - ₹299</option>
-            <option value="500">500g - ₹549</option>
-            <option value="1000">1kg - ₹999</option>
+          <select class="weight-select" id="weight-select">
+            <option value="0">250g - ₹349</option>
+            <option value="1">500g - ₹749</option>
+            <option value="2">1kg - ₹1399</option>
           </select>
         </div>
-        <div class="selected-price">₹299</div>
-        <button class="add-to-cart-btn">Add to Cart</button>
+        <div class="selected-price" id="selected-price">₹349</div>
+        <button class="add-to-cart-btn" onclick="addToCartWithWeight('chicken-bone', document.getElementById('weight-select').value)">Add to Cart</button>
       </div>
     </div>
     <a href="chicken-boneless-pickle.html" class="nav-arrow left">
@@ -377,16 +377,16 @@
   <script src="js/alerts.js"></script>
   <script>
     // Update price when weight selection changes
-    document.getElementById('weight').addEventListener('change', function() {
+    document.getElementById('weight-select').addEventListener('change', function() {
       const prices = [349, 749, 1399];
-      document.getElementById('price').textContent = '₹' + prices[this.value];
+      document.getElementById('selected-price').textContent = '₹' + prices[this.value];
     });
 
     // Add to cart with weight
-    function addToCart() {
-      const prod = window.products.pickles.find(p => p.id === 'chicken-bone');
-      const weight = prod.weights[document.getElementById('weight').value];
-      const cartId = 'chicken-bone-' + weight.label;
+    function addToCartWithWeight(id, weightIdx) {
+      const prod = window.products.pickles.find(p => p.id === id);
+      const weight = prod.weights[weightIdx];
+      const cartId = id + '-' + weight.label;
       const itemName = prod.name + ' (' + weight.label + ')';
       
       // Add to cart
