@@ -54,7 +54,7 @@ export const Navbar: React.FC = () => {
           <Link to="/about">About</Link>
         </li>
         <li>
-          <Link to="/menu">Menu</Link>
+          <Link to="/" onClick={(e) => handleNavClick(e, 'menu')}>Menu</Link>
         </li>
         <li>
           <Link to="/pickles">Pickles</Link>
