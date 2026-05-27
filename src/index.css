@@ -69,12 +69,13 @@ body {
 .animated-bg .floating-element {
   position: absolute;
   border-radius: 50%;
-  opacity: 0.24;
+  opacity: 0.32;
   pointer-events: none;
   /* Hardware acceleration */
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   will-change: transform;
+  filter: blur(2px);
 }
 
 .animated-bg .floating-element:nth-child(1) {
@@ -223,17 +224,34 @@ body {
   width: 95%;
   max-width: 1300px;
   border-radius: 24px;
-  background: rgba(16, 38, 38, 0.45) !important;
-  backdrop-filter: blur(25px) !important;
-  -webkit-backdrop-filter: blur(25px) !important;
-  border: 1.5px solid rgba(227, 209, 138, 0.28) !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(255, 255, 255, 0.15) !important;
-  padding: 12px 40px;
+  background: rgba(12, 32, 32, 0.55) !important;
+  backdrop-filter: blur(30px) saturate(1.6) !important;
+  -webkit-backdrop-filter: blur(30px) saturate(1.6) !important;
+  border: 1.5px solid rgba(227, 209, 138, 0.3) !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35), 0 0 30px rgba(227, 209, 138, 0.04), inset 0 1px 3px rgba(255, 255, 255, 0.12) !important;
+  padding: 14px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.55s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: margin, width, padding, background, border, box-shadow;
+  position: relative;
+}
+
+.navbar::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(227, 209, 138, 0.2), transparent 40%, transparent 60%, rgba(227, 209, 138, 0.15));
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.navbar:hover::after {
+  opacity: 1;
 }
 
 .navbar-scrolled {
@@ -241,12 +259,12 @@ body {
   width: 90%;
   max-width: 1100px;
   border-radius: 20px;
-  background: rgba(10, 24, 24, 0.75) !important;
-  backdrop-filter: blur(35px) !important;
-  -webkit-backdrop-filter: blur(35px) !important;
-  border: 1.5px solid rgba(227, 209, 138, 0.42) !important;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), inset 0 1.5px 3px rgba(255, 255, 255, 0.1) !important;
-  padding: 8px 30px;
+  background: rgba(8, 20, 20, 0.82) !important;
+  backdrop-filter: blur(40px) saturate(1.8) !important;
+  -webkit-backdrop-filter: blur(40px) saturate(1.8) !important;
+  border: 1.5px solid rgba(227, 209, 138, 0.45) !important;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.55), 0 0 25px rgba(227, 209, 138, 0.06), inset 0 1px 2px rgba(255, 255, 255, 0.08) !important;
+  padding: 10px 30px;
 }
 
 .logo-link {
@@ -537,17 +555,27 @@ body {
 
 .hero-title {
   font-family: var(--font-title);
-  font-size: 3.0em;
+  font-size: 3.5em;
   font-weight: 900;
-  letter-spacing: 2px;
-  margin-bottom: 10px;
+  letter-spacing: 3px;
+  margin-bottom: 15px;
   text-transform: uppercase;
-  background: linear-gradient(135deg, var(--color-gold) 30%, var(--color-text-light) 100%);
+  background: linear-gradient(
+    120deg,
+    var(--color-gold) 0%,
+    #fff8dc 20%,
+    var(--color-gold) 40%,
+    #fffbe6 60%,
+    var(--color-gold) 80%,
+    #fff8dc 100%
+  );
+  background-size: 300% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+  filter: drop-shadow(0 4px 12px rgba(227, 209, 138, 0.3));
   line-height: 1.1;
+  animation: heroShimmer 5s ease-in-out infinite;
 }
 
 @media (max-width: 768px) {
@@ -561,12 +589,24 @@ body {
 
 .hero-tagline {
   font-family: 'Great Vibes', 'Dancing Script', cursive !important;
-  font-size: 2.8em !important;
+  font-size: 3em !important;
   font-weight: 500 !important;
   color: #ffffff !important;
   margin-bottom: 40px !important;
-  letter-spacing: 1.5px !important;
-  text-shadow: 0 0 8px rgba(227, 209, 138, 0.75), 0 0 15px rgba(227, 209, 138, 0.45), 0 2px 5px rgba(0, 0, 0, 0.6) !important;
+  letter-spacing: 2px !important;
+  text-shadow: 0 0 12px rgba(227, 209, 138, 0.8), 0 0 25px rgba(227, 209, 138, 0.4), 0 0 50px rgba(227, 209, 138, 0.15), 0 2px 5px rgba(0, 0, 0, 0.6) !important;
+  animation: taglineGlow 3s ease-in-out infinite alternate !important;
+}
+
+@keyframes taglineGlow {
+  0% {
+    text-shadow: 0 0 12px rgba(227, 209, 138, 0.6), 0 0 25px rgba(227, 209, 138, 0.3), 0 2px 5px rgba(0, 0, 0, 0.6);
+    transform: scale(1);
+  }
+  100% {
+    text-shadow: 0 0 18px rgba(227, 209, 138, 1), 0 0 40px rgba(227, 209, 138, 0.5), 0 0 60px rgba(227, 209, 138, 0.2), 0 2px 5px rgba(0, 0, 0, 0.6);
+    transform: scale(1.02);
+  }
 }
 
 .hero-cta-wrapper, .hero-cta-wrapper-centered {
@@ -580,19 +620,38 @@ body {
   align-items: center;
   justify-content: center;
   gap: 30px;
-  background: var(--glass-bg-light);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
-  padding: 16px 36px;
+  background: rgba(16, 38, 38, 0.4);
+  backdrop-filter: blur(25px) saturate(1.5);
+  -webkit-backdrop-filter: blur(25px) saturate(1.5);
+  border: 1.5px solid rgba(227, 209, 138, 0.3);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35), 0 0 20px rgba(227, 209, 138, 0.06), inset 0 1px 3px rgba(255, 255, 255, 0.1);
+  padding: 20px 40px;
   border-radius: 60px;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.hero-cta-container::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(227, 209, 138, 0.25), transparent 30%, transparent 70%, rgba(227, 209, 138, 0.2));
+  z-index: -1;
+  pointer-events: none;
+  animation: ctaGlowRotate 6s linear infinite;
+}
+
+@keyframes ctaGlowRotate {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { opacity: 0.5; }
 }
 
 .hero-cta-container:hover {
-  border-color: var(--glass-border-hover);
-  box-shadow: 0 12px 40px rgba(227, 209, 138, 0.15);
+  border-color: rgba(227, 209, 138, 0.5);
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.4), 0 0 30px rgba(227, 209, 138, 0.12), inset 0 1px 4px rgba(255, 255, 255, 0.15);
+  transform: translateY(-3px);
 }
 
 .dancing-panda-container {

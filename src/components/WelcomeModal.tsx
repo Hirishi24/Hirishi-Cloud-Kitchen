@@ -30,17 +30,24 @@ export const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
         </div>
         <h2 className="modal-title">Welcome to Hirishi Cloud Kitchen</h2>
         <p className="modal-text">Experience the authentic taste of tradition, made with love and care.</p>
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
           <button
             className="hero-cta"
             onClick={onClose}
-            style={{ border: 'none', cursor: 'pointer' }}
+            style={{ border: 'none', cursor: 'pointer', fontSize: '1.15em', padding: '14px 36px' }}
           >
-            Explore Menu
+            ✨ Explore Menu
           </button>
+          <span style={{
+            fontSize: '0.9em',
+            color: 'rgba(227, 209, 138, 0.7)',
+            fontFamily: 'var(--font-body)',
+            letterSpacing: '0.5px',
+          }}>
+            🌍 Delivering across India & Worldwide
+          </span>
         </div>
       </div>
     </div>
   );
 };
-
