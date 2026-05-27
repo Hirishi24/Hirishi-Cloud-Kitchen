@@ -168,18 +168,23 @@ export const Pickles: React.FC = () => {
         <div
           style={{
             position: 'fixed',
-            bottom: '20px',
-            right: '20px',
-            backgroundColor: '#1b3c3d',
+            bottom: '30px',
+            right: '30px',
+            backgroundColor: 'rgba(16, 38, 38, 0.85)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
             color: '#fffbe6',
-            border: '2px solid #e3d18a',
-            borderRadius: '12px',
-            padding: '15px 25px',
-            boxShadow: '0 5px 15px rgba(0,0,0,0.3)',
+            border: '1.5px solid rgba(227, 209, 138, 0.35)',
+            borderRadius: '16px',
+            padding: '16px 28px',
+            boxShadow: '0 12px 35px rgba(0,0,0,0.4), 0 0 15px rgba(227, 209, 138, 0.08)',
             zIndex: 9999,
             fontFamily: "var(--font-title)",
-            fontSize: '1.2em',
-            animation: 'slideDown 0.3s ease-out',
+            fontSize: '1.1em',
+            fontWeight: 600,
+            letterSpacing: '0.3px',
+            animation: 'toastSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+            maxWidth: '380px',
           }}
         >
           {alert.message}
