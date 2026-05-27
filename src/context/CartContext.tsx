@@ -24,6 +24,8 @@ interface CartContextType {
   clearCart: () => void;
   applyCoupon: (code: string) => { success: boolean; message: string };
   removeCoupon: () => void;
+  isCartOpen: boolean;
+  setIsCartOpen: (open: boolean) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -33,6 +35,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const saved = localStorage.getItem('cart');
     return saved ? JSON.parse(saved) : {};
   });
+
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const [couponApplied, setCouponApplied] = useState(false);
   const [couponCode, setCouponCode] = useState('');
@@ -110,6 +114,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       return updated;
     });
+    // Automatically open drawer when items are added to cart
+    setIsCartOpen(true);
   };
 
   const updateQty = (cartId: string, delta: number) => {
@@ -234,6 +240,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         clearCart,
         applyCoupon,
         removeCoupon,
+        isCartOpen,
+        setIsCartOpen,
       }}
     >
       {children}

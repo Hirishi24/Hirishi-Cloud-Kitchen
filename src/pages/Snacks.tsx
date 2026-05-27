@@ -47,23 +47,29 @@ export const Snacks: React.FC = () => {
         </h2>
         <div className="snacks-grid">
           {snacks.map((snack) => (
-            <div key={snack.id} className="snack-item" onClick={() => setSelectedSnack(snack)} style={{ cursor: 'pointer' }}>
+            <div key={snack.id} className="snack-item" onClick={() => setSelectedSnack(snack)} style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', height: '100%' }}>
               {snack.badge && <span className="snack-badge">{snack.badge}</span>}
               <span className="snack-category">{snack.category}</span>
-              <img src={`/img/${snack.image}`} alt={snack.name} className="snack-image" />
-              <h3 className="snack-name">{snack.name}</h3>
-              <p className="snack-description">{snack.description}</p>
-              <div className="snack-price">{snack.price}</div>
-              <button
-                className="add-to-cart-btn"
-                style={{ cursor: 'pointer' }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedSnack(snack);
-                }}
-              >
-                Learn More
-              </button>
+              {/* Upper block */}
+              <div style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', marginBottom: '15px' }}>
+                <img src={`img/${snack.image}`} alt={snack.name} className="snack-image" />
+                <h3 className="snack-name" style={{ minHeight: '1.8em', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '10px 0 5px 0' }}>{snack.name}</h3>
+                <p className="snack-description" style={{ flexGrow: 1 }}>{snack.description}</p>
+              </div>
+              {/* Lower block */}
+              <div style={{ width: '100%', marginTop: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div className="snack-price" style={{ marginBottom: '10px' }}>{snack.price}</div>
+                <button
+                  className="add-to-cart-btn"
+                  style={{ cursor: 'pointer', width: '100%' }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedSnack(snack);
+                  }}
+                >
+                  Learn More
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -78,7 +84,7 @@ export const Snacks: React.FC = () => {
               &times;
             </button>
             <div className="snack-popup-content">
-              <img src={`/img/${selectedSnack.image}`} alt={selectedSnack.name} className="snack-popup-image" />
+              <img src={`img/${selectedSnack.image}`} alt={selectedSnack.name} className="snack-popup-image" />
               <h2 className="snack-popup-title">{selectedSnack.name}</h2>
               <p className="snack-popup-description">{selectedSnack.description}</p>
               <div className="snack-popup-price">{selectedSnack.price}</div>

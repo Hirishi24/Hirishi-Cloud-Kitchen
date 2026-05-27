@@ -4,7 +4,7 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 
 export const Navbar: React.FC = () => {
-  const { cartBadgeCount } = useCart();
+  const { cartBadgeCount, setIsCartOpen } = useCart();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -38,7 +38,7 @@ export const Navbar: React.FC = () => {
     <nav className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}>
       <div className="navbar-logo">
         <Link to="/" className="logo-link">
-          <img src="/img/hirishi-logo.svg" alt="Hirishi Cloud Kitchen Logo" className="logo-img" />
+          <img src="img/hirishi-logo.svg" alt="Hirishi Cloud Kitchen Logo" className="logo-img" />
           <div className="navbar-title">
             <span className="brand-main">Hirishi</span>
             <span className="brand-sub">Cloud Kitchen</span>
@@ -85,10 +85,14 @@ export const Navbar: React.FC = () => {
           </Link>
         )}
 
-        <Link to="/cart" className="cart-icon-link">
+        <button
+          onClick={() => setIsCartOpen(true)}
+          className="cart-icon-link"
+          style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, outline: 'none' }}
+        >
           <span id="cart-badge" className="cart-badge">{cartBadgeCount}</span>
-          <img src="/img/cart.png" alt="Cart" className="cart-icon-svg" style={{ width: '32px', height: '32px' }} />
-        </Link>
+          <img src="img/cart.png" alt="Cart" className="cart-icon-svg" style={{ width: '32px', height: '32px' }} />
+        </button>
       </div>
     </nav>
   );

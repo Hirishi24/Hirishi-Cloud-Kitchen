@@ -23,7 +23,7 @@ export const About: React.FC = () => {
 
         <div className="founder-section">
           <div className="founder-card">
-            <img src="/img/satya.png" alt="Satya Saladi" className="founder-image" />
+            <img src="img/satya.png" alt="Satya Saladi" className="founder-image" />
             <h3 className="founder-name">Satya Saladi</h3>
             <p className="founder-role">The Heart of Our Kitchen</p>
             <p className="founder-quote">
@@ -31,7 +31,7 @@ export const About: React.FC = () => {
             </p>
           </div>
           <div className="founder-card">
-            <img src="/img/hirishi.png" alt="Hirishi" className="founder-image" />
+            <img src="img/hirishi.png" alt="Hirishi" className="founder-image" />
             <h3 className="founder-name">Hirishi</h3>
             <p className="founder-role">The Vision Behind Hirishi</p>
             <p className="founder-quote">

@@ -22,7 +22,7 @@ export const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
         <div style={{ textAlign: 'center', padding: '10px 0' }}>
           <div className="modal-logo-wrapper">
             <img
-              src="/img/hirishi-logo.svg"
+              src="img/hirishi-logo.svg"
               alt="Welcome to Hirishi Cloud Kitchen"
               className="modal-logo-img"
             />

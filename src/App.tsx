@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { Navbar } from './components/Navbar';
 import { PromoBanner } from './components/PromoBanner';
 import { AnimatedBg } from './components/AnimatedBg';
 import { WelcomeModal } from './components/WelcomeModal';
+import { CartDrawer } from './components/CartDrawer';
 import { Footer } from './components/Footer';
 
 // Pages
@@ -47,6 +48,9 @@ function App() {
 
             {/* Session Welcome Modal */}
             {showWelcome && <WelcomeModal onClose={handleCloseWelcome} />}
+
+            {/* Global Slide-over Cart Drawer */}
+            <CartDrawer />
 
             {/* Page content wrapper with transition - completely hides main content during modal to optimize performance and prevent flashing */}
             <div className={`app-main-layout ${showWelcome ? 'layout-hidden' : 'layout-visible'}`}>

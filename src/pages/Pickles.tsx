@@ -97,51 +97,62 @@ export const Pickles: React.FC = () => {
             const inCartQty = getProductCartCount(p.id);
 
             return (
-              <div key={p.id} className="menu-item" style={{ position: 'relative' }}>
-                <Link to={`/pickles/${p.id}`} className="menu-item-link" style={{ display: 'block', width: '100%' }}>
-                  <img
-                    src={`/img/${p.image}`}
-                    alt={p.name}
-                    style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', display: 'block', margin: '0 auto 10px auto' }}
-                  />
-                  <span style={{ fontSize: '1.2em', fontWeight: 'bold', display: 'block', textAlign: 'center' }}>
-                    {p.name}
-                  </span>
-                </Link>
-                <div className="price-row" style={{ margin: '5px 0' }}>
-                  <span className="selling" style={{ fontSize: '0.9em', opacity: 0.8 }}>
-                    from ₹{minPrice} onwards
-                  </span>
-                </div>
-                <div style={{ margin: '0.7em 0', width: '100%' }}>
-                  <select
-                    className="weight-select"
-                    value={weightIdx}
-                    onChange={(e) => handleWeightChange(p.id, parseInt(e.target.value))}
-                    style={{ width: '100%', boxSizing: 'border-box' }}
-                  >
-                    {p.weights.map((w, idx) => (
-                      <option key={idx} value={idx}>
-                        {w.label} - ₹{w.price}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="selected-price" style={{ fontWeight: 'bold', fontSize: '1.2em', margin: '5px 0' }}>
-                  ₹{selectedOption.price}
-                </div>
-                {inCartQty > 0 && (
-                  <div className="item-quantity" style={{ display: 'block', marginBottom: '8px' }}>
-                    {inCartQty} {inCartQty === 1 ? 'item' : 'items'} in cart
+              <div key={p.id} className="menu-item" style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: '100%' }}>
+                {/* Upper block - stretches to fill empty space */}
+                <div style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', marginBottom: '15px' }}>
+                  <Link to={`/pickles/${p.id}`} className="menu-item-link" style={{ display: 'block', width: '100%', textDecoration: 'none' }}>
+                    <img
+                      src={`img/${p.image}`}
+                      alt={p.name}
+                      style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', display: 'block', margin: '0 auto 10px auto' }}
+                    />
+                    <span style={{ fontSize: '1.2em', fontWeight: 'bold', textAlign: 'center', minHeight: '2.8em', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      {p.name}
+                    </span>
+                  </Link>
+                  <div className="price-row" style={{ margin: '5px 0' }}>
+                    <span className="selling" style={{ fontSize: '0.9em', opacity: 0.8 }}>
+                      from ₹{minPrice} onwards
+                    </span>
                   </div>
-                )}
-                <button
-                  className="hero-cta"
-                  onClick={() => handleAddToCart(p)}
-                  style={{ border: 'none', cursor: 'pointer', width: '100%', padding: '8px 0', marginTop: '5px' }}
-                >
-                  Add to Cart
-                </button>
+                </div>
+
+                {/* Lower block - stays locked to the bottom */}
+                <div style={{ width: '100%', marginTop: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <div style={{ margin: '0.7em 0', width: '100%' }}>
+                    <select
+                      className="weight-select"
+                      value={weightIdx}
+                      onChange={(e) => handleWeightChange(p.id, parseInt(e.target.value))}
+                      style={{ width: '100%', boxSizing: 'border-box' }}
+                    >
+                      {p.weights.map((w, idx) => (
+                        <option key={idx} value={idx}>
+                          {w.label} - ₹{w.price}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="selected-price" style={{ fontWeight: 'bold', fontSize: '1.2em', margin: '5px 0' }}>
+                    ₹{selectedOption.price}
+                  </div>
+                  <div style={{ minHeight: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px' }}>
+                    {inCartQty > 0 ? (
+                      <span className="item-quantity" style={{ fontSize: '0.85em', color: 'var(--color-gold)' }}>
+                        {inCartQty} {inCartQty === 1 ? 'item' : 'items'} in cart
+                      </span>
+                    ) : (
+                      <span style={{ fontSize: '0.85em', opacity: 0 }} aria-hidden="true">&nbsp;</span>
+                    )}
+                  </div>
+                  <button
+                    className="hero-cta"
+                    onClick={() => handleAddToCart(p)}
+                    style={{ border: 'none', cursor: 'pointer', width: '100%', padding: '8px 0' }}
+                  >
+                    Add to Cart
+                  </button>
+                </div>
               </div>
             );
           })}

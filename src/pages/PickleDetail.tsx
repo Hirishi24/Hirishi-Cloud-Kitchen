@@ -114,7 +114,7 @@ export const PickleDetail: React.FC = () => {
       <div className="product-container">
         <div className="product-image-container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <img
-            src={`/img/${product.image}`}
+            src={`img/${product.image}`}
             alt={product.name}
             className="product-image"
             style={{ maxWidth: '100%', maxHeight: '450px', objectFit: 'cover' }}

@@ -1,0 +1,48 @@
+{
+  "hash": "d8b9f15d",
+  "configHash": "eaca1e3a",
+  "lockfileHash": "bc37fb87",
+  "browserHash": "8649be45",
+  "optimized": {
+    "@formspree/react": {
+      "src": "../../node_modules/@formspree/react/dist/index.mjs",
+      "file": "@formspree_react.js",
+      "fileHash": "46775dea",
+      "needsInterop": false
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "8d2e9fd2",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.mjs",
+      "file": "react-router-dom.js",
+      "fileHash": "90bb30cb",
+      "needsInterop": false
+    },
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "17d19afe",
+      "needsInterop": true
+    },
+    "react/jsx-dev-runtime": {
+      "src": "../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "b29b2312",
+      "needsInterop": true
+    }
+  },
+  "chunks": {
+    "react-CoTh1R2n": {
+      "file": "react-CoTh1R2n.js",
+      "isDynamicEntry": false
+    },
+    "react-dom-DWSBsIl4": {
+      "file": "react-dom-DWSBsIl4.js",
+      "isDynamicEntry": false
+    }
+  }
+}
