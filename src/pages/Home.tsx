@@ -126,7 +126,7 @@ export const Home: React.FC = () => {
             </div>
           </div>
           <div className="hero-illustration">
-            <img src="/img/Mother-Child.svg" alt="Mother and Child Illustration" className="amma-illustration" />
+            <img src="img/Mother-Child.svg" alt="Mother and Child Illustration" className="amma-illustration" />
           </div>
         </div>
         <div className="scroll-indicator" onClick={handleScrollCueClick}>
@@ -149,7 +149,7 @@ export const Home: React.FC = () => {
           </div>
           <div className="about-image reveal-on-scroll reveal-right">
             {/* Illustration now used as background or show image */}
-            <img src="/img/hirishi-logo.svg" alt="Hirishi Cloud Kitchen Logo" style={{ maxWidth: '100%', borderRadius: '15px', border: '1px solid var(--glass-border)', boxShadow: 'var(--glass-shadow)', background: 'rgba(255, 251, 230, 0.05)' }} />
+            <img src="img/hirishi-logo.svg" alt="Hirishi Cloud Kitchen Logo" style={{ maxWidth: '100%', borderRadius: '15px', border: '1px solid var(--glass-border)', boxShadow: 'var(--glass-shadow)', background: 'rgba(255, 251, 230, 0.05)' }} />
           </div>
         </div>
       </section>
@@ -160,17 +160,17 @@ export const Home: React.FC = () => {
         <div className="menu-grid">
           <Link to="/pickles" className="menu-item menu-link reveal-on-scroll reveal-left">
             <div className="menu-tooltip">Tap to view Pickles Cloud menu!</div>
-            <img src="/img/pickles.svg" alt="Homemade Pickles" />
+            <img src="img/pickles.svg" alt="Homemade Pickles" />
             <span>Pickles Cloud</span>
           </Link>
           <Link to="/sweets" className="menu-item menu-link reveal-on-scroll">
             <div className="menu-tooltip">Tap to view Sweets Cloud menu!</div>
-            <img src="/img/Sweets.svg" alt="Homemade Sweets" />
+            <img src="img/Sweets.svg" alt="Homemade Sweets" />
             <span>Sweets Cloud</span>
           </Link>
           <Link to="/snacks" className="menu-item menu-link reveal-on-scroll reveal-right">
             <div className="menu-tooltip">Tap to view Snacks Cloud menu!</div>
-            <img src="/img/Snacks.svg" alt="Snacks" />
+            <img src="img/Snacks.svg" alt="Snacks" />
             <span>Snacks Cloud</span>
           </Link>
         </div>
@@ -184,7 +184,7 @@ export const Home: React.FC = () => {
             <div className="contact-details">
               <div className="contact-method">
                 <div className="contact-icon-wrapper">
-                  <img src="/img/Whatsapp-icon.png" alt="WhatsApp" className="contact-icon" />
+                  <img src="img/Whatsapp-icon.png" alt="WhatsApp" className="contact-icon" />
                 </div>
                 <a href="https://wa.me/919441317724" target="_blank" rel="noopener noreferrer" className="contact-link">
                   <span className="number">+91 944 131 7724</span>
@@ -192,7 +192,7 @@ export const Home: React.FC = () => {
               </div>
               <div className="contact-method">
                 <div className="contact-icon-wrapper">
-                  <img src="/img/Gmail.width-500.format-webp.webp" alt="Gmail" className="contact-icon" />
+                  <img src="img/Gmail.width-500.format-webp.webp" alt="Gmail" className="contact-icon" />
                 </div>
                 <a href="mailto:hck@hirishi.com?subject=Inquiry from Hirishi Cloud Kitchen Website" className="contact-link">
                   <span className="email">hck@hirishi.com</span>
@@ -200,7 +200,7 @@ export const Home: React.FC = () => {
               </div>
               <div className="contact-method">
                 <div className="contact-icon-wrapper">
-                  <img src="/img/instagram-icon.png" alt="Instagram" className="contact-icon" />
+                  <img src="img/instagram-icon.png" alt="Instagram" className="contact-icon" />
                 </div>
                 <a href="https://instagram.com/hirishicloudkitchen" target="_blank" rel="noopener noreferrer" className="contact-link">
                   <span className="social-handle">@hirishicloudkitchen</span>

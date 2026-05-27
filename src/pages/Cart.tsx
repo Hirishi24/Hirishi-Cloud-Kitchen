@@ -23,6 +23,16 @@ export const Cart: React.FC = () => {
   const [showCouponModal, setShowCouponModal] = useState(false);
   const [showClearCartModal, setShowClearCartModal] = useState(false);
 
+  // Checkout Wizard States
+  const [checkoutStep, setCheckoutStep] = useState<'option' | 'details' | 'success' | null>(null);
+  const [shippingDetails, setShippingDetails] = useState({
+    fullName: '',
+    phone: '',
+    address: '',
+    isInternational: false,
+    country: 'India'
+  });
+
   // Coupon Form state
   const [couponInput, setCouponInput] = useState('');
   const [couponMessage, setCouponMessage] = useState('');
@@ -131,7 +141,7 @@ export const Cart: React.FC = () => {
           cartItems.map((item) => {
             // Find product image
             const product = allProducts.find((p) => p.id === item.productId);
-            const imgSrc = product ? `/img/${product.image}` : '/img/pickles.svg';
+            const imgSrc = product ? `img/${product.image}` : 'img/pickles.svg';
 
             return (
               <div
@@ -246,7 +256,7 @@ export const Cart: React.FC = () => {
           </div>
 
           <div style={{ textAlign: 'center', marginBottom: '1.5em', marginTop: '1.5em' }}>
-            <button className="buy-now-btn" onClick={() => setShowBuyModal(true)}>
+            <button className="buy-now-btn" onClick={() => { setShowBuyModal(true); setCheckoutStep('option'); }}>
               Buy Now
             </button>
           </div>
@@ -259,45 +269,217 @@ export const Cart: React.FC = () => {
         </Link>
       </div>
 
-      {/* Buy Now Modal */}
+      {/* Buy Now / Checkout Wizard Modal */}
       {showBuyModal && (
         <>
           <div className="buy-modal show" onClick={() => setShowBuyModal(false)}></div>
           <div className="buy-modal show" style={{ zIndex: 2001, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <div className="cloud-shape" onClick={(e) => e.stopPropagation()}>
+            <div className="cloud-shape" style={{ maxWidth: '480px', width: '90%', padding: '2.5em 2em' }} onClick={(e) => e.stopPropagation()}>
               <button className="close-modal" onClick={() => setShowBuyModal(false)}>
                 &times;
               </button>
-              <div className="panda-area">
-                <svg width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="45" cy="55" rx="22" ry="20" fill="#fff" stroke="#20403b" stroke-width="2" />
-                  <ellipse cx="25" cy="40" rx="7" ry="8" fill="#20403b" />
-                  <ellipse cx="65" cy="40" rx="7" ry="8" fill="#20403b" />
-                  <ellipse cx="37" cy="58" rx="4" ry="5" fill="#20403b" />
-                  <ellipse cx="53" cy="58" rx="4" ry="5" fill="#20403b" />
-                  <ellipse cx="37" cy="60" rx="1.2" ry="1.5" fill="#fff" />
-                  <ellipse cx="53" cy="60" rx="1.2" ry="1.5" fill="#fff" />
-                  <ellipse cx="45" cy="65" rx="2.2" ry="1.2" fill="#20403b" />
-                  <path d="M42 68 Q45 70 48 68" stroke="#20403b" stroke-width="1.5" fill="none" />
-                  <rect x="25" y="75" width="40" height="18" rx="5" fill="#e3d18a" stroke="#20403b" stroke-width="2" />
-                </svg>
-                <a
-                  href={getWhatsAppLink()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="panda-board-link"
-                  onClick={() => {
-                    setShowBuyModal(false);
-                    clearCart();
-                  }}
-                  style={{ display: 'inline-block', marginTop: '10px' }}
-                >
-                  Order on WhatsApp
-                </a>
-              </div>
-              <div className="cloud-message">
-                <span>Online checkout coming soon <span style={{ fontSize: '1.2em' }}>😔</span></span>
-              </div>
+
+              {checkoutStep === 'option' && (
+                <div style={{ textAlign: 'center' }}>
+                  <h3 style={{ fontFamily: "var(--font-title)", color: 'var(--color-gold)', fontSize: '1.6em', marginBottom: '0.8em' }}>
+                    Choose Checkout Method
+                  </h3>
+                  
+                  {/* WhatsApp Special Promo Card */}
+                  <div style={{
+                    background: 'rgba(27, 60, 61, 0.4)',
+                    border: '1.5px solid var(--color-gold)',
+                    borderRadius: '16px',
+                    padding: '1.2em',
+                    marginBottom: '1.5em',
+                    boxShadow: '0 4px 15px rgba(0,0,0,0.15)'
+                  }}>
+                    <span style={{ fontSize: '2em', display: 'block', marginBottom: '0.2em' }}>🎁</span>
+                    <p style={{ margin: 0, fontFamily: "var(--font-title)", fontSize: '1.15em', color: '#fffbe6', lineHeight: '1.4' }}>
+                      Get a <b>Flat 10% Discount</b> + extra custom surprises when ordering directly on WhatsApp!
+                    </p>
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                    {/* WhatsApp Checkout Button */}
+                    <a
+                      href={getWhatsAppLink()}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hero-cta"
+                      onClick={() => {
+                        setShowBuyModal(false);
+                        clearCart();
+                      }}
+                      style={{
+                        display: 'block',
+                        textDecoration: 'none',
+                        background: 'linear-gradient(135deg, #25D366, #128C7E)',
+                        border: 'none',
+                        color: '#fff',
+                        fontWeight: 'bold',
+                        padding: '12px 20px',
+                        borderRadius: '30px',
+                        boxShadow: '0 4px 15px rgba(37, 211, 102, 0.3)',
+                        transition: 'transform 0.2s'
+                      }}
+                    >
+                      💬 Order via WhatsApp (Best Discount)
+                    </a>
+
+                    {/* Standard Checkout Button */}
+                    <button
+                      className="hero-cta"
+                      onClick={() => setCheckoutStep('details')}
+                      style={{
+                        width: '100%',
+                        border: '1.5px solid var(--color-gold)',
+                        background: 'transparent',
+                        color: 'var(--color-gold)',
+                        padding: '12px 20px',
+                        borderRadius: '30px',
+                        fontWeight: 'bold',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s'
+                      }}
+                    >
+                      🛒 Continue standard checkout here
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {checkoutStep === 'details' && (
+                <div>
+                  <h3 style={{ fontFamily: "var(--font-title)", color: 'var(--color-gold)', fontSize: '1.5em', marginBottom: '1em', textAlign: 'center' }}>
+                    Shipping Details
+                  </h3>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      setCheckoutStep('success');
+                      clearCart();
+                    }}
+                    style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}
+                  >
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                      <label htmlFor="checkout-name" style={{ fontFamily: "var(--font-title)", color: '#fffbe6', fontSize: '0.9em' }}>Full Name</label>
+                      <input
+                        type="text"
+                        id="checkout-name"
+                        required
+                        placeholder="Enter recipient's name"
+                        value={shippingDetails.fullName}
+                        onChange={(e) => setShippingDetails({ ...shippingDetails, fullName: e.target.value })}
+                        style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'rgba(255, 251, 230, 0.05)', color: '#fffbe6' }}
+                      />
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                      <label htmlFor="checkout-phone" style={{ fontFamily: "var(--font-title)", color: '#fffbe6', fontSize: '0.9em' }}>Phone Number</label>
+                      <input
+                        type="tel"
+                        id="checkout-phone"
+                        required
+                        placeholder="Enter mobile number"
+                        value={shippingDetails.phone}
+                        onChange={(e) => setShippingDetails({ ...shippingDetails, phone: e.target.value })}
+                        style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'rgba(255, 255, 255, 0.05)', color: '#fffbe6' }}
+                      />
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                      <label htmlFor="checkout-address" style={{ fontFamily: "var(--font-title)", color: '#fffbe6', fontSize: '0.9em' }}>Shipping Address</label>
+                      <textarea
+                        id="checkout-address"
+                        required
+                        placeholder="House No, Street, Landmark, City, State, PIN"
+                        value={shippingDetails.address}
+                        onChange={(e) => setShippingDetails({ ...shippingDetails, address: e.target.value })}
+                        style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'rgba(255, 255, 255, 0.05)', color: '#fffbe6', minHeight: '60px' }}
+                      />
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                      <label htmlFor="checkout-destination" style={{ fontFamily: "var(--font-title)", color: '#fffbe6', fontSize: '0.9em' }}>Shipping Destination</label>
+                      <select
+                        id="checkout-destination"
+                        value={shippingDetails.isInternational ? 'intl' : 'domestic'}
+                        onChange={(e) => {
+                          const isIntl = e.target.value === 'intl';
+                          setShippingDetails({
+                            ...shippingDetails,
+                            isInternational: isIntl,
+                            country: isIntl ? '' : 'India'
+                          });
+                        }}
+                        style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: '#1b3c3d', color: '#fffbe6' }}
+                      >
+                        <option value="domestic">🇮🇳 India Delivery</option>
+                        <option value="intl">🌎 International Delivery (Worldwide)</option>
+                      </select>
+                    </div>
+
+                    {shippingDetails.isInternational && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                        <label htmlFor="checkout-country" style={{ fontFamily: "var(--font-title)", color: '#fffbe6', fontSize: '0.9em' }}>Destination Country</label>
+                        <input
+                          type="text"
+                          id="checkout-country"
+                          required
+                          placeholder="e.g. USA, Canada, UAE, UK"
+                          value={shippingDetails.country}
+                          onChange={(e) => setShippingDetails({ ...shippingDetails, country: e.target.value })}
+                          style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'rgba(255, 255, 255, 0.05)', color: '#fffbe6' }}
+                        />
+                      </div>
+                    )}
+
+                    <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+                      <button
+                        type="button"
+                        onClick={() => setCheckoutStep('option')}
+                        style={{ flex: 1, padding: '10px', borderRadius: '20px', border: '1px solid var(--glass-border)', background: 'transparent', color: '#fffbe6', cursor: 'pointer' }}
+                      >
+                        Back
+                      </button>
+                      <button
+                        type="submit"
+                        className="hero-cta"
+                        style={{ flex: 2, padding: '10px', borderRadius: '20px', border: 'none', cursor: 'pointer' }}
+                      >
+                        Confirm & Place Order
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              )}
+
+              {checkoutStep === 'success' && (
+                <div style={{ textAlign: 'center' }}>
+                  <div className="success-lottie-container" style={{ margin: '0 auto 15px auto', width: '80px', height: '80px' }}>
+                    <svg className="success-checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                      <circle className="success-checkmark-circle" cx="26" cy="26" r="25" fill="none" />
+                      <path className="success-checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                    </svg>
+                  </div>
+                  
+                  <h3 style={{ fontFamily: "var(--font-title)", color: 'var(--color-gold)', fontSize: '1.6em', marginBottom: '0.5em' }}>
+                    Order Placed!
+                  </h3>
+                  <p style={{ fontFamily: "var(--font-title)", color: '#fffbe6', fontSize: '1.1em', lineHeight: '1.5', marginBottom: '1.2em' }}>
+                    Amma Chethi Vantillu is preparing your delicious pickles with love! We will reach out to you shortly on your provided contact details to coordinate custom updates.
+                  </p>
+                  
+                  <button
+                    className="hero-cta"
+                    onClick={() => setShowBuyModal(false)}
+                    style={{ border: 'none', cursor: 'pointer', padding: '10px 30px' }}
+                  >
+                    Done
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </>

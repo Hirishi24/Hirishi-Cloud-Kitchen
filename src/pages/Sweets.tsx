@@ -47,22 +47,28 @@ export const Sweets: React.FC = () => {
         </h2>
         <div className="sweets-grid">
           {sweets.map((sweet) => (
-            <div key={sweet.id} className="sweet-item" onClick={() => setSelectedSweet(sweet)} style={{ cursor: 'pointer' }}>
+            <div key={sweet.id} className="sweet-item" onClick={() => setSelectedSweet(sweet)} style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', height: '100%' }}>
               {sweet.badge && <span className="sweet-badge">{sweet.badge}</span>}
-              <img src={`/img/${sweet.image}`} alt={sweet.name} className="sweet-image" />
-              <h3 className="sweet-name">{sweet.name}</h3>
-              <p className="sweet-description">{sweet.description}</p>
-              <div className="sweet-price">{sweet.price}</div>
-              <button
-                className="add-to-cart-btn"
-                style={{ cursor: 'pointer' }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedSweet(sweet);
-                }}
-              >
-                Learn More
-              </button>
+              {/* Upper block */}
+              <div style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', marginBottom: '15px' }}>
+                <img src={`img/${sweet.image}`} alt={sweet.name} className="sweet-image" />
+                <h3 className="sweet-name" style={{ minHeight: '1.8em', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '10px 0 5px 0' }}>{sweet.name}</h3>
+                <p className="sweet-description" style={{ flexGrow: 1 }}>{sweet.description}</p>
+              </div>
+              {/* Lower block */}
+              <div style={{ width: '100%', marginTop: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div className="sweet-price" style={{ marginBottom: '10px' }}>{sweet.price}</div>
+                <button
+                  className="add-to-cart-btn"
+                  style={{ cursor: 'pointer', width: '100%' }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedSweet(sweet);
+                  }}
+                >
+                  Learn More
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -77,7 +83,7 @@ export const Sweets: React.FC = () => {
               &times;
             </button>
             <div className="sweet-popup-content">
-              <img src={`/img/${selectedSweet.image}`} alt={selectedSweet.name} className="sweet-popup-image" />
+              <img src={`img/${selectedSweet.image}`} alt={selectedSweet.name} className="sweet-popup-image" />
               <h2 className="sweet-popup-title">{selectedSweet.name}</h2>
               <p className="sweet-popup-description">{selectedSweet.description}</p>
               <div className="sweet-popup-price">{selectedSweet.price}</div>

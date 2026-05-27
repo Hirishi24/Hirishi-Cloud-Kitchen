@@ -8,7 +8,7 @@ export const Footer: React.FC = () => {
         {/* Brand Column */}
         <div className="footer-col brand-col">
           <div className="footer-logo">
-            <img src="/img/hirishi-logo.svg" alt="Hirishi Cloud Kitchen" className="footer-logo-img" />
+            <img src="img/hirishi-logo.svg" alt="Hirishi Cloud Kitchen" className="footer-logo-img" />
             <div className="footer-logo-text">
               <span className="brand-main">Hirishi</span>
               <span className="brand-sub">Cloud Kitchen</span>
@@ -17,10 +17,10 @@ export const Footer: React.FC = () => {
           <p className="brand-tagline">Experience the authentic taste of tradition, hand-crafted with Amma's love and shipped fresh across India & Worldwide (International Delivery Available).</p>
           <div className="footer-socials">
             <a href="https://instagram.com/hirishicloudkitchen" target="_blank" rel="noopener noreferrer" title="Instagram">
-              <img src="/img/instagram-icon.png" alt="Instagram" />
+              <img src="img/instagram-icon.png" alt="Instagram" />
             </a>
             <a href="https://facebook.com/hirishicloudkitchen" target="_blank" rel="noopener noreferrer" title="Facebook">
-              <img src="/img/facebook logo_icon.png" alt="Facebook" />
+              <img src="img/facebook logo_icon.png" alt="Facebook" />
             </a>
             <a href="https://youtube.com/@hirishicloudkitchen" target="_blank" rel="noopener noreferrer" title="YouTube">
               <svg viewBox="0 0 24 24" fill="currentColor" className="footer-social-svg">
@@ -28,10 +28,10 @@ export const Footer: React.FC = () => {
               </svg>
             </a>
             <a href="https://www.whatsapp.com/channel/0029VbB6K9z05MUmwvnVGe2y" target="_blank" rel="noopener noreferrer" title="WhatsApp Channel">
-              <img src="/img/Whatsapp-icon.png" alt="WhatsApp Channel" />
+              <img src="img/Whatsapp-icon.png" alt="WhatsApp Channel" />
             </a>
             <a href="https://x.com/hirishicloud" target="_blank" rel="noopener noreferrer" title="X (Twitter)">
-              <img src="/img/twitter-icon.png" alt="X" />
+              <img src="img/twitter-icon.png" alt="X" />
             </a>
           </div>
         </div>
@@ -62,11 +62,11 @@ export const Footer: React.FC = () => {
           <h4 className="footer-heading">Get in Touch</h4>
           <ul className="footer-links contact-links">
             <li>
-              <img src="/img/Whatsapp-icon.png" alt="WhatsApp" className="footer-contact-icon" />
+              <img src="img/Whatsapp-icon.png" alt="WhatsApp" className="footer-contact-icon" />
               <a href="tel:+919441317724">+91 944 131 7724</a>
             </li>
             <li>
-              <img src="/img/Gmail.width-500.format-webp.webp" alt="Gmail" className="footer-contact-icon" />
+              <img src="img/Gmail.width-500.format-webp.webp" alt="Gmail" className="footer-contact-icon" />
               <a href="mailto:hck@hirishi.com">hck@hirishi.com</a>
             </li>
           </ul>
@@ -87,4 +87,3 @@ export const Footer: React.FC = () => {
     </footer>
   );
 };
-
