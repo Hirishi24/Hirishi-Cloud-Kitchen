@@ -266,7 +266,7 @@ export const vegPickles: Product[] = [
   {
     id: "mango",
     name: "Mango Pickle",
-    image: "Drumstick-pachadi-scaled.webp",
+    image: "mango-pickle.png",
     description: "Freshly sliced green mangoes pickled in a blend of rich mustard seeds, red chili powder, oil, and traditional spices. A staple in Indian households, offering a perfectly sour and spicy kick.",
     features: [
       "Fresh quality sour mangoes",
@@ -283,7 +283,7 @@ export const vegPickles: Product[] = [
   {
     id: "lemon",
     name: "Lemon Pickle",
-    image: "Drumstick-pachadi-scaled.webp",
+    image: "lemon-pickle.png",
     description: "Tangy and flavorful lemon halves matured with salt, red chili powder, fenugreek, and mustard seeds. This classic pickle has a bright, savory flavor that complements curd rice beautifully.",
     features: [
       "Sun-ripened lemons",
@@ -300,7 +300,7 @@ export const vegPickles: Product[] = [
   {
     id: "green-chilli",
     name: "Green Chilli Pickle",
-    image: "Drumstick-pachadi-scaled.webp",
+    image: "green-chilli-pickle.png",
     description: "Fiery hot green chilies sliced and marinated in a rich mustard and lemon base. Perfect for spice lovers looking to add heat and flavor to any dish.",
     features: [
       "Fresh, crisp green chilies",
@@ -317,7 +317,7 @@ export const vegPickles: Product[] = [
   {
     id: "mixed-veg",
     name: "Mixed Veg Pickle",
-    image: "Drumstick-pachadi-scaled.webp",
+    image: "mixed-veg-pickle.png",
     description: "A colorful blend of seasonal vegetables like carrots, cauliflower, and peas pickled in aromatic spices. Offers a crunchy texture and rich flavor in every bite.",
     features: [
       "Assorted fresh vegetables",
@@ -335,11 +335,19 @@ export const vegPickles: Product[] = [
 
 export const sweets: SweetProduct[] = [
   {
+    id: "pootharekulu",
+    name: "Nethi Pootharekulu (Dry Fruit Jaggery)",
+    description: "The legendary Andhra 'paper-sweet'! Translucent, paper-thin rice starch wrappers folded with pure liquid ghee (Nethi), rich organic jaggery, and crushed premium cashews, pistachios & almonds. Melts instantly in the mouth.",
+    price: "₹900/kg",
+    image: "pootharekulu.png",
+    badge: "Royal Heritage"
+  },
+  {
     id: "gulab-jamun",
     name: "Gulab Jamun",
     description: "Soft and spongy milk-solid balls soaked in rose-flavored sugar syrup",
     price: "₹350/kg",
-    image: "Sweets.svg",
+    image: "gulab-jamun.png",
     badge: "Best Seller"
   },
   {
@@ -347,7 +355,7 @@ export const sweets: SweetProduct[] = [
     name: "Rasgulla",
     description: "Spongy cottage cheese balls soaked in light sugar syrup",
     price: "₹300/kg",
-    image: "Sweets.svg",
+    image: "rasgulla.png",
     badge: "Popular"
   },
   {
@@ -355,7 +363,7 @@ export const sweets: SweetProduct[] = [
     name: "Kaju Katli",
     description: "Diamond-shaped cashew fudge with a rich, melt-in-mouth texture",
     price: "₹800/kg",
-    image: "Sweets.svg",
+    image: "kaju-katli.png",
     badge: "Premium"
   },
   {
@@ -363,7 +371,7 @@ export const sweets: SweetProduct[] = [
     name: "Besan Ladoo",
     description: "Sweet gram flour balls flavored with cardamom and ghee",
     price: "₹400/kg",
-    image: "Sweets.svg",
+    image: "besan-ladoo.png",
     badge: "Traditional"
   }
 ];
@@ -374,7 +382,7 @@ export const snacks: SnackProduct[] = [
     name: "Murukku",
     description: "Crispy and crunchy spiral-shaped snack made from rice flour and spices",
     price: "₹250/kg",
-    image: "Snacks.svg",
+    image: "murukku.png",
     badge: "Best Seller",
     category: "Traditional"
   },
@@ -383,7 +391,7 @@ export const snacks: SnackProduct[] = [
     name: "Mixture",
     description: "A delightful mix of various fried snacks with peanuts and spices",
     price: "₹300/kg",
-    image: "Snacks.svg",
+    image: "mixture.png",
     badge: "Popular",
     category: "Mixed"
   },
@@ -392,7 +400,7 @@ export const snacks: SnackProduct[] = [
     name: "Thatte",
     description: "Crispy diamond-shaped snack made from rice flour and urad dal",
     price: "₹280/kg",
-    image: "Snacks.svg",
+    image: "thatte.png",
     badge: "Crispy",
     category: "Traditional"
   },
@@ -401,8 +409,53 @@ export const snacks: SnackProduct[] = [
     name: "Kara Sev",
     description: "Spicy and crispy vermicelli-like snack made from gram flour",
     price: "₹320/kg",
-    image: "Snacks.svg",
+    image: "snacks-cloud.png",
     badge: "Spicy",
+    category: "Spicy"
+  },
+  {
+    id: "pindi-vadiyalu",
+    name: "Pindi Vadiyalu",
+    description: "Traditional sun-dried crispy fryums made from premium rice flour or tapioca. A crunchy Telugu staple perfect as a meal side or quick crispy snack.",
+    price: "₹280/kg",
+    image: "pindi-vadiyalu.png",
+    badge: "Vadiyalu",
+    category: "Traditional"
+  },
+  {
+    id: "minapa-vadiyalu",
+    name: "Minapa Vadiyalu",
+    description: "Authentic sun-dried lentil (urad dal) dumplings/crisps, fried to a golden crunch. Imbued with light spices, bringing an unforgettable, rich, savory texture.",
+    price: "₹320/kg",
+    image: "minapa-vadiyalu.png",
+    badge: "Lentil Dumpling",
+    category: "Traditional"
+  },
+  {
+    id: "saggubiyyam-vadiyalu",
+    name: "Saggubiyyam Vadiyalu",
+    description: "Light and puffed sun-dried sabudana (sago) fryums. These beautifully translucent crispy discs expand magnificently when fried, offering a delicate crunch.",
+    price: "₹300/kg",
+    image: "saggubiyyam-vadiyalu.png",
+    badge: "Sabudana Fryum",
+    category: "Traditional"
+  },
+  {
+    id: "regi-vadiyalu",
+    name: "Regi Vadiyalu",
+    description: "An explosion of flavors! Traditional sun-dried sweet, sour, and spicy jujube berry candy treats. A beloved classic South Indian nostalgic preparation.",
+    price: "₹360/kg",
+    image: "regi-vadiyalu.png",
+    badge: "Sweet & Spicy Candy",
+    category: "Spicy"
+  },
+  {
+    id: "majjiga-mirapakayalu",
+    name: "Majjigalo Mirapakayalu",
+    description: "Traditional South Indian sun-dried curd chillies (buttermilk chillies / sandige menasinakai), deep-fried to a dark crispy brown perfection. Spicy, tangy, and salty - the ultimate crunch accompaniment to curd rice.",
+    price: "₹300/kg",
+    image: "majjiga-mirapakayalu.png",
+    badge: "Curd Chilli",
     category: "Spicy"
   }
 ];

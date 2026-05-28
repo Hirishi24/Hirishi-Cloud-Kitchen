@@ -1,218 +1,262 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { useAuth } from '../context/AuthContext';
+import { Home, BookOpen, ShoppingCart, Phone, Sun, Moon, ShoppingBag, Search, X } from 'lucide-react';
+import { pickles, vegPickles, sweets, snacks } from '../productsData';
 
 export const Navbar: React.FC = () => {
   const { cartBadgeCount, setIsCartOpen } = useCart();
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const navRef = useRef<HTMLElement>(null);
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    const saved = localStorage.getItem('hck_theme');
+    return (saved === 'light' ? 'light' : 'dark');
+  });
+  const location = useLocation();
 
+  // Mac Spotlight Search State
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Close search on escape key press
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsSearchOpen(false);
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Close mobile menu on route change
+  // Reset query on search open/close
   useEffect(() => {
-    setMobileMenuOpen(false);
-  }, [location]);
-
-  // Close mobile menu on outside click
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (navRef.current && !navRef.current.contains(e.target as Node)) {
-        setMobileMenuOpen(false);
-      }
-    };
-    if (mobileMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+    if (!isSearchOpen) {
+      setSearchQuery('');
     }
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [mobileMenuOpen]);
+  }, [isSearchOpen]);
 
-  // Lock body scroll when mobile menu is open
+  // Unified list of searchable items
+  const searchableItems = [
+    ...pickles.map(p => ({ ...p, type: 'pickle', categoryName: 'Non-Veg Pickle', path: `/pickles?searchProduct=${p.id}` })),
+    ...vegPickles.map(p => ({ ...p, type: 'pickle', categoryName: 'Vegetarian Pickle', path: `/pickles?searchProduct=${p.id}` })),
+    ...sweets.map(p => ({ ...p, type: 'sweet', categoryName: 'Sweets Cloud', path: `/sweets?searchProduct=${p.id}` })),
+    ...snacks.map(p => ({ ...p, type: 'snack', categoryName: 'Snacks Cloud', path: `/snacks?searchProduct=${p.id}` }))
+  ];
+
+  const filteredSearch = searchQuery.trim() === '' 
+    ? [] 
+    : searchableItems.filter(item => 
+        item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (item.description && item.description.toLowerCase().includes(searchQuery.toLowerCase()))
+      );
+
   useEffect(() => {
-    if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('hck_theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+
+  const isActive = (path: string) => location.pathname === path;
+
+  const scrollToSection = (id: string) => {
+    if (location.pathname !== '/') {
+      window.location.hash = '#/';
+      setTimeout(() => {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+      }, 300);
     } else {
-      document.body.style.overflow = '';
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
     }
-    return () => { document.body.style.overflow = ''; };
-  }, [mobileMenuOpen]);
-
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
-    e.preventDefault();
-    setMobileMenuOpen(false);
-    if (location.pathname === '/') {
-      const element = document.getElementById(sectionId);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    } else {
-      navigate(`/#${sectionId}`);
-    }
-  };
-
-  const handleLinkClick = () => {
-    setMobileMenuOpen(false);
   };
 
   return (
     <>
-      <nav ref={navRef} className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}>
-        <div className="navbar-logo">
-          <Link to="/" className="logo-link" onClick={handleLinkClick}>
-            <img src="img/hirishi-logo.svg" alt="Hirishi Cloud Kitchen Logo" className="logo-img" />
-            <div className="navbar-title">
-              <span className="brand-main">Hirishi</span>
-              <span className="brand-sub">Cloud Kitchen</span>
-            </div>
-          </Link>
+      {/* === TOP NAV: Logo + Theme + Cart === */}
+      <nav className={`top-nav ${scrolled ? 'scrolled' : ''}`}>
+        <Link 
+          to="/" 
+          className="top-nav-logo"
+          onClick={() => {
+            sessionStorage.removeItem('hck_welcome_seen');
+            // If they are on the home page, trigger a reload to play the intro again
+            if (window.location.hash === '#/' || window.location.pathname === '/' || window.location.hash === '') {
+              window.location.reload();
+            }
+          }}
+        >
+          <img src="img/hirishi-logo.svg" alt="Hirishi" />
+          <div className="top-nav-brand">
+            <span className="brand-name">Hirishi</span>
+            <span className="brand-sub">Cloud Kitchen</span>
+          </div>
+        </Link>
+
+        {/* Floating Announcement Capsule (Desktop/Tablet Only) */}
+        <div className="top-nav-promo" onClick={() => setIsCartOpen(true)} style={{ cursor: 'pointer' }} title="Click to view cart and apply code!">
+          <span className="promo-badge-glow"></span>
+          <span className="coupon-code-mini">HIRISHI10</span>
+          <span className="promo-text-mini">10% OFF above ₹2000! 🎉</span>
         </div>
 
-        {/* Desktop Nav Links */}
-        <ul className="navbar-links">
-          <li>
-            <Link to="/" onClick={(e) => handleNavClick(e, 'hero')}>Home</Link>
-          </li>
-          <li>
-            <Link to="/about">About</Link>
-          </li>
-          <li>
-            <Link to="/" onClick={(e) => handleNavClick(e, 'menu')}>Menu</Link>
-          </li>
-          <li>
-            <Link to="/pickles">Pickles</Link>
-          </li>
-          <li>
-            <Link to="/" onClick={(e) => handleNavClick(e, 'contact')}>Contact</Link>
-          </li>
-        </ul>
-
-        <div className="nav-right">
-          {/* Desktop auth */}
-          <div className="nav-auth-desktop">
-            {user ? (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <span className="nav-user-greeting">
-                  Hi, {user.fullName}!
-                </span>
-                <button
-                  onClick={logout}
-                  className="login-btn"
-                  style={{ border: 'none', cursor: 'pointer', padding: '6px 12px' }}
-                >
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <Link to="/login" className="login-btn" onClick={handleLinkClick}>
-                <span className="btn-text">Login</span>
-                <span className="btn-icon">→</span>
-              </Link>
-            )}
-          </div>
-
-          <button
-            onClick={() => setIsCartOpen(true)}
-            className="cart-icon-link"
-            aria-label="Open cart"
-            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, outline: 'none' }}
-          >
-            <span id="cart-badge" className={`cart-badge ${cartBadgeCount > 0 ? 'cart-badge-pulse' : ''}`}>{cartBadgeCount}</span>
-            <img src="img/cart.png" alt="Cart" className="cart-icon-svg" style={{ width: '32px', height: '32px' }} />
+        <div className="top-nav-actions">
+          <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
+            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
           </button>
-
-          {/* Hamburger Button (Mobile) */}
-          <button
-            className={`hamburger-btn ${mobileMenuOpen ? 'active' : ''}`}
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle mobile menu"
-          >
-            <span className="hamburger-line"></span>
-            <span className="hamburger-line"></span>
-            <span className="hamburger-line"></span>
+          <button className="top-nav-cart" onClick={() => setIsCartOpen(true)} aria-label="Open cart">
+            <ShoppingBag size={22} />
+            {cartBadgeCount > 0 && (
+              <span className="cart-badge cart-badge-pulse">{cartBadgeCount}</span>
+            )}
           </button>
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
-      <div className={`mobile-menu-overlay ${mobileMenuOpen ? 'show' : ''}`}>
-        <div className={`mobile-menu-panel ${mobileMenuOpen ? 'show' : ''}`}>
-          <div className="mobile-menu-header">
-            <img src="img/hirishi-logo.svg" alt="Logo" className="mobile-menu-logo" />
-            <div>
-              <span className="brand-main" style={{ fontSize: '1.3em' }}>Hirishi</span>
-              <br />
-              <span className="brand-sub" style={{ fontSize: '0.85em' }}>Cloud Kitchen</span>
-            </div>
+      {/* === BOTTOM NAV: 5 tabs with center order button === */}
+      <div className="bottom-nav">
+        <Link to="/" className={`bottom-nav-item ${isActive('/') ? 'active' : ''}`}>
+          <span className="bottom-nav-icon"><Home size={20} /></span>
+          Home
+        </Link>
+        <Link to="/about" className={`bottom-nav-item ${isActive('/about') ? 'active' : ''}`}>
+          <span className="bottom-nav-icon"><BookOpen size={20} /></span>
+          About
+        </Link>
+        <button 
+          className="bottom-nav-order" 
+          onClick={() => scrollToSection('menu')} 
+          aria-label="Order Now"
+        >
+          <ShoppingCart size={24} />
+        </button>
+        <button
+          className={`bottom-nav-item ${isSearchOpen ? 'active' : ''}`}
+          onClick={() => setIsSearchOpen(true)}
+        >
+          <span className="bottom-nav-icon"><Search size={20} /></span>
+          Search
+        </button>
+        <button
+          className="bottom-nav-item"
+          onClick={() => scrollToSection('contact')}
+        >
+          <span className="bottom-nav-icon"><Phone size={20} /></span>
+          Contact
+        </button>
+      </div>
+
+      {/* === MAC SPOTLIGHT SEARCH OVERLAY === */}
+      <div className={`spotlight-backdrop ${isSearchOpen ? 'active' : ''}`} onClick={() => setIsSearchOpen(false)}>
+        <div className={`spotlight-modal ${isSearchOpen ? 'active' : ''}`} onClick={(e) => e.stopPropagation()}>
+          <div className="spotlight-search-bar">
+            <Search className="spotlight-icon-search" size={20} />
+            <input
+              type="text"
+              className="spotlight-input"
+              placeholder="Search pickles, sweets, snacks..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              autoFocus={isSearchOpen}
+            />
+            <button className="spotlight-close-btn" onClick={() => setIsSearchOpen(false)}>
+              <X size={18} />
+            </button>
           </div>
-          <ul className="mobile-menu-links">
-            <li style={{ '--delay': '0.05s' } as React.CSSProperties}>
-              <Link to="/" onClick={(e) => handleNavClick(e, 'hero')}>
-                <span className="mobile-link-icon">🏠</span> Home
-              </Link>
-            </li>
-            <li style={{ '--delay': '0.1s' } as React.CSSProperties}>
-              <Link to="/about" onClick={handleLinkClick}>
-                <span className="mobile-link-icon">📖</span> About
-              </Link>
-            </li>
-            <li style={{ '--delay': '0.15s' } as React.CSSProperties}>
-              <Link to="/" onClick={(e) => handleNavClick(e, 'menu')}>
-                <span className="mobile-link-icon">🍽️</span> Menu
-              </Link>
-            </li>
-            <li style={{ '--delay': '0.2s' } as React.CSSProperties}>
-              <Link to="/pickles" onClick={handleLinkClick}>
-                <span className="mobile-link-icon">🥒</span> Pickles
-              </Link>
-            </li>
-            <li style={{ '--delay': '0.25s' } as React.CSSProperties}>
-              <Link to="/sweets" onClick={handleLinkClick}>
-                <span className="mobile-link-icon">🍬</span> Sweets
-              </Link>
-            </li>
-            <li style={{ '--delay': '0.3s' } as React.CSSProperties}>
-              <Link to="/snacks" onClick={handleLinkClick}>
-                <span className="mobile-link-icon">🍿</span> Snacks
-              </Link>
-            </li>
-            <li style={{ '--delay': '0.35s' } as React.CSSProperties}>
-              <Link to="/" onClick={(e) => handleNavClick(e, 'contact')}>
-                <span className="mobile-link-icon">📞</span> Contact
-              </Link>
-            </li>
-          </ul>
-          <div className="mobile-menu-footer">
-            {user ? (
-              <div className="mobile-auth-section">
-                <span className="mobile-user-name">Hi, {user.fullName}!</span>
-                <button onClick={() => { logout(); setMobileMenuOpen(false); }} className="mobile-logout-btn">
-                  Logout
-                </button>
-              </div>
+
+          <div className="spotlight-content">
+            {searchQuery.trim() === '' ? (
+              <>
+                <div className="spotlight-section">
+                  <div className="spotlight-section-title">Quick Categories</div>
+                  <div className="spotlight-categories-grid">
+                    <Link to="/pickles" className="spotlight-category-chip" onClick={() => setIsSearchOpen(false)}>
+                      🥒 Pickles Cloud
+                    </Link>
+                    <Link to="/sweets" className="spotlight-category-chip" onClick={() => setIsSearchOpen(false)}>
+                      🍬 Sweets Cloud
+                    </Link>
+                    <Link to="/snacks" className="spotlight-category-chip" onClick={() => setIsSearchOpen(false)}>
+                      🍿 Snacks Cloud
+                    </Link>
+                  </div>
+                </div>
+
+                <div className="spotlight-section">
+                  <div className="spotlight-section-title">Trending Searches</div>
+                  <div className="spotlight-trending-list">
+                    {[
+                      { name: 'Chicken Boneless Pickle', path: '/pickles?searchProduct=chicken-boneless' },
+                      { name: 'Mutton Keema Pickle', path: '/pickles?searchProduct=mutton-keema' },
+                      { name: 'Mango Pickle', path: '/pickles?searchProduct=mango' },
+                      { name: 'Kaju Katli (Coming Soon)', path: '/sweets' },
+                      { name: 'Murukku (Coming Soon)', path: '/snacks' }
+                    ].map((item, idx) => (
+                      <Link 
+                        key={idx} 
+                        to={item.path} 
+                        className="spotlight-trending-item" 
+                        onClick={() => setIsSearchOpen(false)}
+                      >
+                        <Search size={14} className="trending-icon" />
+                        <span>{item.name}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </>
             ) : (
-              <Link to="/login" className="mobile-login-btn" onClick={handleLinkClick}>
-                Login / Register →
-              </Link>
+              <div className="spotlight-section">
+                <div className="spotlight-section-title">
+                  Search Results ({filteredSearch.length})
+                </div>
+                {filteredSearch.length > 0 ? (
+                  <div className="spotlight-results-list">
+                    {filteredSearch.map((item) => (
+                      <Link
+                        key={item.id}
+                        to={item.path}
+                        className="spotlight-result-item"
+                        onClick={() => setIsSearchOpen(false)}
+                      >
+                        <img 
+                          src={`img/${item.image}`} 
+                          alt={item.name} 
+                          className="spotlight-result-avatar"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = 'img/hirishi-logo.svg';
+                          }}
+                        />
+                        <div className="spotlight-result-details">
+                          <span className="spotlight-result-name">{item.name}</span>
+                          <span className="spotlight-result-desc">
+                            {item.categoryName} • {item.description ? item.description.substring(0, 70) + '...' : ''}
+                          </span>
+                        </div>
+                        <div className="spotlight-result-action">
+                          {item.type === 'pickle' ? (
+                            <span className="price-tag">₹{(item as any).weights?.[0]?.price}</span>
+                          ) : (
+                            <span className="price-tag">{(item as any).price}</span>
+                          )}
+                          <Search size={14} />
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="spotlight-empty-state">
+                    No results found for "<strong>{searchQuery}</strong>". Try searching for "pickle", "sweets", or "chicken".
+                  </div>
+                )}
+              </div>
             )}
-            <div className="mobile-menu-socials">
-              <a href="https://wa.me/919441317724" target="_blank" rel="noopener noreferrer" title="WhatsApp">
-                <img src="img/Whatsapp-icon.png" alt="WhatsApp" />
-              </a>
-              <a href="https://instagram.com/hirishicloudkitchen" target="_blank" rel="noopener noreferrer" title="Instagram">
-                <img src="img/instagram-icon.png" alt="Instagram" />
-              </a>
-            </div>
+          </div>
+          <div className="spotlight-footer">
+            <span className="spotlight-hotkey">ESC</span> to close
           </div>
         </div>
       </div>

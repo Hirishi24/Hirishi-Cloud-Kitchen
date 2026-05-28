@@ -1,586 +1,463 @@
 import React, { useEffect, useState } from 'react';
 import { useCart } from '../context/CartContext';
-import { allProducts } from '../productsData';
+import { X, Minus, Plus, ShoppingCart, MessageCircle, Package, ArrowLeft, PartyPopper, Trash2 } from 'lucide-react';
+
+const COUNTRY_CODES = [
+  { code: "+91", country: "India" },
+  { code: "+1", country: "USA / Canada" },
+  { code: "+44", country: "UK" },
+  { code: "+971", country: "UAE" },
+  { code: "+61", country: "Australia" },
+  { code: "+65", country: "Singapore" },
+  { code: "+60", country: "Malaysia" },
+  { code: "+966", country: "Saudi Arabia" },
+  { code: "+968", country: "Oman" },
+  { code: "+965", country: "Kuwait" },
+  { code: "+974", country: "Qatar" },
+  { code: "+973", country: "Bahrain" },
+  { code: "+49", country: "Germany" },
+  { code: "+33", country: "France" },
+  { code: "+64", country: "New Zealand" }
+];
+
+const INDIAN_STATES = [
+  "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", 
+  "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", 
+  "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", 
+  "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", 
+  "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal",
+  "Andaman and Nicobar Islands", "Chandigarh", "Dadra and Nagar Haveli and Daman and Diu", 
+  "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry"
+];
 
 export const CartDrawer: React.FC = () => {
   const {
-    cart,
-    cartTotalBeforeDiscount,
-    cartDiscount,
-    cartGrandTotal,
-    couponApplied,
-    couponCode,
-    updateQty,
-    clearCart,
-    isCartOpen,
-    setIsCartOpen,
-    applyCoupon,
+    cart, cartTotalBeforeDiscount, cartDiscount, cartGrandTotal,
+    couponApplied, couponCode, updateQty, clearCart,
+    isCartOpen, setIsCartOpen, applyCoupon,
   } = useCart();
 
-  // Local states for checkout wizard inside the drawer
-  const [showCheckout, setShowCheckout] = useState(false);
-  const [checkoutStep, setCheckoutStep] = useState<'option' | 'details' | 'success'>('option');
+  const [checkoutStep, setCheckoutStep] = useState<'cart' | 'option' | 'details' | 'success'>('cart');
+  const [couponInput, setCouponInput] = useState('');
+  const [couponMsg, setCouponMsg] = useState<{ text: string; ok: boolean } | null>(null);
   const [shippingDetails, setShippingDetails] = useState({
     fullName: '',
     phone: '',
-    address: '',
+    streetAddress: '',
+    landmark: '',
+    city: '',
+    state: '',
+    pincode: '',
     isInternational: false,
     country: 'India'
   });
 
-  const [couponInput, setCouponInput] = useState('');
-  const [couponMessage, setCouponMessage] = useState('');
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [isdCode, setIsdCode] = useState('+91');
 
-  // Lock body scroll when drawer is open
-  useEffect(() => {
-    if (isCartOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
+  const validateForm = () => {
+    const errs: Record<string, string> = {};
+    if (!shippingDetails.fullName.trim()) {
+      errs.fullName = "Full Name is required.";
+    } else if (shippingDetails.fullName.trim().length < 3) {
+      errs.fullName = "Full Name must be at least 3 characters.";
     }
-    return () => {
-      document.body.style.overflow = '';
-    };
+    
+    if (!shippingDetails.phone.trim()) {
+      errs.phone = "Phone Number is required.";
+    } else {
+      const cleanPhone = shippingDetails.phone.replace(/\D/g, '');
+      if (isdCode === '+91') {
+        if (cleanPhone.length !== 10) {
+          errs.phone = "Please enter a 10-digit mobile number.";
+        }
+      } else {
+        if (cleanPhone.length < 7 || cleanPhone.length > 15) {
+          errs.phone = "Please enter a valid mobile number (7-15 digits).";
+        }
+      }
+    }
+    
+    if (!shippingDetails.streetAddress.trim()) {
+      errs.streetAddress = "Street Address is required.";
+    }
+    
+    if (!shippingDetails.city.trim()) {
+      errs.city = "City is required.";
+    }
+    
+    if (!shippingDetails.state) {
+      errs.state = "Select a State.";
+    }
+    
+    if (!shippingDetails.pincode.trim()) {
+      errs.pincode = "Pincode is required.";
+    } else {
+      const cleanPincode = shippingDetails.pincode.replace(/\D/g, '');
+      if (cleanPincode.length !== 6) {
+        errs.pincode = "Enter a 6-digit Pincode.";
+      }
+    }
+    
+    setFormErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
+  const getIntlWhatsAppLink = () => {
+    const phone = '919573969154';
+    let msg = 'Hello Hirishi Cloud Kitchen! I would like to place an international order:\n\n';
+    cartItems.forEach((item) => { msg += `• ${item.qty} x ${item.name} (${item.weightLabel}) - ₹${item.price * item.qty}\n`; });
+    msg += `\nSubtotal: ₹${cartTotalBeforeDiscount}`;
+    if (couponApplied && cartDiscount > 0) msg += `\nCoupon Applied: ${couponCode} (-₹${cartDiscount})`;
+    msg += `\nTotal: ₹${cartGrandTotal}\n\n`;
+    msg += `Please let me know the shipping options and total amount for delivery outside India. Thanks!`;
+    return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+  };
+
+  useEffect(() => {
+    document.body.style.overflow = isCartOpen ? 'hidden' : '';
+    if (!isCartOpen) { setCheckoutStep('cart'); setCouponMsg(null); }
+    return () => { document.body.style.overflow = ''; };
   }, [isCartOpen]);
+
+  const cartItems = Object.values(cart);
 
   const handleApplyCoupon = (e: React.FormEvent) => {
     e.preventDefault();
     const res = applyCoupon(couponInput);
-    setCouponMessage(res.message);
+    setCouponMsg({ text: res.message, ok: res.success });
   };
 
-  const getWhatsAppLink = () => {
+  const getWhatsAppLink = (addrDetails = shippingDetails) => {
     const phone = '919573969154';
-    let message = 'Hello Hirishi Cloud Kitchen! I would like to place an order:\n\n';
+    let msg = 'Hello Hirishi Cloud Kitchen! I would like to place an order:\n\n';
+    cartItems.forEach((item) => { msg += `• ${item.qty} x ${item.name} (${item.weightLabel}) - ₹${item.price * item.qty}\n`; });
+    msg += `\nSubtotal: ₹${cartTotalBeforeDiscount}`;
+    if (couponApplied && cartDiscount > 0) msg += `\nCoupon Applied: ${couponCode} (-₹${cartDiscount})`;
     
-    Object.values(cart).forEach((item) => {
-      message += `• ${item.qty} x ${item.name} - ₹${item.price * item.qty}\n`;
-    });
-
-    message += `\nSubtotal: ₹${cartTotalBeforeDiscount}`;
-    if (couponApplied && cartDiscount > 0) {
-      message += `\nCoupon Applied: ${couponCode} (-₹${cartDiscount})`;
+    msg += `\nTotal: ₹${cartGrandTotal}\n\n`;
+    
+    if (addrDetails.fullName) {
+      msg += `*Customer Details:*\n`;
+      msg += `Name: ${addrDetails.fullName}\n`;
+      if (addrDetails.phone) msg += `Phone: ${isdCode} ${addrDetails.phone}\n`;
+      
+      const fullAddress = [
+        addrDetails.streetAddress,
+        addrDetails.landmark ? `(Landmark: ${addrDetails.landmark})` : '',
+        addrDetails.city,
+        addrDetails.state,
+        addrDetails.pincode,
+        addrDetails.country
+      ].filter(Boolean).join(', ');
+      
+      if (fullAddress) msg += `Address: ${fullAddress}\n\n`;
     }
-    message += `\nGrand Total: ₹${cartGrandTotal}\n\nPlease let me know the payment and delivery details. Thanks!`;
     
-    return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+    msg += `Please process this order. Thanks!`;
+    return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
   };
-
-  const cartItems = Object.values(cart);
 
   if (!isCartOpen) return null;
 
   return (
     <>
-      {/* Backdrop */}
-      <div
-        className="cart-drawer-backdrop show"
-        onClick={() => setIsCartOpen(false)}
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          zIndex: 3000,
-          backdropFilter: 'blur(4px)',
-          WebkitBackdropFilter: 'blur(4px)',
-          transition: 'opacity 0.4s ease',
-        }}
-      />
-
-      {/* Slide-over Drawer Panel */}
-      <div
-        className="cart-drawer show"
-        style={{
-          position: 'fixed',
-          top: 0,
-          right: 0,
-          width: '100%',
-          maxWidth: '450px',
-          height: '100%',
-          backgroundColor: 'rgba(20, 38, 38, 0.95)',
-          borderLeft: '1px solid var(--glass-border)',
-          boxShadow: '-10px 0 30px rgba(0, 0, 0, 0.5)',
-          zIndex: 3001,
-          display: 'flex',
-          flexDirection: 'column',
-          color: '#fffbe6',
-          fontFamily: 'var(--font-body)',
-        }}
-      >
-        {/* Drawer Header */}
-        <div
-          style={{
-            padding: '20px',
-            borderBottom: '1px solid var(--glass-border)',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <h2 style={{ margin: 0, fontFamily: 'var(--font-title)', color: 'var(--color-gold)', fontSize: '1.8em' }}>
-            Shopping Cart ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
-          </h2>
-          <button
-            onClick={() => setIsCartOpen(false)}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: '#ff6b6b',
-              fontSize: '1.2em',
-              cursor: 'pointer',
-              fontFamily: 'var(--font-title)',
-            }}
-          >
-            Minimize ✕
-          </button>
+      <div className="cart-drawer-backdrop show" onClick={() => setIsCartOpen(false)} />
+      <div className="cart-drawer show">
+        <div className="cart-header">
+          <h3 className="cart-title">
+            {checkoutStep === 'cart' ? `Your Cart (${cartItems.length})` :
+             checkoutStep === 'option' ? 'Checkout' :
+             checkoutStep === 'details' ? 'Shipping Details' : 'Order Placed!'}
+          </h3>
+          <button className="cart-close" onClick={() => setIsCartOpen(false)}><X size={18} /></button>
         </div>
 
-        {/* Drawer Body */}
-        <div style={{ flex: 1, overflowY: 'auto', padding: '20px' }}>
-          {cartItems.length > 0 ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-              {cartItems.map((item) => {
-                const product = allProducts.find((p) => p.id === item.productId);
-                const imgSrc = product ? `img/${product.image}` : 'img/pickles.svg';
-
-                return (
-                  <div
-                    key={item.cartId}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '12px',
-                      padding: '12px',
-                      borderRadius: '12px',
-                      background: 'rgba(255, 251, 230, 0.05)',
-                      border: '1px solid var(--glass-border)',
-                    }}
-                  >
-                    <img
-                      src={imgSrc}
-                      alt={item.name}
-                      style={{
-                        width: '60px',
-                        height: '60px',
-                        borderRadius: '50%',
-                        objectFit: 'cover',
-                        border: '1px solid var(--color-gold)',
-                      }}
-                    />
-                    <div style={{ flex: 1 }}>
-                      <h4 style={{ margin: '0 0 4px 0', fontFamily: 'var(--font-title)', color: 'var(--color-gold)', fontSize: '1.1em' }}>
-                        {item.name}
-                      </h4>
-                      <p style={{ margin: 0, fontSize: '0.95em', opacity: 0.9 }}>
-                        ₹{item.price} x {item.qty}
-                      </p>
+        {checkoutStep === 'cart' && (
+          <>
+            <div className="cart-items">
+              {cartItems.length === 0 ? (
+                <div className="cart-empty">
+                  <div className="cart-empty-icon"><ShoppingCart size={48} /></div>
+                  <div className="cart-empty-text">Your cart is empty</div>
+                  <button className="btn-secondary" onClick={() => setIsCartOpen(false)} style={{ maxWidth: '200px', margin: '0 auto' }}>
+                    Browse Menu
+                  </button>
+                </div>
+              ) : (
+                cartItems.map((item) => (
+                  <div className="cart-item" key={item.cartId}>
+                    <div className="cart-item-info">
+                      <div className="cart-item-name">{item.name}</div>
+                      <div className="cart-item-weight">{item.weightLabel}</div>
+                      <div className="cart-item-price">₹{item.price * item.qty}</div>
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
-                      <button
-                        onClick={() => updateQty(item.cartId, 1)}
-                        style={{ width: '22px', height: '22px', border: 'none', borderRadius: '50%', background: 'var(--color-gold)', color: 'var(--color-bg-dark)', fontWeight: 'bold', cursor: 'pointer' }}
-                      >
-                        +
-                      </button>
-                      <span style={{ fontWeight: 'bold', fontSize: '1.1em' }}>{item.qty}</span>
-                      <button
-                        onClick={() => updateQty(item.cartId, -1)}
-                        style={{ width: '22px', height: '22px', border: 'none', borderRadius: '50%', background: 'var(--color-gold)', color: 'var(--color-bg-dark)', fontWeight: 'bold', cursor: 'pointer' }}
-                      >
-                        -
-                      </button>
+                    <div className="cart-qty-controls">
+                      <button className="cart-qty-btn" onClick={() => updateQty(item.cartId, -1)}><Minus size={14} /></button>
+                      <span className="cart-qty-value">{item.qty}</span>
+                      <button className="cart-qty-btn" onClick={() => updateQty(item.cartId, 1)}><Plus size={14} /></button>
                     </div>
                   </div>
-                );
-              })}
+                ))
+              )}
+            </div>
 
-              {/* Coupon input in drawer */}
-              <form
-                onSubmit={handleApplyCoupon}
-                style={{
-                  marginTop: '15px',
-                  display: 'flex',
-                  gap: '8px',
-                  borderTop: '1px dashed var(--glass-border)',
-                  paddingTop: '15px',
-                }}
-              >
-                <input
-                  type="text"
-                  placeholder="Coupon code..."
-                  value={couponInput}
-                  onChange={(e) => setCouponInput(e.target.value)}
-                  style={{
-                    flex: 1,
-                    padding: '8px 12px',
-                    borderRadius: '8px',
-                    border: '1px solid var(--glass-border)',
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    color: '#fffbe6',
-                  }}
-                />
-                <button
-                  type="submit"
-                  style={{
-                    padding: '8px 16px',
-                    borderRadius: '8px',
-                    border: 'none',
-                    background: 'var(--color-gold)',
-                    color: 'var(--color-bg-dark)',
-                    fontWeight: 'bold',
-                    cursor: 'pointer',
-                  }}
-                >
-                  Apply
+            {cartItems.length > 0 && (
+              <div className="cart-footer">
+                <form className="coupon-form" onSubmit={handleApplyCoupon}>
+                  <input className="coupon-input" placeholder="Coupon code" value={couponInput} onChange={(e) => setCouponInput(e.target.value)} />
+                  <button type="submit" className="coupon-apply-btn">Apply</button>
+                </form>
+                {couponMsg && <div className={`coupon-message ${couponMsg.ok ? 'success' : 'error'}`}>{couponMsg.text}</div>}
+
+                <div className="cart-total-row"><span>Subtotal</span><span>₹{cartTotalBeforeDiscount}</span></div>
+                {cartDiscount > 0 && (
+                  <div className="cart-total-row" style={{ color: '#4ade80' }}><span>Discount ({couponCode})</span><span>-₹{cartDiscount}</span></div>
+                )}
+                <div className="cart-total-row grand"><span>Total</span><span>₹{cartGrandTotal}</span></div>
+
+                <button className="cart-checkout-btn" onClick={() => setCheckoutStep('option')}>
+                  Proceed to Checkout
                 </button>
-              </form>
-              {couponMessage && (
-                <p style={{ margin: '4px 0 0 0', fontSize: '0.9em', color: 'var(--color-gold)', textAlign: 'center' }}>
-                  {couponMessage}
-                </p>
-              )}
-            </div>
-          ) : (
-            <div style={{ textAlign: 'center', padding: '40px 0', opacity: 0.7 }}>
-              <span style={{ fontSize: '3em', display: 'block', marginBottom: '10px' }}>🛒</span>
-              Your cart is empty.
-            </div>
-          )}
-        </div>
-
-        {/* Drawer Footer */}
-        {cartItems.length > 0 && (
-          <div
-            style={{
-              padding: '20px',
-              borderTop: '1px solid var(--glass-border)',
-              background: 'rgba(16, 38, 38, 0.95)',
-            }}
-          >
-            {/* Totals */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '15px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', opacity: 0.9 }}>
-                <span>Subtotal:</span>
-                <span>₹{cartTotalBeforeDiscount}</span>
+                <button onClick={clearCart} style={{ color: 'var(--text-muted)', fontSize: '0.8em', textAlign: 'center', padding: '8px', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                  <Trash2 size={14} /> Clear Cart
+                </button>
               </div>
-              {couponApplied && cartDiscount > 0 && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#ff6b6b' }}>
-                  <span>Discount ({couponCode}):</span>
-                  <span>-₹{cartDiscount}</span>
-                </div>
-              )}
-              <div
-                style={{
+            )}
+          </>
+        )}
+
+        {checkoutStep === 'option' && (
+          <div className="checkout-step">
+            <div className="checkout-option" onClick={() => window.open(getWhatsAppLink(), '_blank')}>
+              <div className="checkout-option-icon"><MessageCircle size={32} /></div>
+              <div className="checkout-option-text">
+                <div className="checkout-option-title">Order via WhatsApp</div>
+                <div className="checkout-option-desc">Get the best discount! Chat directly with us</div>
+              </div>
+            </div>
+            <div className="checkout-option" onClick={() => setCheckoutStep('details')}>
+              <div className="checkout-option-icon"><Package size={32} /></div>
+              <div className="checkout-option-text">
+                <div className="checkout-option-title">Continue Here</div>
+                <div className="checkout-option-desc">Fill shipping details and place order</div>
+              </div>
+            </div>
+            <button className="btn-secondary" onClick={() => setCheckoutStep('cart')} style={{ marginTop: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <ArrowLeft size={16} /> Back to Cart
+            </button>
+          </div>
+        )}
+
+        {checkoutStep === 'details' && (
+          <div className="checkout-step">
+            <div className="checkout-form" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <label style={{ fontFamily: "var(--font-title)", fontSize: '0.9em' }}>Shipping Destination</label>
+              <select
+                className="form-input"
+                value={shippingDetails.isInternational ? 'intl' : 'domestic'}
+                onChange={(e) => {
+                  const isIntl = e.target.value === 'intl';
+                  setShippingDetails({
+                    ...shippingDetails,
+                    isInternational: isIntl,
+                    country: isIntl ? '' : 'India'
+                  });
+                }}
+                style={{ background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}
+              >
+                <option value="domestic">🇮🇳 India Delivery</option>
+                <option value="intl">🌎 International Delivery (Worldwide)</option>
+              </select>
+
+              {shippingDetails.isInternational ? (
+                <div style={{
+                  background: 'var(--bg-secondary)',
+                  border: '1px solid var(--border)',
+                  borderRadius: '12px',
+                  padding: '1em',
+                  textAlign: 'center',
+                  marginTop: '10px',
                   display: 'flex',
-                  justifyContent: 'space-between',
-                  fontWeight: 'bold',
-                  fontSize: '1.25em',
-                  color: 'var(--color-gold)',
-                  borderTop: '1px solid var(--glass-border)',
-                  paddingTop: '8px',
-                }}
-              >
-                <span>Total:</span>
-                <span>₹{cartGrandTotal}</span>
-              </div>
-            </div>
+                  flexDirection: 'column',
+                  gap: '10px'
+                }}>
+                  <span style={{ fontSize: '2em' }}>🌎</span>
+                  <h4 style={{ fontFamily: "var(--font-title)", color: 'var(--text-primary)', margin: 0 }}>International Orders</h4>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.85em', lineHeight: '1.4', margin: 0 }}>
+                    International shipping fees and delivery regulations are country-specific. Please tap below to message us directly on WhatsApp to coordinate your order!
+                  </p>
+                  <a
+                    href={getIntlWhatsAppLink()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="cart-whatsapp-btn"
+                    onClick={() => {
+                      clearCart();
+                      setIsCartOpen(false);
+                    }}
+                    style={{
+                      textDecoration: 'none',
+                      background: 'linear-gradient(135deg, #25D366, #128C7E)',
+                      color: '#fff',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      padding: '12px',
+                      borderRadius: '25px',
+                      fontWeight: 'bold',
+                      boxShadow: '0 4px 15px rgba(37, 211, 102, 0.3)'
+                    }}
+                  >
+                    💬 Coordinate on WhatsApp
+                  </a>
+                  <button className="btn-secondary" onClick={() => setCheckoutStep('option')} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginTop: '5px' }}>
+                    <ArrowLeft size={16} /> Back
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <label>Full Name *</label>
+                  <input 
+                    className="form-input" 
+                    value={shippingDetails.fullName} 
+                    onChange={(e) => setShippingDetails({ ...shippingDetails, fullName: e.target.value })} 
+                    placeholder="Recipient's name" 
+                  />
+                  {formErrors.fullName && <span style={{ color: '#ff8b94', fontSize: '0.8em', marginTop: '-6px' }}>{formErrors.fullName}</span>}
+                  
+                  <label>Phone Number *</label>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <select
+                      value={isdCode}
+                      onChange={(e) => setIsdCode(e.target.value)}
+                      style={{ padding: '8px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}
+                    >
+                      {COUNTRY_CODES.map((c) => (
+                        <option key={c.code} value={c.code}>{c.country} ({c.code})</option>
+                      ))}
+                    </select>
+                    <input 
+                      className="form-input" 
+                      style={{ flex: 1 }}
+                      value={shippingDetails.phone} 
+                      onChange={(e) => setShippingDetails({ ...shippingDetails, phone: e.target.value })} 
+                      placeholder="Mobile number" 
+                    />
+                  </div>
+                  {formErrors.phone && <span style={{ color: '#ff8b94', fontSize: '0.8em', marginTop: '-6px' }}>{formErrors.phone}</span>}
+                  
+                  <label>Flat, House No, Street *</label>
+                  <input 
+                    className="form-input" 
+                    value={shippingDetails.streetAddress} 
+                    onChange={(e) => setShippingDetails({ ...shippingDetails, streetAddress: e.target.value })} 
+                    placeholder="Flat/House No, Building, Street" 
+                  />
+                  {formErrors.streetAddress && <span style={{ color: '#ff8b94', fontSize: '0.8em', marginTop: '-6px' }}>{formErrors.streetAddress}</span>}
+                  
+                  <label>Landmark (Optional)</label>
+                  <input 
+                    className="form-input" 
+                    value={shippingDetails.landmark} 
+                    onChange={(e) => setShippingDetails({ ...shippingDetails, landmark: e.target.value })} 
+                    placeholder="Near temple/shop/etc." 
+                  />
 
-            {/* Buttons */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              <button
-                className="buy-now-btn"
-                onClick={() => setShowCheckout(true)}
-                style={{
-                  width: '100%',
-                  padding: '12px 0',
-                  borderRadius: '25px',
-                  fontSize: '1.1em',
-                  fontWeight: 'bold',
-                  cursor: 'pointer',
-                  border: 'none',
-                }}
-              >
-                Checkout
-              </button>
-              <button
-                onClick={() => {
-                  clearCart();
-                  setIsCartOpen(false);
-                }}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: '#ff6b6b',
-                  cursor: 'pointer',
-                  padding: '5px',
-                }}
-              >
-                Clear Cart
-              </button>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                      <label>City / Town *</label>
+                      <input 
+                        className="form-input" 
+                        value={shippingDetails.city} 
+                        onChange={(e) => setShippingDetails({ ...shippingDetails, city: e.target.value })} 
+                        placeholder="City" 
+                      />
+                      {formErrors.city && <span style={{ color: '#ff8b94', fontSize: '0.8em' }}>{formErrors.city}</span>}
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                      <label>State *</label>
+                      <select
+                        className="form-input"
+                        value={shippingDetails.state}
+                        onChange={(e) => setShippingDetails({ ...shippingDetails, state: e.target.value })}
+                        style={{ background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}
+                      >
+                        <option value="">Select State</option>
+                        {INDIAN_STATES.map((s) => (
+                          <option key={s} value={s}>{s}</option>
+                        ))}
+                      </select>
+                      {formErrors.state && <span style={{ color: '#ff8b94', fontSize: '0.8em' }}>{formErrors.state}</span>}
+                    </div>
+                  </div>
+
+                  <label>Pincode *</label>
+                  <input 
+                    className="form-input" 
+                    value={shippingDetails.pincode} 
+                    onChange={(e) => setShippingDetails({ ...shippingDetails, pincode: e.target.value })} 
+                    placeholder="6-digit ZIP code" 
+                  />
+                  {formErrors.pincode && <span style={{ color: '#ff8b94', fontSize: '0.8em', marginTop: '-6px' }}>{formErrors.pincode}</span>}
+
+                  <button 
+                    className="cart-checkout-btn" 
+                    onClick={() => {
+                      if (validateForm()) {
+                        setCheckoutStep('success');
+                      }
+                    }}
+                    style={{ marginTop: '10px' }}
+                  >
+                    Continue to Order — ₹{cartGrandTotal}
+                  </button>
+                  <button className="btn-secondary" onClick={() => setCheckoutStep('option')} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <ArrowLeft size={16} /> Back
+                  </button>
+                </>
+              )}
             </div>
           </div>
         )}
-      </div>
 
-      {/* Checkout Wizard Overlay (opens on top of drawer) */}
-      {showCheckout && (
-        <>
-          <div
-            onClick={() => setShowCheckout(false)}
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              backgroundColor: 'rgba(0,0,0,0.6)',
-              zIndex: 4000,
-              backdropFilter: 'blur(5px)',
-              WebkitBackdropFilter: 'blur(5px)',
-            }}
-          />
-          <div
-            className="checkout-modal show"
-            style={{
-              position: 'fixed',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              backgroundColor: 'rgba(20, 38, 38, 0.98)',
-              border: '1px solid var(--glass-border)',
-              borderRadius: '24px',
-              boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
-              zIndex: 4001,
-              width: '90%',
-              maxWidth: '460px',
-              padding: '2.5em 2em',
-              color: '#fffbe6',
-              fontFamily: 'var(--font-body)',
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={() => setShowCheckout(false)}
-              style={{
-                position: 'absolute',
-                top: '15px',
-                right: '15px',
-                background: 'none',
-                border: 'none',
-                color: '#fffbe6',
-                fontSize: '1.8em',
-                cursor: 'pointer',
-                lineHeight: 1,
+        {checkoutStep === 'success' && (
+          <div className="checkout-success">
+            <div className="checkout-success-icon"><PartyPopper size={64} /></div>
+            <h3>Order Recorded! Continue to Payment</h3>
+            <p style={{ color: 'var(--text-secondary)', marginBottom: '20px', fontSize: '0.92em', lineHeight: '1.4' }}>
+              Your details have been saved. To secure your <strong>Maximum Discount & Free Shipping</strong> and complete payment, continue to our WhatsApp payment gateway.
+            </p>
+            <a 
+              href={getWhatsAppLink()} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="cart-whatsapp-btn" 
+              onClick={() => {
+                clearCart();
+                setIsCartOpen(false);
+              }}
+              style={{ 
+                textDecoration: 'none', 
+                background: 'linear-gradient(135deg, #25D366, #128C7E)', 
+                color: '#fff',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                padding: '12px',
+                borderRadius: '25px',
+                fontWeight: 'bold',
+                boxShadow: '0 4px 15px rgba(37, 211, 102, 0.3)'
               }}
             >
-              &times;
-            </button>
-
-            {checkoutStep === 'option' && (
-              <div style={{ textAlign: 'center' }}>
-                <h3 style={{ fontFamily: "var(--font-title)", color: 'var(--color-gold)', fontSize: '1.6em', marginBottom: '0.8em' }}>
-                  Choose Checkout Method
-                </h3>
-                
-                <div style={{
-                  background: 'rgba(27, 60, 61, 0.4)',
-                  border: '1.5px solid var(--color-gold)',
-                  borderRadius: '16px',
-                  padding: '1.2em',
-                  marginBottom: '1.5em',
-                }}>
-                  <span style={{ fontSize: '2em', display: 'block', marginBottom: '0.2em' }}>🎁</span>
-                  <p style={{ margin: 0, fontFamily: "var(--font-title)", fontSize: '1.15em', color: '#fffbe6', lineHeight: '1.4' }}>
-                    Get a <b>Flat 10% Discount</b> + extra custom surprises when ordering directly on WhatsApp!
-                  </p>
-                </div>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                  <a
-                    href={getWhatsAppLink()}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hero-cta"
-                    onClick={() => {
-                      setShowCheckout(false);
-                      setIsCartOpen(false);
-                      clearCart();
-                    }}
-                    style={{
-                      display: 'block',
-                      textDecoration: 'none',
-                      background: 'linear-gradient(135deg, #25D366, #128C7E)',
-                      border: 'none',
-                      color: '#fff',
-                      fontWeight: 'bold',
-                      padding: '12px 20px',
-                      borderRadius: '30px',
-                      boxShadow: '0 4px 15px rgba(37, 211, 102, 0.3)',
-                    }}
-                  >
-                    💬 Order via WhatsApp (Best Discount)
-                  </a>
-
-                  <button
-                    className="hero-cta"
-                    onClick={() => setCheckoutStep('details')}
-                    style={{
-                      width: '100%',
-                      border: '1.5px solid var(--color-gold)',
-                      background: 'transparent',
-                      color: 'var(--color-gold)',
-                      padding: '12px 20px',
-                      borderRadius: '30px',
-                      fontWeight: 'bold',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    🛒 Continue standard checkout here
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {checkoutStep === 'details' && (
-              <div>
-                <h3 style={{ fontFamily: "var(--font-title)", color: 'var(--color-gold)', fontSize: '1.5em', marginBottom: '1em', textAlign: 'center' }}>
-                  Shipping Details
-                </h3>
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    setCheckoutStep('success');
-                    clearCart();
-                  }}
-                  style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}
-                >
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                    <label htmlFor="drawer-checkout-name" style={{ fontFamily: "var(--font-title)", color: '#fffbe6', fontSize: '0.9em' }}>Full Name</label>
-                    <input
-                      type="text"
-                      id="drawer-checkout-name"
-                      required
-                      placeholder="Enter recipient's name"
-                      value={shippingDetails.fullName}
-                      onChange={(e) => setShippingDetails({ ...shippingDetails, fullName: e.target.value })}
-                      style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'rgba(255, 251, 230, 0.05)', color: '#fffbe6' }}
-                    />
-                  </div>
-
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                    <label htmlFor="drawer-checkout-phone" style={{ fontFamily: "var(--font-title)", color: '#fffbe6', fontSize: '0.9em' }}>Phone Number</label>
-                    <input
-                      type="tel"
-                      id="drawer-checkout-phone"
-                      required
-                      placeholder="Enter mobile number"
-                      value={shippingDetails.phone}
-                      onChange={(e) => setShippingDetails({ ...shippingDetails, phone: e.target.value })}
-                      style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'rgba(255, 255, 255, 0.05)', color: '#fffbe6' }}
-                    />
-                  </div>
-
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                    <label htmlFor="drawer-checkout-address" style={{ fontFamily: "var(--font-title)", color: '#fffbe6', fontSize: '0.9em' }}>Shipping Address</label>
-                    <textarea
-                      id="drawer-checkout-address"
-                      required
-                      placeholder="House No, Street, Landmark, City, State, PIN"
-                      value={shippingDetails.address}
-                      onChange={(e) => setShippingDetails({ ...shippingDetails, address: e.target.value })}
-                      style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'rgba(255, 255, 255, 0.05)', color: '#fffbe6', minHeight: '60px' }}
-                    />
-                  </div>
-
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                    <label htmlFor="drawer-checkout-destination" style={{ fontFamily: "var(--font-title)", color: '#fffbe6', fontSize: '0.9em' }}>Shipping Destination</label>
-                    <select
-                      id="drawer-checkout-destination"
-                      value={shippingDetails.isInternational ? 'intl' : 'domestic'}
-                      onChange={(e) => {
-                        const isIntl = e.target.value === 'intl';
-                        setShippingDetails({
-                          ...shippingDetails,
-                          isInternational: isIntl,
-                          country: isIntl ? '' : 'India'
-                        });
-                      }}
-                      style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: '#1b3c3d', color: '#fffbe6' }}
-                    >
-                      <option value="domestic">🇮🇳 India Delivery</option>
-                      <option value="intl">🌎 International Delivery (Worldwide)</option>
-                    </select>
-                  </div>
-
-                  {shippingDetails.isInternational && (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                      <label htmlFor="drawer-checkout-country" style={{ fontFamily: "var(--font-title)", color: '#fffbe6', fontSize: '0.9em' }}>Destination Country</label>
-                      <input
-                        type="text"
-                        id="drawer-checkout-country"
-                        required
-                        placeholder="e.g. USA, Canada, UAE, UK"
-                        value={shippingDetails.country}
-                        onChange={(e) => setShippingDetails({ ...shippingDetails, country: e.target.value })}
-                        style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'rgba(255, 255, 255, 0.05)', color: '#fffbe6' }}
-                      />
-                    </div>
-                  )}
-
-                  <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-                    <button
-                      type="button"
-                      onClick={() => setCheckoutStep('option')}
-                      style={{ flex: 1, padding: '10px', borderRadius: '20px', border: '1px solid var(--glass-border)', background: 'transparent', color: '#fffbe6', cursor: 'pointer' }}
-                    >
-                      Back
-                    </button>
-                    <button
-                      type="submit"
-                      className="hero-cta"
-                      style={{ flex: 2, padding: '10px', borderRadius: '20px', border: 'none', cursor: 'pointer' }}
-                    >
-                      Confirm & Place
-                    </button>
-                  </div>
-                </form>
-              </div>
-            )}
-
-            {checkoutStep === 'success' && (
-              <div style={{ textAlign: 'center' }}>
-                <div className="success-lottie-container" style={{ margin: '0 auto 15px auto', width: '80px', height: '80px' }}>
-                  <svg className="success-checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                    <circle className="success-checkmark-circle" cx="26" cy="26" r="25" fill="none" />
-                    <path className="success-checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
-                  </svg>
-                </div>
-                
-                <h3 style={{ fontFamily: "var(--font-title)", color: 'var(--color-gold)', fontSize: '1.6em', marginBottom: '0.5em' }}>
-                  Order Placed!
-                </h3>
-                <p style={{ fontFamily: "var(--font-title)", color: '#fffbe6', fontSize: '1.1em', lineHeight: '1.5', marginBottom: '1.2em' }}>
-                  Amma Chethi Vantillu is preparing your delicious food with love! We will reach out to you shortly to coordinate updates.
-                </p>
-                
-                <button
-                  className="hero-cta"
-                  onClick={() => {
-                    setShowCheckout(false);
-                    setIsCartOpen(false);
-                  }}
-                  style={{ border: 'none', cursor: 'pointer', padding: '10px 30px' }}
-                >
-                  Done
-                </button>
-              </div>
-            )}
+              <MessageCircle size={18} /> Continue to WhatsApp for Max Discount
+            </a>
           </div>
-        </>
-      )}
+        )}
+      </div>
     </>
   );
 };
