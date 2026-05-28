@@ -39,7 +39,7 @@ export const PickleDetail: React.FC = () => {
   if (!product) {
     return (
       <section className="product-section" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '80vh' }}>
-        <div style={{ textAlign: 'center', color: '#fffbe6' }}>
+        <div style={{ textAlign: 'center', color: 'var(--text-primary)' }}>
           <h2 style={{ fontFamily: "var(--font-title)", fontSize: '2em' }}>Product Not Found</h2>
           <button onClick={() => navigate('/pickles')} className="hero-cta" style={{ border: 'none', cursor: 'pointer', marginTop: '20px' }}>
             Back to Pickles
@@ -77,9 +77,9 @@ export const PickleDetail: React.FC = () => {
             position: 'fixed',
             bottom: '20px',
             right: '20px',
-            backgroundColor: '#1b3c3d',
-            color: '#fffbe6',
-            border: '2px solid #e3d18a',
+            backgroundColor: 'var(--bg-secondary)',
+            color: 'var(--text-primary)',
+            border: '2px solid var(--gold)',
             borderRadius: '12px',
             padding: '15px 25px',
             boxShadow: '0 5px 15px rgba(0,0,0,0.3)',
@@ -138,7 +138,7 @@ export const PickleDetail: React.FC = () => {
           </ul>
 
           <div className="weight-options" style={{ margin: '25px 0' }}>
-            <label style={{ display: 'block', marginBottom: '8px', color: '#e3d18a', fontFamily: "var(--font-title)", fontSize: '1.2em' }}>
+            <label style={{ display: 'block', marginBottom: '8px', color: 'var(--gold)', fontFamily: "var(--font-title)", fontSize: '1.2em' }}>
               Select Weight:
             </label>
             <select
@@ -156,7 +156,7 @@ export const PickleDetail: React.FC = () => {
           </div>
 
           <div className="price-section" style={{ margin: '20px 0 30px 0' }}>
-            <div className="selected-price" style={{ fontFamily: "var(--font-title)", fontSize: '1.8em', color: '#e3d18a', fontWeight: 'bold' }}>
+            <div className="selected-price" style={{ fontFamily: "var(--font-title)", fontSize: '1.8em', color: 'var(--gold)', fontWeight: 'bold' }}>
               ₹{selectedOption.price}
             </div>
           </div>

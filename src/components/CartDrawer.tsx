@@ -264,7 +264,7 @@ export const CartDrawer: React.FC = () => {
                     country: isIntl ? '' : 'India'
                   });
                 }}
-                style={{ background: '#1b3c3d', color: '#fffbe6' }}
+                style={{ background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}
               >
                 <option value="domestic">🇮🇳 India Delivery</option>
                 <option value="intl">🌎 International Delivery (Worldwide)</option>
@@ -272,7 +272,7 @@ export const CartDrawer: React.FC = () => {
 
               {shippingDetails.isInternational ? (
                 <div style={{
-                  background: 'rgba(27, 60, 61, 0.4)',
+                  background: 'var(--bg-secondary)',
                   border: '1px solid var(--border)',
                   borderRadius: '12px',
                   padding: '1em',
@@ -283,7 +283,7 @@ export const CartDrawer: React.FC = () => {
                   gap: '10px'
                 }}>
                   <span style={{ fontSize: '2em' }}>🌎</span>
-                  <h4 style={{ fontFamily: "var(--font-title)", color: '#fffbe6', margin: 0 }}>International Orders</h4>
+                  <h4 style={{ fontFamily: "var(--font-title)", color: 'var(--text-primary)', margin: 0 }}>International Orders</h4>
                   <p style={{ color: 'var(--text-secondary)', fontSize: '0.85em', lineHeight: '1.4', margin: 0 }}>
                     International shipping fees and delivery regulations are country-specific. Please tap below to message us directly on WhatsApp to coordinate your order!
                   </p>
@@ -332,7 +332,7 @@ export const CartDrawer: React.FC = () => {
                     <select
                       value={isdCode}
                       onChange={(e) => setIsdCode(e.target.value)}
-                      style={{ padding: '8px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: '#1b3c3d', color: '#fffbe6' }}
+                      style={{ padding: '8px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}
                     >
                       {COUNTRY_CODES.map((c) => (
                         <option key={c.code} value={c.code}>{c.country} ({c.code})</option>
@@ -383,7 +383,7 @@ export const CartDrawer: React.FC = () => {
                         className="form-input"
                         value={shippingDetails.state}
                         onChange={(e) => setShippingDetails({ ...shippingDetails, state: e.target.value })}
-                        style={{ background: '#1b3c3d', color: '#fffbe6' }}
+                        style={{ background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}
                       >
                         <option value="">Select State</option>
                         {INDIAN_STATES.map((s) => (
