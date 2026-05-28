@@ -194,7 +194,6 @@ export const Home: React.FC = () => {
         <div className="hero-content">
           <img src="img/hirishi-logo.svg" alt="Hirishi Cloud Kitchen" className="hero-logo-badge" />
           <span className="hero-brand-name">Hirishi Cloud Kitchen</span>
-          <span className="hero-label">Handcrafted Since 2024</span>
           <h1 className="hero-title">
             Taste of<br />
             Amma's <span className="accent">Love</span>
