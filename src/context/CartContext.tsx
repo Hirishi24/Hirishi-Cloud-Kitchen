@@ -114,8 +114,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       return updated;
     });
-    // Automatically open drawer when items are added to cart
-    setIsCartOpen(true);
+    // Mini cart bar on the Pickles page shows added items instead
   };
 
   const updateQty = (cartId: string, delta: number) => {
