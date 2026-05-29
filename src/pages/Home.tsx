@@ -147,8 +147,8 @@ export const Home: React.FC = () => {
     }
     
     setErrorMessage('');
-    // Pass the actual HTMLFormElement DOM node to prevent React 19 event recycling issues
-    await handleFormspreeSubmit(e.currentTarget);
+    // Pass the React event object to the Formspree handler
+    await handleFormspreeSubmit(e);
   };
 
   // Intersection Observer for staggered reveal
