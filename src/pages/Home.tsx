@@ -214,8 +214,8 @@ export const Home: React.FC = () => {
           </h1>
           <p className="hero-tagline">Ammachethi Vantillu</p>
           <p className="hero-subtitle">
-            Premium homemade non-veg pickles, royal Andhra Nethi Pootharekulu, and a curated
-            selection of authentic homestyle delicacies — crafted from heritage recipes and delivered fresh worldwide.
+            Premium homemade  pickles, Royal Andhra Nethi Pootharekulu, and a curated
+            selection of authentic homestyle delicacies , Crafted from heritage recipes and delivered fresh worldwide.
           </p>
           <div className="hero-cta-group">
             <button className="btn-primary" onClick={() => document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' })}>
