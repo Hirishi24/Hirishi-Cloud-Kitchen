@@ -3758,15 +3758,31 @@ button {
   height: 100%;
   background: url('/img/petr-sevcovic-qE1jxYXiwOA-unsplash.jpg') center/cover no-repeat;
   opacity: 0;
-  transform: scale(1.18);
-  transition: opacity 1.8s ease, transform 20s cubic-bezier(0.25, 1, 0.5, 1);
+  transform: scale(1.18) translateZ(0);
+  -webkit-transform: scale(1.18) translateZ(0);
   will-change: transform, opacity;
 }
 
-/* Once preloader loaded, reveal blurred high-end kitchen background slowly */
+/* Once preloader loaded, reveal blurred high-end kitchen background slowly using keyframes for perfect mobile support */
 .welcome-cartier-screen.loaded .cartier-bg-image {
-  opacity: 0.08; /* Quiet luxury detail */
-  transform: scale(1.02);
+  animation: welcomeKenBurns 20s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  -webkit-animation: welcomeKenBurns 20s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes welcomeKenBurns {
+  0% {
+    opacity: 0;
+    transform: scale(1.18) translateZ(0);
+    -webkit-transform: scale(1.18) translateZ(0);
+  }
+  8% {
+    opacity: 0.08;
+  }
+  100% {
+    opacity: 0.08;
+    transform: scale(1.02) translateZ(0);
+    -webkit-transform: scale(1.02) translateZ(0);
+  }
 }
 
 .cartier-bg-overlay {
