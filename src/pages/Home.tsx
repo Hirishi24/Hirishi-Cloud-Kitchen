@@ -1,10 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowDown, Star, Users, Package, Globe, Phone } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { Star, Users, Package, Globe, Phone } from 'lucide-react';
 import { useForm, ValidationError } from '@formspree/react';
 
 export const Home: React.FC = () => {
-  useEffect(() => { window.scrollTo(0, 0); }, []);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state && (location.state as any).scrollTo) {
+      const targetId = (location.state as any).scrollTo;
+      setTimeout(() => {
+        const element = document.getElementById(targetId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 200);
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [location]);
 
   // Formspree Config
   const FORMSPREE_ID = "mykvljbe"; // User's actual Formspree form ID
@@ -200,15 +214,12 @@ export const Home: React.FC = () => {
           </h1>
           <p className="hero-tagline">Ammachethi Vantillu</p>
           <p className="hero-subtitle">
-            Premium homemade pickles, crafted with generations-old recipes
-            and delivered fresh to your doorstep — across India & Worldwide.
+            Premium homemade  pickles, Royal Andhra Nethi Pootharekulu, and a curated
+            selection of authentic homestyle delicacies , Crafted from heritage recipes and delivered fresh worldwide.
           </p>
           <div className="hero-cta-group">
-            <Link to="/pickles" className="btn-primary">
+            <button className="btn-primary" onClick={() => document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' })}>
               <Package size={20} /> Order Now
-            </Link>
-            <button className="btn-secondary" onClick={() => document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' })}>
-              Explore Menu <ArrowDown size={16} />
             </button>
           </div>
           <div className="hero-stats">
@@ -237,11 +248,11 @@ export const Home: React.FC = () => {
         </div>
 
         <div className="category-pills reveal">
-          <Link to="/pickles" className="category-pill active">🥒 All Pickles</Link>
-          <Link to="/pickles" className="category-pill">🍗 Non-Veg Pickles</Link>
-          <Link to="/pickles" className="category-pill">🌿 Veg Pickles</Link>
-          <Link to="/sweets" className="category-pill">🍯 Sweets</Link>
-          <Link to="/snacks" className="category-pill">🍿 Snacks</Link>
+          <Link to="/" className="category-pill active" onClick={(e) => { e.preventDefault(); document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' }); }}>All Delicacies</Link>
+          <Link to="/pickles?filter=non-veg" className="category-pill">Non-Veg Pickles</Link>
+          <Link to="/pickles?filter=veg" className="category-pill">Veg Pickles</Link>
+          <Link to="/sweets" className="category-pill">Sweets</Link>
+          <Link to="/snacks" className="category-pill">Snacks</Link>
         </div>
 
         <div className="bento-grid reveal">
@@ -250,7 +261,6 @@ export const Home: React.FC = () => {
             <div className="bento-card-overlay"></div>
             <span className="bento-card-arrow">→</span>
             <div className="bento-card-content">
-              <div className="bento-card-emoji">🥒</div>
               <div className="bento-card-title">Pickles Cloud</div>
               <div className="bento-card-subtitle">12+ authentic varieties • Order Now</div>
             </div>
@@ -260,7 +270,6 @@ export const Home: React.FC = () => {
             <div className="bento-card-overlay"></div>
             <span className="bento-card-arrow">→</span>
             <div className="bento-card-content">
-              <div className="bento-card-emoji">🍯</div>
               <div className="bento-card-title">Sweets Cloud</div>
               <div className="bento-card-subtitle">Traditional Nethi Pootharekulu & more • Order Now</div>
             </div>
@@ -270,9 +279,17 @@ export const Home: React.FC = () => {
             <div className="bento-card-overlay"></div>
             <span className="bento-card-arrow">→</span>
             <div className="bento-card-content">
-              <div className="bento-card-emoji">🍿</div>
               <div className="bento-card-title">Snacks Cloud</div>
               <div className="bento-card-subtitle">Traditional Telugu Vadiyalu & savories • Order Now</div>
+            </div>
+          </Link>
+          <Link to="/sweets?searchProduct=pootharekulu" className="bento-card wide" style={{ textDecoration: 'none' }}>
+            <img src="img/pootharekulu.png" alt="Royal Andhra Nethi Pootharekulu" className="bento-card-img" />
+            <div className="bento-card-overlay"></div>
+            <span className="bento-card-arrow">→</span>
+            <div className="bento-card-content">
+              <div className="bento-card-title">Royal Andhra Nethi Pootharekulu</div>
+              <div className="bento-card-subtitle">Handmade with pure cow ghee & loaded with premium dry fruits • Order Now</div>
             </div>
           </Link>
         </div>
@@ -419,7 +436,7 @@ export const Home: React.FC = () => {
                   field="email"
                   errors={state.errors}
                   className="form-error-banner"
-                  style={{ marginTop: '4px', background: 'none', border: 'none', padding: '0', color: '#ff8b94' }}
+                  style={{ marginTop: '4px', background: 'none', border: 'none', padding: '0', color: 'var(--error)' }}
                 />
               </div>
 
@@ -450,7 +467,7 @@ export const Home: React.FC = () => {
                   field="message"
                   errors={state.errors}
                   className="form-error-banner"
-                  style={{ marginTop: '4px', background: 'none', border: 'none', padding: '0', color: '#ff8b94' }}
+                  style={{ marginTop: '4px', background: 'none', border: 'none', padding: '0', color: 'var(--error)' }}
                 />
               </div>
               

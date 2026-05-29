@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { Home, BookOpen, ShoppingCart, Phone, Sun, Moon, ShoppingBag, Search, X } from 'lucide-react';
+import { Home, BookOpen, ShoppingCart, Phone, Sun, Moon, ShoppingBag, Search, X, Minus, Plus } from 'lucide-react';
 import { pickles, vegPickles, sweets, snacks } from '../productsData';
 
 export const Navbar: React.FC = () => {
-  const { cartBadgeCount, setIsCartOpen } = useCart();
+  const { cart, cartBadgeCount, cartGrandTotal, setIsCartOpen, updateQty } = useCart();
   const [scrolled, setScrolled] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     const saved = localStorage.getItem('hck_theme');
@@ -16,6 +16,12 @@ export const Navbar: React.FC = () => {
   // Mac Spotlight Search State
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [miniCartOpen, setMiniCartOpen] = useState(false);
+
+  // Close mini cart on page navigation
+  useEffect(() => {
+    setMiniCartOpen(false);
+  }, [location.pathname]);
 
   // Close search on escape key press
   useEffect(() => {
@@ -118,7 +124,16 @@ export const Navbar: React.FC = () => {
 
       {/* === BOTTOM NAV: 5 tabs with center order button === */}
       <div className="bottom-nav">
-        <Link to="/" className={`bottom-nav-item ${isActive('/') ? 'active' : ''}`}>
+        <Link 
+          to="/" 
+          className={`bottom-nav-item ${isActive('/') ? 'active' : ''}`}
+          onClick={(e) => {
+            if (location.pathname === '/') {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+          }}
+        >
           <span className="bottom-nav-icon"><Home size={20} /></span>
           Home
         </Link>
@@ -174,13 +189,13 @@ export const Navbar: React.FC = () => {
                   <div className="spotlight-section-title">Quick Categories</div>
                   <div className="spotlight-categories-grid">
                     <Link to="/pickles" className="spotlight-category-chip" onClick={() => setIsSearchOpen(false)}>
-                      🥒 Pickles Cloud
+                      Pickles Cloud
                     </Link>
                     <Link to="/sweets" className="spotlight-category-chip" onClick={() => setIsSearchOpen(false)}>
-                      🍬 Sweets Cloud
+                      Sweets Cloud
                     </Link>
                     <Link to="/snacks" className="spotlight-category-chip" onClick={() => setIsSearchOpen(false)}>
-                      🍿 Snacks Cloud
+                      Snacks Cloud
                     </Link>
                   </div>
                 </div>
@@ -260,6 +275,47 @@ export const Navbar: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Global Mini Cart Bubble — expands from bottom nav */}
+      {Object.keys(cart).length > 0 && (
+        <>
+          {!miniCartOpen ? (
+            <button className="mini-cart-bubble" onClick={() => setMiniCartOpen(true)}>
+              <ShoppingBag size={18} />
+              <span className="mini-cart-bubble-count">{cartBadgeCount}</span>
+              <span className="mini-cart-bubble-price">₹{cartGrandTotal}</span>
+            </button>
+          ) : (
+            <div className="mini-cart-bar open">
+              <div className="mini-cart-header">
+                <span className="mini-cart-header-title"><ShoppingBag size={14} /> Your Items</span>
+                <button className="mini-cart-close" onClick={() => setMiniCartOpen(false)}><X size={16} /></button>
+              </div>
+              <div className="mini-cart-items">
+                {Object.values(cart).map((item) => (
+                  <div className="mini-cart-item" key={item.cartId}>
+                    <div className="mini-cart-item-info">
+                      <span className="mini-cart-item-name">{item.name}</span>
+                      <span className="mini-cart-item-weight">{item.weightLabel}</span>
+                    </div>
+                    <div className="mini-cart-item-qty">
+                      <button onClick={() => updateQty(item.cartId, -1)} className="mini-cart-qty-btn"><Minus size={12} /></button>
+                      <span>{item.qty}</span>
+                      <button onClick={() => updateQty(item.cartId, 1)} className="mini-cart-qty-btn"><Plus size={12} /></button>
+                    </div>
+                    <span className="mini-cart-item-price">₹{item.price * item.qty}</span>
+                  </div>
+                ))}
+              </div>
+              <button className="mini-cart-checkout" onClick={() => { setMiniCartOpen(false); setIsCartOpen(true); }}>
+                <ShoppingBag size={16} />
+                <span>View Cart ({cartBadgeCount})</span>
+                <span className="mini-cart-total">₹{cartGrandTotal}</span>
+              </button>
+            </div>
+          )}
+        </>
+      )}
     </>
   );
 };

@@ -64,7 +64,7 @@ export const About: React.FC = () => {
           <p style={{ color: 'var(--text-secondary)', maxWidth: '650px', margin: '0 auto 32px', lineHeight: '1.8' }}>
             At Hirishi Cloud Kitchen, we're not just selling food — we're sharing a piece of our home with you. We believe that food made with love and care can bring joy to people's lives, and we're committed to maintaining the highest standards of quality and hygiene.
           </p>
-          <Link to="/pickles" className="btn-primary" style={{ maxWidth: '280px', margin: '0 auto', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+          <Link to="/" state={{ scrollTo: 'menu' }} className="btn-primary" style={{ maxWidth: '280px', margin: '0 auto', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
             <ShoppingBag size={18} /> Explore Our Products
           </Link>
         </div>

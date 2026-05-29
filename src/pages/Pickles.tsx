@@ -3,26 +3,34 @@ import { Link, useLocation } from 'react-router-dom';
 import { pickles, vegPickles } from '../productsData';
 import type { Product, WeightOption } from '../productsData';
 import { useCart } from '../context/CartContext';
-import { ArrowLeft, Plus, Check, Leaf, Drumstick, X, ShoppingBag, Minus } from 'lucide-react';
+import { ArrowLeft, Plus, Check, Leaf, Drumstick, X } from 'lucide-react';
 
 const allPickles = [...pickles, ...vegPickles];
 
 export const Pickles: React.FC = () => {
-  const { addToCart, cart, cartGrandTotal, cartBadgeCount, setIsCartOpen, updateQty } = useCart();
+  const { addToCart } = useCart();
   const location = useLocation();
-  const cartItems = Object.values(cart);
   const [filter, setFilter] = useState<'all' | 'veg' | 'non-veg'>('all');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedWeight, setSelectedWeight] = useState<WeightOption | null>(null);
   const [toast, setToast] = useState<string | null>(null);
-  const [miniCartOpen, setMiniCartOpen] = useState(false);
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
-  // Listen to search params for automatic product modal popup
+  // Listen to search params for automatic product modal popup and category filtering
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const searchProduct = params.get('searchProduct');
+    const categoryFilter = params.get('filter');
+
+    if (categoryFilter === 'veg') {
+      setFilter('veg');
+    } else if (categoryFilter === 'non-veg') {
+      setFilter('non-veg');
+    } else if (categoryFilter === 'all') {
+      setFilter('all');
+    }
+
     if (searchProduct) {
       const prod = allPickles.find((p) => p.id === searchProduct);
       if (prod) {
@@ -92,7 +100,7 @@ export const Pickles: React.FC = () => {
 
           <div className="category-pills reveal">
             <button className={`category-pill ${filter === 'all' ? 'active' : ''}`} onClick={() => setFilter('all')}>
-              🥒 All Pickles
+              All Pickles
             </button>
             <button className={`category-pill ${filter === 'non-veg' ? 'active' : ''}`} onClick={() => setFilter('non-veg')}>
               <Drumstick size={14} /> Non-Veg
@@ -145,46 +153,7 @@ export const Pickles: React.FC = () => {
         </div>
       </div>
 
-      {/* Mini Cart Bubble — expands from bottom nav */}
-      {cartItems.length > 0 && (
-        <>
-          {!miniCartOpen ? (
-            <button className="mini-cart-bubble" onClick={() => setMiniCartOpen(true)}>
-              <ShoppingBag size={18} />
-              <span className="mini-cart-bubble-count">{cartBadgeCount}</span>
-              <span className="mini-cart-bubble-price">₹{cartGrandTotal}</span>
-            </button>
-          ) : (
-            <div className="mini-cart-bar open">
-              <div className="mini-cart-header">
-                <span className="mini-cart-header-title"><ShoppingBag size={14} /> Your Items</span>
-                <button className="mini-cart-close" onClick={() => setMiniCartOpen(false)}><X size={16} /></button>
-              </div>
-              <div className="mini-cart-items">
-                {cartItems.map((item) => (
-                  <div className="mini-cart-item" key={item.cartId}>
-                    <div className="mini-cart-item-info">
-                      <span className="mini-cart-item-name">{item.name}</span>
-                      <span className="mini-cart-item-weight">{item.weightLabel}</span>
-                    </div>
-                    <div className="mini-cart-item-qty">
-                      <button onClick={() => updateQty(item.cartId, -1)} className="mini-cart-qty-btn"><Minus size={12} /></button>
-                      <span>{item.qty}</span>
-                      <button onClick={() => updateQty(item.cartId, 1)} className="mini-cart-qty-btn"><Plus size={12} /></button>
-                    </div>
-                    <span className="mini-cart-item-price">₹{item.price * item.qty}</span>
-                  </div>
-                ))}
-              </div>
-              <button className="mini-cart-checkout" onClick={() => setIsCartOpen(true)}>
-                <ShoppingBag size={16} />
-                <span>View Cart ({cartBadgeCount})</span>
-                <span className="mini-cart-total">₹{cartGrandTotal}</span>
-              </button>
-            </div>
-          )}
-        </>
-      )}
+
 
       {/* Popup — OUTSIDE page-enter so position:fixed works correctly */}
       <div className={`sheet-backdrop ${selectedProduct ? 'show' : ''}`} onClick={closeSheet}></div>

@@ -116,7 +116,7 @@ export const WelcomeModal: React.FC<Props> = ({ onClose }) => {
 
         {/* Quiet luxury footer */}
         <p className="cartier-footer">
-          ESTABLISHED 2024 • BOUTIQUE PREPARATIONS
+          ESTABLISHED 2024 • AMMA'S CULINARY CLASSICS
         </p>
       </div>
     </div>

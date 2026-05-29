@@ -563,7 +563,7 @@ export const Cart: React.FC = () => {
                           onChange={(e) => setShippingDetails({ ...shippingDetails, fullName: e.target.value })}
                           style={{ padding: '8px 12px', borderRadius: '8px' }}
                         />
-                        {formErrors.fullName && <span style={{ color: '#ff8b94', fontSize: '0.8em', marginTop: '2px' }}>{formErrors.fullName}</span>}
+                        {formErrors.fullName && <span style={{ color: 'var(--error)', fontSize: '0.8em', marginTop: '2px' }}>{formErrors.fullName}</span>}
                       </div>
 
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -589,7 +589,7 @@ export const Cart: React.FC = () => {
                             style={{ flex: 1, padding: '8px 12px', borderRadius: '8px' }}
                           />
                         </div>
-                        {formErrors.phone && <span style={{ color: '#ff8b94', fontSize: '0.8em', marginTop: '2px' }}>{formErrors.phone}</span>}
+                        {formErrors.phone && <span style={{ color: 'var(--error)', fontSize: '0.8em', marginTop: '2px' }}>{formErrors.phone}</span>}
                       </div>
 
                       {/* Address Blocks */}
@@ -606,7 +606,7 @@ export const Cart: React.FC = () => {
                             onChange={(e) => setShippingDetails({ ...shippingDetails, streetAddress: e.target.value })}
                             style={{ padding: '8px 12px', borderRadius: '8px' }}
                           />
-                          {formErrors.streetAddress && <span style={{ color: '#ff8b94', fontSize: '0.8em', marginTop: '2px' }}>{formErrors.streetAddress}</span>}
+                          {formErrors.streetAddress && <span style={{ color: 'var(--error)', fontSize: '0.8em', marginTop: '2px' }}>{formErrors.streetAddress}</span>}
                         </div>
                         
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
@@ -635,7 +635,7 @@ export const Cart: React.FC = () => {
                               onChange={(e) => setShippingDetails({ ...shippingDetails, city: e.target.value })}
                               style={{ padding: '8px 12px', borderRadius: '8px', width: '100%', boxSizing: 'border-box' }}
                             />
-                            {formErrors.city && <span style={{ color: '#ff8b94', fontSize: '0.8em', marginTop: '2px' }}>{formErrors.city}</span>}
+                            {formErrors.city && <span style={{ color: 'var(--error)', fontSize: '0.8em', marginTop: '2px' }}>{formErrors.city}</span>}
                           </div>
 
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
@@ -652,7 +652,7 @@ export const Cart: React.FC = () => {
                                 <option key={s} value={s}>{s}</option>
                               ))}
                             </select>
-                            {formErrors.state && <span style={{ color: '#ff8b94', fontSize: '0.8em', marginTop: '2px' }}>{formErrors.state}</span>}
+                            {formErrors.state && <span style={{ color: 'var(--error)', fontSize: '0.8em', marginTop: '2px' }}>{formErrors.state}</span>}
                           </div>
                         </div>
 
@@ -668,7 +668,7 @@ export const Cart: React.FC = () => {
                             onChange={(e) => setShippingDetails({ ...shippingDetails, pincode: e.target.value })}
                             style={{ padding: '8px 12px', borderRadius: '8px' }}
                           />
-                          {formErrors.pincode && <span style={{ color: '#ff8b94', fontSize: '0.8em', marginTop: '2px' }}>{formErrors.pincode}</span>}
+                          {formErrors.pincode && <span style={{ color: 'var(--error)', fontSize: '0.8em', marginTop: '2px' }}>{formErrors.pincode}</span>}
                         </div>
                       </div>
 
