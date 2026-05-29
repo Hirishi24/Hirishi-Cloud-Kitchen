@@ -1615,7 +1615,7 @@ button {
 .footer {
   position: relative;
   padding: var(--space-3xl) var(--content-padding) var(--space-xl);
-  background: var(--bg-secondary);
+  background: var(--bg-primary);
   border-top: 1px solid var(--border);
 }
 
@@ -2492,7 +2492,7 @@ button {
 .footer {
   position: relative;
   padding: var(--space-3xl) var(--content-padding) var(--space-xl);
-  background: var(--bg-secondary);
+  background: var(--bg-primary);
   border-top: 1px solid var(--border);
 }
 
@@ -2923,7 +2923,7 @@ button {
   background: linear-gradient(90deg, #e8e3d4, #f0ece0, #e8e3d4);
 }
 
-[data-theme="light"] .footer { background: #e8e3d4; }
+
 
 [data-theme="light"] .welcome-content {
   background: var(--bg-secondary);
