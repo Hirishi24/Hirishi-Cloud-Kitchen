@@ -416,7 +416,7 @@ export const Home: React.FC = () => {
                   field="email"
                   errors={state.errors}
                   className="form-error-banner"
-                  style={{ marginTop: '4px', background: 'none', border: 'none', padding: '0', color: '#ff8b94' }}
+                  style={{ marginTop: '4px', background: 'none', border: 'none', padding: '0', color: 'var(--error)' }}
                 />
               </div>
 
@@ -447,7 +447,7 @@ export const Home: React.FC = () => {
                   field="message"
                   errors={state.errors}
                   className="form-error-banner"
-                  style={{ marginTop: '4px', background: 'none', border: 'none', padding: '0', color: '#ff8b94' }}
+                  style={{ marginTop: '4px', background: 'none', border: 'none', padding: '0', color: 'var(--error)' }}
                 />
               </div>
               

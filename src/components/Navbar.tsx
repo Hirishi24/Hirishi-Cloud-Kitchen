@@ -118,7 +118,16 @@ export const Navbar: React.FC = () => {
 
       {/* === BOTTOM NAV: 5 tabs with center order button === */}
       <div className="bottom-nav">
-        <Link to="/" className={`bottom-nav-item ${isActive('/') ? 'active' : ''}`}>
+        <Link 
+          to="/" 
+          className={`bottom-nav-item ${isActive('/') ? 'active' : ''}`}
+          onClick={(e) => {
+            if (location.pathname === '/') {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+          }}
+        >
           <span className="bottom-nav-icon"><Home size={20} /></span>
           Home
         </Link>

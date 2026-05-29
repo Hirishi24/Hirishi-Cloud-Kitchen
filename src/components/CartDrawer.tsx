@@ -212,7 +212,7 @@ export const CartDrawer: React.FC = () => {
 
                 <div className="cart-total-row"><span>Subtotal</span><span>₹{cartTotalBeforeDiscount}</span></div>
                 {cartDiscount > 0 && (
-                  <div className="cart-total-row" style={{ color: '#4ade80' }}><span>Discount ({couponCode})</span><span>-₹{cartDiscount}</span></div>
+                  <div className="cart-total-row" style={{ color: 'var(--success)' }}><span>Discount ({couponCode})</span><span>-₹{cartDiscount}</span></div>
                 )}
                 <div className="cart-total-row grand"><span>Total</span><span>₹{cartGrandTotal}</span></div>
 
@@ -325,7 +325,7 @@ export const CartDrawer: React.FC = () => {
                     onChange={(e) => setShippingDetails({ ...shippingDetails, fullName: e.target.value })} 
                     placeholder="Recipient's name" 
                   />
-                  {formErrors.fullName && <span style={{ color: '#ff8b94', fontSize: '0.8em', marginTop: '-6px' }}>{formErrors.fullName}</span>}
+                  {formErrors.fullName && <span style={{ color: 'var(--error)', fontSize: '0.8em', marginTop: '-6px' }}>{formErrors.fullName}</span>}
                   
                   <label>Phone Number *</label>
                   <div style={{ display: 'flex', gap: '8px' }}>
@@ -346,7 +346,7 @@ export const CartDrawer: React.FC = () => {
                       placeholder="Mobile number" 
                     />
                   </div>
-                  {formErrors.phone && <span style={{ color: '#ff8b94', fontSize: '0.8em', marginTop: '-6px' }}>{formErrors.phone}</span>}
+                  {formErrors.phone && <span style={{ color: 'var(--error)', fontSize: '0.8em', marginTop: '-6px' }}>{formErrors.phone}</span>}
                   
                   <label>Flat, House No, Street *</label>
                   <input 
@@ -355,7 +355,7 @@ export const CartDrawer: React.FC = () => {
                     onChange={(e) => setShippingDetails({ ...shippingDetails, streetAddress: e.target.value })} 
                     placeholder="Flat/House No, Building, Street" 
                   />
-                  {formErrors.streetAddress && <span style={{ color: '#ff8b94', fontSize: '0.8em', marginTop: '-6px' }}>{formErrors.streetAddress}</span>}
+                  {formErrors.streetAddress && <span style={{ color: 'var(--error)', fontSize: '0.8em', marginTop: '-6px' }}>{formErrors.streetAddress}</span>}
                   
                   <label>Landmark (Optional)</label>
                   <input 
@@ -374,7 +374,7 @@ export const CartDrawer: React.FC = () => {
                         onChange={(e) => setShippingDetails({ ...shippingDetails, city: e.target.value })} 
                         placeholder="City" 
                       />
-                      {formErrors.city && <span style={{ color: '#ff8b94', fontSize: '0.8em' }}>{formErrors.city}</span>}
+                      {formErrors.city && <span style={{ color: 'var(--error)', fontSize: '0.8em' }}>{formErrors.city}</span>}
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -390,7 +390,7 @@ export const CartDrawer: React.FC = () => {
                           <option key={s} value={s}>{s}</option>
                         ))}
                       </select>
-                      {formErrors.state && <span style={{ color: '#ff8b94', fontSize: '0.8em' }}>{formErrors.state}</span>}
+                      {formErrors.state && <span style={{ color: 'var(--error)', fontSize: '0.8em' }}>{formErrors.state}</span>}
                     </div>
                   </div>
 
@@ -401,7 +401,7 @@ export const CartDrawer: React.FC = () => {
                     onChange={(e) => setShippingDetails({ ...shippingDetails, pincode: e.target.value })} 
                     placeholder="6-digit ZIP code" 
                   />
-                  {formErrors.pincode && <span style={{ color: '#ff8b94', fontSize: '0.8em', marginTop: '-6px' }}>{formErrors.pincode}</span>}
+                  {formErrors.pincode && <span style={{ color: 'var(--error)', fontSize: '0.8em', marginTop: '-6px' }}>{formErrors.pincode}</span>}
 
                   <button 
                     className="cart-checkout-btn" 

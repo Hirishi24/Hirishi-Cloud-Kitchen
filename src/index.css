@@ -21,6 +21,19 @@
   --border: rgba(227, 209, 138, 0.18);
   --border-hover: rgba(227, 209, 138, 0.4);
   --overlay: rgba(10, 24, 24, 0.7);
+  --error: #ff8b94;
+  --success: #4ade80;
+  --card-gradient: linear-gradient(
+    180deg,
+    transparent 20%,
+    rgba(16, 38, 38, 0.4) 50%,
+    rgba(16, 38, 38, 0.95) 85%
+  );
+  --bento-gradient: linear-gradient(
+    180deg,
+    transparent 30%,
+    rgba(16, 38, 38, 0.9) 100%
+  );
 
   /* === GLASS === */
   --glass-bg: rgba(16, 38, 38, 0.6);
@@ -730,7 +743,7 @@ button {
 .bento-card-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent 30%, rgba(16, 38, 38, 0.9) 100%);
+  background: var(--bento-gradient);
   z-index: 1;
 }
 
@@ -822,12 +835,7 @@ button {
 .food-card-gradient {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    transparent 20%,
-    rgba(16, 38, 38, 0.4) 50%,
-    rgba(16, 38, 38, 0.95) 85%
-  );
+  background: var(--card-gradient);
   z-index: 1;
 }
 
@@ -1961,8 +1969,8 @@ button {
   font-size: 0.8em;
   margin-top: 4px;
 }
-.coupon-message.success { color: #4ade80; }
-.coupon-message.error { color: #f87171; }
+.coupon-message.success { color: var(--success); }
+.coupon-message.error { color: var(--error); }
 
 /* ============================================================
    WELCOME MODAL
@@ -2674,8 +2682,8 @@ button {
 }
 .coupon-apply-btn:hover { background: var(--gold); color: var(--bg-primary); }
 .coupon-message { font-size: 0.8em; margin-top: 4px; }
-.coupon-message.success { color: #4ade80; }
-.coupon-message.error { color: #f87171; }
+.coupon-message.success { color: var(--success); }
+.coupon-message.error { color: var(--error); }
 
 /* ============================================================
    WELCOME MODAL
@@ -2868,6 +2876,19 @@ button {
   --glass-bg: rgba(240, 236, 224, 0.7);
   --glass-border: rgba(139, 122, 46, 0.15);
   --glass-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  --error: #dc3545;
+  --success: #1e7832;
+  --card-gradient: linear-gradient(
+    180deg,
+    transparent 20%,
+    rgba(250, 248, 240, 0.4) 50%,
+    rgba(250, 248, 240, 0.95) 85%
+  );
+  --bento-gradient: linear-gradient(
+    180deg,
+    transparent 30%,
+    rgba(250, 248, 240, 0.9) 100%
+  );
 }
 
 [data-theme="light"] .animated-bg .floating-element { opacity: 0.06; }
@@ -3203,7 +3224,7 @@ button {
   border: 1px solid rgba(220, 53, 69, 0.3);
   padding: var(--space-sm) var(--space-md);
   border-radius: var(--radius-md);
-  color: #ff8b94;
+  color: var(--error);
   font-size: 0.9em;
   display: flex;
   align-items: center;

@@ -63,7 +63,7 @@ export const Register: React.FC = () => {
           </svg>
           
           <h2>Register</h2>
-          {error && <div style={{ color: '#ff6b6b', fontFamily: "var(--font-title)", fontSize: '1.2em', marginBottom: '10px' }}>{error}</div>}
+          {error && <div style={{ color: 'var(--error)', fontFamily: "var(--font-title)", fontSize: '1.2em', marginBottom: '10px' }}>{error}</div>}
           
           <input
             type="text"
