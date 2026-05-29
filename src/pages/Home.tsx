@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ArrowDown, Star, Users, Package, Globe, Phone } from 'lucide-react';
+import { Star, Users, Package, Globe, Phone } from 'lucide-react';
 import { useForm, ValidationError } from '@formspree/react';
 
 export const Home: React.FC = () => {
@@ -218,11 +218,8 @@ export const Home: React.FC = () => {
             and delivered fresh to your doorstep — across India & Worldwide.
           </p>
           <div className="hero-cta-group">
-            <Link to="/pickles" className="btn-primary">
+            <button className="btn-primary" onClick={() => document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' })}>
               <Package size={20} /> Order Now
-            </Link>
-            <button className="btn-secondary" onClick={() => document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' })}>
-              Explore Menu <ArrowDown size={16} />
             </button>
           </div>
           <div className="hero-stats">
