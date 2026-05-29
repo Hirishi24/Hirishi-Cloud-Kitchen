@@ -6,11 +6,5 @@ export const AnimatedBg: React.FC = () => (
     <div className="floating-element"></div>
     <div className="floating-element"></div>
     <div className="floating-element"></div>
-    <div className="sparkle"></div>
-    <div className="sparkle"></div>
-    <div className="sparkle"></div>
-    <div className="sparkle"></div>
-    <div className="sparkle"></div>
-    <div className="sparkle"></div>
   </div>
 );
