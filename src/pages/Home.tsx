@@ -251,7 +251,7 @@ export const Home: React.FC = () => {
         </div>
 
         <div className="category-pills reveal">
-          <Link to="/pickles" className="category-pill active">All Delicacies</Link>
+          <Link to="/" className="category-pill active" onClick={(e) => { e.preventDefault(); document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' }); }}>All Delicacies</Link>
           <Link to="/pickles" className="category-pill">Non-Veg Pickles</Link>
           <Link to="/pickles" className="category-pill">Veg Pickles</Link>
           <Link to="/sweets" className="category-pill">Sweets</Link>
