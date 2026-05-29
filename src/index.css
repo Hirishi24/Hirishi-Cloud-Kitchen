@@ -23,6 +23,7 @@
   --overlay: rgba(10, 24, 24, 0.7);
   --error: #ff8b94;
   --success: #4ade80;
+  --welcome-bg-opacity: 0.08;
   --card-gradient: linear-gradient(
     180deg,
     transparent 20%,
@@ -759,7 +760,7 @@ button {
 .bento-card-subtitle {
   font-family: var(--font-body);
   font-size: 0.85em;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .bento-card-arrow {
@@ -880,7 +881,7 @@ button {
 
 .food-card-desc {
   font-size: 0.8em;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -2868,6 +2869,7 @@ button {
   --glass-shadow: 0 8px 32px rgba(0,0,0,0.08);
   --error: #dc3545;
   --success: #1e7832;
+  --welcome-bg-opacity: 0.14;
   --card-gradient: linear-gradient(
     180deg,
     transparent 20%,
@@ -3776,10 +3778,10 @@ button {
     -webkit-transform: scale(1.18) translateZ(0);
   }
   8% {
-    opacity: 0.08;
+    opacity: var(--welcome-bg-opacity);
   }
   100% {
-    opacity: 0.08;
+    opacity: var(--welcome-bg-opacity);
     transform: scale(1.02) translateZ(0);
     -webkit-transform: scale(1.02) translateZ(0);
   }

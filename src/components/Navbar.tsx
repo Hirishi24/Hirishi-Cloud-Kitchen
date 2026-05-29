@@ -9,7 +9,7 @@ export const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     const saved = localStorage.getItem('hck_theme');
-    return (saved === 'light' ? 'light' : 'dark');
+    return (saved === 'dark' ? 'dark' : 'light');
   });
   const location = useLocation();
 
