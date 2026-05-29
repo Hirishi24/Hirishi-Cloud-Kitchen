@@ -727,6 +727,11 @@ button {
   aspect-ratio: auto;
 }
 
+.bento-card.wide {
+  grid-column: span 3;
+  aspect-ratio: 3 / 1;
+}
+
 .bento-card-img {
   position: absolute;
   inset: 0;
@@ -2986,6 +2991,10 @@ button {
     grid-row: span 1;
     aspect-ratio: 2 / 1;
   }
+  .bento-card.wide {
+    grid-column: span 2;
+    aspect-ratio: 2 / 1;
+  }
   .bento-card { aspect-ratio: 1 / 1.1; }
 
   .food-grid {
@@ -3013,6 +3022,7 @@ button {
 @media (max-width: 480px) {
   .bento-grid { grid-template-columns: 1fr; }
   .bento-card.large { grid-column: span 1; aspect-ratio: 16/9; }
+  .bento-card.wide { grid-column: span 1; aspect-ratio: 16/10; }
   .bento-card { aspect-ratio: 16/10; }
   .food-grid { grid-template-columns: 1fr 1fr; }
   .footer-grid { grid-template-columns: 1fr; }

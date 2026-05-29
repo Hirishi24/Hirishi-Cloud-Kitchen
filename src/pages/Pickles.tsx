@@ -17,10 +17,20 @@ export const Pickles: React.FC = () => {
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
-  // Listen to search params for automatic product modal popup
+  // Listen to search params for automatic product modal popup and category filtering
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const searchProduct = params.get('searchProduct');
+    const categoryFilter = params.get('filter');
+
+    if (categoryFilter === 'veg') {
+      setFilter('veg');
+    } else if (categoryFilter === 'non-veg') {
+      setFilter('non-veg');
+    } else if (categoryFilter === 'all') {
+      setFilter('all');
+    }
+
     if (searchProduct) {
       const prod = allPickles.find((p) => p.id === searchProduct);
       if (prod) {

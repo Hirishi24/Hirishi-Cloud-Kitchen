@@ -252,8 +252,8 @@ export const Home: React.FC = () => {
 
         <div className="category-pills reveal">
           <Link to="/" className="category-pill active" onClick={(e) => { e.preventDefault(); document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' }); }}>All Delicacies</Link>
-          <Link to="/pickles" className="category-pill">Non-Veg Pickles</Link>
-          <Link to="/pickles" className="category-pill">Veg Pickles</Link>
+          <Link to="/pickles?filter=non-veg" className="category-pill">Non-Veg Pickles</Link>
+          <Link to="/pickles?filter=veg" className="category-pill">Veg Pickles</Link>
           <Link to="/sweets" className="category-pill">Sweets</Link>
           <Link to="/snacks" className="category-pill">Snacks</Link>
         </div>
@@ -284,6 +284,15 @@ export const Home: React.FC = () => {
             <div className="bento-card-content">
               <div className="bento-card-title">Snacks Cloud</div>
               <div className="bento-card-subtitle">Traditional Telugu Vadiyalu & savories • Order Now</div>
+            </div>
+          </Link>
+          <Link to="/sweets?searchProduct=pootharekulu" className="bento-card wide" style={{ textDecoration: 'none' }}>
+            <img src="img/pootharekulu.png" alt="Royal Andhra Nethi Pootharekulu" className="bento-card-img" />
+            <div className="bento-card-overlay"></div>
+            <span className="bento-card-arrow">→</span>
+            <div className="bento-card-content">
+              <div className="bento-card-title">Royal Andhra Nethi Pootharekulu</div>
+              <div className="bento-card-subtitle">Handmade with pure cow ghee & loaded with premium dry fruits • Order Now</div>
             </div>
           </Link>
         </div>
