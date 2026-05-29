@@ -174,13 +174,13 @@ export const Navbar: React.FC = () => {
                   <div className="spotlight-section-title">Quick Categories</div>
                   <div className="spotlight-categories-grid">
                     <Link to="/pickles" className="spotlight-category-chip" onClick={() => setIsSearchOpen(false)}>
-                      🥒 Pickles Cloud
+                      Pickles Cloud
                     </Link>
                     <Link to="/sweets" className="spotlight-category-chip" onClick={() => setIsSearchOpen(false)}>
-                      🍬 Sweets Cloud
+                      Sweets Cloud
                     </Link>
                     <Link to="/snacks" className="spotlight-category-chip" onClick={() => setIsSearchOpen(false)}>
-                      🍿 Snacks Cloud
+                      Snacks Cloud
                     </Link>
                   </div>
                 </div>

@@ -131,7 +131,7 @@ export const Snacks: React.FC = () => {
 
           <div className="category-pills reveal">
             <button className={`category-pill ${filter === 'all' ? 'active' : ''}`} onClick={() => setFilter('all')}>
-              🍿 All Snacks
+              All Snacks
             </button>
             <button className={`category-pill ${filter === 'traditional' ? 'active' : ''}`} onClick={() => setFilter('traditional')}>
               <Award size={14} /> Traditional Classics

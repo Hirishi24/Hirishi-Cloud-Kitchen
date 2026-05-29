@@ -237,11 +237,11 @@ export const Home: React.FC = () => {
         </div>
 
         <div className="category-pills reveal">
-          <Link to="/pickles" className="category-pill active">🥒 All Pickles</Link>
-          <Link to="/pickles" className="category-pill">🍗 Non-Veg Pickles</Link>
-          <Link to="/pickles" className="category-pill">🌿 Veg Pickles</Link>
-          <Link to="/sweets" className="category-pill">🍯 Sweets</Link>
-          <Link to="/snacks" className="category-pill">🍿 Snacks</Link>
+          <Link to="/pickles" className="category-pill active">All Pickles</Link>
+          <Link to="/pickles" className="category-pill">Non-Veg Pickles</Link>
+          <Link to="/pickles" className="category-pill">Veg Pickles</Link>
+          <Link to="/sweets" className="category-pill">Sweets</Link>
+          <Link to="/snacks" className="category-pill">Snacks</Link>
         </div>
 
         <div className="bento-grid reveal">
@@ -250,7 +250,6 @@ export const Home: React.FC = () => {
             <div className="bento-card-overlay"></div>
             <span className="bento-card-arrow">→</span>
             <div className="bento-card-content">
-              <div className="bento-card-emoji">🥒</div>
               <div className="bento-card-title">Pickles Cloud</div>
               <div className="bento-card-subtitle">12+ authentic varieties • Order Now</div>
             </div>
@@ -260,7 +259,6 @@ export const Home: React.FC = () => {
             <div className="bento-card-overlay"></div>
             <span className="bento-card-arrow">→</span>
             <div className="bento-card-content">
-              <div className="bento-card-emoji">🍯</div>
               <div className="bento-card-title">Sweets Cloud</div>
               <div className="bento-card-subtitle">Traditional Nethi Pootharekulu & more • Order Now</div>
             </div>
@@ -270,7 +268,6 @@ export const Home: React.FC = () => {
             <div className="bento-card-overlay"></div>
             <span className="bento-card-arrow">→</span>
             <div className="bento-card-content">
-              <div className="bento-card-emoji">🍿</div>
               <div className="bento-card-title">Snacks Cloud</div>
               <div className="bento-card-subtitle">Traditional Telugu Vadiyalu & savories • Order Now</div>
             </div>

@@ -130,7 +130,7 @@ export const Sweets: React.FC = () => {
 
           <div className="category-pills reveal">
             <button className={`category-pill ${filter === 'all' ? 'active' : ''}`} onClick={() => setFilter('all')}>
-              🍬 All Sweets
+              All Sweets
             </button>
             <button className={`category-pill ${filter === 'bestseller' ? 'active' : ''}`} onClick={() => setFilter('bestseller')}>
               <Star size={14} /> Best Sellers & Premium

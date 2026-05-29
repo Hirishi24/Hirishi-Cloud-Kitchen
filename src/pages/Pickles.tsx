@@ -92,7 +92,7 @@ export const Pickles: React.FC = () => {
 
           <div className="category-pills reveal">
             <button className={`category-pill ${filter === 'all' ? 'active' : ''}`} onClick={() => setFilter('all')}>
-              🥒 All Pickles
+              All Pickles
             </button>
             <button className={`category-pill ${filter === 'non-veg' ? 'active' : ''}`} onClick={() => setFilter('non-veg')}>
               <Drumstick size={14} /> Non-Veg
