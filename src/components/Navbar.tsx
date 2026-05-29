@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { Home, BookOpen, ShoppingCart, Phone, Sun, Moon, ShoppingBag, Search, X, Minus, Plus } from 'lucide-react';
+import { Home, BookOpen, ShoppingCart, Phone, ShoppingBag, Search, X, Minus, Plus } from 'lucide-react';
 import { pickles, vegPickles, sweets, snacks } from '../productsData';
 
 export const Navbar: React.FC = () => {
   const { cart, cartBadgeCount, cartGrandTotal, setIsCartOpen, updateQty } = useCart();
   const [scrolled, setScrolled] = useState(false);
-  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+  const [theme] = useState<'dark' | 'light'>(() => {
     const saved = localStorage.getItem('hck_theme');
     return (saved === 'light' ? 'light' : 'dark');
   });
@@ -65,7 +65,6 @@ export const Navbar: React.FC = () => {
     localStorage.setItem('hck_theme', theme);
   }, [theme]);
 
-  const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -110,9 +109,6 @@ export const Navbar: React.FC = () => {
         </div>
 
         <div className="top-nav-actions">
-          <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
-            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
           <button className="top-nav-cart" onClick={() => setIsCartOpen(true)} aria-label="Open cart">
             <ShoppingBag size={22} />
             {cartBadgeCount > 0 && (
