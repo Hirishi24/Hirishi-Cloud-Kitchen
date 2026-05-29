@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { snacks } from '../productsData';
 import { useCart } from '../context/CartContext';
-import { ArrowLeft, Plus, Check, Sparkles, Flame, Award, X, ShoppingBag, Minus } from 'lucide-react';
+import { ArrowLeft, Plus, Check, Sparkles, Flame, Award, X } from 'lucide-react';
 
 interface EnhancedProduct {
   id: string;
@@ -32,14 +32,12 @@ const enhancedSnacks: EnhancedProduct[] = snacks.map((s) => {
 });
 
 export const Snacks: React.FC = () => {
-  const { addToCart, cart, cartGrandTotal, cartBadgeCount, setIsCartOpen, updateQty } = useCart();
+  const { addToCart } = useCart();
   const location = useLocation();
-  const cartItems = Object.values(cart);
   const [filter, setFilter] = useState<'all' | 'traditional' | 'spicy'>('all');
   const [selectedProduct, setSelectedProduct] = useState<EnhancedProduct | null>(null);
   const [selectedWeight, setSelectedWeight] = useState<{ label: string; price: number } | null>(null);
   const [toast, setToast] = useState<string | null>(null);
-  const [miniCartOpen, setMiniCartOpen] = useState(false);
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
@@ -177,46 +175,7 @@ export const Snacks: React.FC = () => {
         </div>
       </div>
 
-      {/* Mini Cart Bubble — expands from bottom nav */}
-      {cartItems.length > 0 && (
-        <>
-          {!miniCartOpen ? (
-            <button className="mini-cart-bubble" onClick={() => setMiniCartOpen(true)}>
-              <ShoppingBag size={18} />
-              <span className="mini-cart-bubble-count">{cartBadgeCount}</span>
-              <span className="mini-cart-bubble-price">₹{cartGrandTotal}</span>
-            </button>
-          ) : (
-            <div className="mini-cart-bar open">
-              <div className="mini-cart-header">
-                <span className="mini-cart-header-title"><ShoppingBag size={14} /> Your Items</span>
-                <button className="mini-cart-close" onClick={() => setMiniCartOpen(false)}><X size={16} /></button>
-              </div>
-              <div className="mini-cart-items">
-                {cartItems.map((item) => (
-                  <div className="mini-cart-item" key={item.cartId}>
-                    <div className="mini-cart-item-info">
-                      <span className="mini-cart-item-name">{item.name}</span>
-                      <span className="mini-cart-item-weight">{item.weightLabel}</span>
-                    </div>
-                    <div className="mini-cart-item-qty">
-                      <button onClick={() => updateQty(item.cartId, -1)} className="mini-cart-qty-btn"><Minus size={12} /></button>
-                      <span>{item.qty}</span>
-                      <button onClick={() => updateQty(item.cartId, 1)} className="mini-cart-qty-btn"><Plus size={12} /></button>
-                    </div>
-                    <span className="mini-cart-item-price">₹{item.price * item.qty}</span>
-                  </div>
-                ))}
-              </div>
-              <button className="mini-cart-checkout" onClick={() => setIsCartOpen(true)}>
-                <ShoppingBag size={16} />
-                <span>View Cart ({cartBadgeCount})</span>
-                <span className="mini-cart-total">₹{cartGrandTotal}</span>
-              </button>
-            </div>
-          )}
-        </>
-      )}
+
 
       {/* Popup — OUTSIDE page-enter so position:fixed works correctly */}
       <div className={`sheet-backdrop ${selectedProduct ? 'show' : ''}`} onClick={closeSheet}></div>
