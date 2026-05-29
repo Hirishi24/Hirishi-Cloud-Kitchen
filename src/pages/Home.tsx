@@ -1,10 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { ArrowDown, Star, Users, Package, Globe, Phone } from 'lucide-react';
 import { useForm, ValidationError } from '@formspree/react';
 
 export const Home: React.FC = () => {
-  useEffect(() => { window.scrollTo(0, 0); }, []);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state && (location.state as any).scrollTo) {
+      const targetId = (location.state as any).scrollTo;
+      setTimeout(() => {
+        const element = document.getElementById(targetId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 200);
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [location]);
 
   // Formspree Config
   const FORMSPREE_ID = "mykvljbe"; // User's actual Formspree form ID
